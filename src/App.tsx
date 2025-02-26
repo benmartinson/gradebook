@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useQuery, useMutation } from "convex/react";
-import QuestionPage from "./quiz/QuestionPage";
-
+import GradebookPage from "./gradebook/GradebookPage";
 export default function App() {
   return (
-    <QuestionPage />
+    <GradebookPage />
   );
 }
