@@ -1,4 +1,4 @@
-import { Assignment, Student } from "../../types";
+import { Assignment, Student } from "../../../types";
 import { grades } from "../../mocks";
 
 const StudentGradeRow = ({ assignment, student }: { assignment: Assignment, student: Student }) => {

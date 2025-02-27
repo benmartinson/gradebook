@@ -1,4 +1,4 @@
-import { Assignment, AssignmentGrade, AssignmentType, Student } from "./types";
+import { Assignment, AssignmentGrade, AssignmentType, Student } from "../types";
 
 export const grades: AssignmentGrade[] = [
   {

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Select from "react-select";
 import { FaSort } from "react-icons/fa";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
 const Navbar = () => {
   const gradingPeriods = [
@@ -18,8 +20,11 @@ const Navbar = () => {
     { value: "project", label: "Projects" },
   ];
 
+  const addAssignment = useMutation(api.gradebook.addAssignment);
+
   return (
-    <div className="flex justify-end items-center py-2 px-6 border-b border-gray-200">
+    <div className="flex justify-between items-center py-2 px-6 border-b border-gray-200">
+      <div></div>
       <div className="flex items-center gap-4">
         <button className="text-gray-600 hover:text-gray-800 flex items-center gap-1">
           <div>Date Order</div>
@@ -43,6 +48,21 @@ const Navbar = () => {
             className="text-sm"
           />
         </div>
+        <div>
+
+        <button onClick={() => addAssignment({
+          description: "Test Assignment",
+          assignmentType: "test",
+          weight: 100,
+          maxPoints: 100,
+          dueDate: "2024-01-01",
+          assignedDate: "2024-01-01",
+          notes: "Test Notes",
+          isExtraCredit: false,
+        })} className="bg-[#0ead69] hover:bg-[#3a6363] text-white font-medium py-1.5 px-3 rounded text-sm">
+          Add Assignment
+        </button>
+      </div>
       </div>
     </div>
   );

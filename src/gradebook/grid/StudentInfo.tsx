@@ -1,5 +1,5 @@
 import { FaUserCircle } from 'react-icons/fa';
-import { Student } from '../../types';
+import { Student } from '../../../types';
 
 const StudentInfo = ({ student }: { student: Student }) => {
 

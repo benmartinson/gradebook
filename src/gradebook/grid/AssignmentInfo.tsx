@@ -1,4 +1,4 @@
-import { Assignment } from "../../types";
+import { Assignment } from "../../../types";
 import { assignmentTypes } from "../../mocks";
 import moment from "moment";
 const AssignmentInfo = ({ assignment }: { assignment: Assignment }) => {

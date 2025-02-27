@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { useQuery, useMutation } from "convex/react";
 import GradebookPage from "./gradebook/GradebookPage";
+import { useMutation } from "convex/react";
+import { api } from "../convex/_generated/api";
+
 
 export default function App() {
   return (
-    <GradebookPage />
+    <div>
+      <GradebookPage />
+    </div>
   );
 }
