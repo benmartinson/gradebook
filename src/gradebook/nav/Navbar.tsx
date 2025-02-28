@@ -3,8 +3,10 @@ import Select from "react-select";
 import { FaSort } from "react-icons/fa";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const gradingPeriods = [
     { value: "q1", label: "Quarter 1" },
     { value: "q2", label: "Quarter 2" },
@@ -49,20 +51,13 @@ const Navbar = () => {
           />
         </div>
         <div>
-
-        <button onClick={() => addAssignment({
-          description: "Test Assignment",
-          assignmentType: "test",
-          weight: 100,
-          maxPoints: 100,
-          dueDate: "2024-01-01",
-          assignedDate: "2024-01-01",
-          notes: "Test Notes",
-          isExtraCredit: false,
-        })} className="bg-[#0ead69] hover:bg-[#3a6363] text-white font-medium py-1.5 px-3 rounded text-sm">
-          Add Assignment
-        </button>
-      </div>
+          <button 
+            onClick={() => navigate('/gradebook/new')}
+            className="bg-[#0ead69] hover:bg-[#3a6363] text-white font-medium py-1.5 px-3 rounded text-sm mr-10"
+          >
+            Add Assignment
+          </button>
+        </div>
       </div>
     </div>
   );

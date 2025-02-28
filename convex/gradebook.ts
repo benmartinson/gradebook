@@ -1,30 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
-export const sendMessage = mutation({
-  args: {
-    user: v.string(),
-    body: v.string(),
-  },
-  handler: async (ctx, args) => {
-    console.log("This TypeScript function is running on the server.");
-    await ctx.db.insert("messages", {
-      user: args.user,
-      body: args.body,
-    });
-  },
-});
-
-export const getMessages = query({
-  args: {},
-  handler: async (ctx) => {
-    // Get most recent messages first
-    const messages = await ctx.db.query("messages").order("desc").take(50);
-    // Reverse the list so that it's in a chronological order.
-    return messages.reverse();
-  },
-});
-
 export const addAssignment = mutation({
   args: {
     description: v.string(),
@@ -48,5 +24,31 @@ export const addAssignment = mutation({
       notes: args.notes,
       isExtraCredit: args.isExtraCredit,
     });
+  },
+});
+
+export const getAssignments = query({
+  args: {},
+  handler: async (ctx) => {
+    const assignments = await ctx.db.query("assignments").collect();
+    return assignments;
+  },
+});
+
+export const getClassStudents = query({
+  args: {},
+  handler: async (ctx) => {
+    const students = await ctx.db.query("students").collect();
+    return students;
+  },
+});
+
+export const addClassStudent = mutation({
+  args: {
+    firstName: v.string(),
+    lastName: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert("students", { firstName: args.firstName, lastName: args.lastName });
   },
 });

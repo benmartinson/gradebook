@@ -12,7 +12,7 @@ const AssignmentInfo = ({ assignment }: { assignment: Assignment }) => {
           {assignmentType?.description}
         </div>
         
-        <div className="text-sm font-extrabold text-gray-700 mb-2 text-left h-12">
+        <div className="text-sm font-extrabold text-gray-700 mb-2 text-left h-12 leading-[16px] overflow-hidden text-ellipsis line-clamp-3">
           {assignment.description}
         </div>
         

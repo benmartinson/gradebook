@@ -1,27 +1,49 @@
-import { FaBook } from "react-icons/fa";
+import { FaBook, FaChevronLeft, FaChevronRight, FaCompress, FaExpand } from "react-icons/fa";
+import React, { useEffect } from "react";
+import classNames from "classnames";
+import { useNavigate } from "react-router";
 
 const Sidebar = () => {
+  const [isCollapsed, setIsCollapsed] = React.useState(() => {
+    const saved = localStorage.getItem('sidebarCollapsed');
+    return saved ? JSON.parse(saved) : false;
+  });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem('sidebarCollapsed', JSON.stringify(isCollapsed));
+  }, [isCollapsed]);
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  const bookIconClasses = classNames("text-blue-600 shrink-0 cursor-pointer", {
+    // "mt-10": isCollapsed
+  });
+
   return (
-    <div className="w-64 bg-white border-r border-gray-200 p-4">
+    <div className={`transition-all duration-300 bg-white border-r border-gray-200 p-4 relative ${isCollapsed ? 'w-16' : 'w-64'}`}>
       <div className="flex items-center gap-2 mb-6">
-        <FaBook size={24} className="text-blue-600" />
-        <h2 className="text-xl font-semibold">Calculus II</h2>
-      </div>
-      
-      <div className="text-sm text-gray-600 mb-4">
-        <p>Spring 2023</p>
-        <p>Section 002</p>
-        <p>MWF 10:00 - 11:15 AM</p>
-      </div>
-      
-      <div className="border-t border-gray-200 pt-4 mt-4">
-        <h3 className="font-medium mb-2">Quick Stats</h3>
-        <div className="text-sm">
-          <p>Class Average: 87.3%</p>
-          <p>Assignments: 24</p>
-          <p>Students: 32</p>
+        <div className="flex items-center gap-2" onClick={() => navigate("/gradebook/class")}>
+          <FaBook size={24} className={bookIconClasses} />
+          {!isCollapsed && (
+            <h2 className="text-xl font-semibold">Calculus II</h2>
+          )}
         </div>
+        <button 
+          onClick={toggleCollapse} 
+          className="absolute -right-4 top-3 rounded-full w-8 h-8 bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
+        >
+          {isCollapsed ? <FaChevronRight size={16} /> : <FaChevronLeft size={16} />}
+        </button>
       </div>
+      
+      {!isCollapsed && (
+        <nav className="space-y-2">
+          {/* Add navigation items here */}
+        </nav>
+      )}
     </div>
   );
 };
