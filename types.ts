@@ -29,4 +29,10 @@ export type AssignmentGrade = {
   rawScore: number;
 };
 
+export type TableColumn = {
+  key: string;
+  label: string;
+  placeholder: string;
+};
+
 

@@ -25,7 +25,7 @@ const Navbar = () => {
   const addAssignment = useMutation(api.gradebook.addAssignment);
 
   return (
-    <div className="flex justify-between items-center py-2 px-6 border-b border-gray-200">
+    <div className="flex justify-between items-center py-2 px-6 border-b-2 border-gray-200">
       <div></div>
       <div className="flex items-center gap-4">
         <button className="text-gray-600 hover:text-gray-800 flex items-center gap-1">
@@ -49,14 +49,6 @@ const Navbar = () => {
             placeholder="Assignment Type"
             className="text-sm"
           />
-        </div>
-        <div>
-          <button 
-            onClick={() => navigate('/gradebook/new')}
-            className="bg-[#0ead69] hover:bg-[#3a6363] text-white font-medium py-1.5 px-3 rounded text-sm mr-10"
-          >
-            Add Assignment
-          </button>
         </div>
       </div>
     </div>

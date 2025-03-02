@@ -18,7 +18,6 @@ const GradebookPage = ({ children }: { children: React.ReactNode }) => {
       <div className={pageClasses}>
         <Sidebar setIsFullWidth={setIsFullWidth} />
         <div className="flex-1 flex flex-col relative">
-          <SettingsModal isFullWidth={isFullWidth} setIsFullWidth={setIsFullWidth}/>
           {children}
         </div>
       </div>

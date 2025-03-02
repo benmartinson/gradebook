@@ -32,28 +32,6 @@ const ClassPage = () => {
           </div>
         </div>
       </div>
-
-      <div className="mt-8">
-        <h2 className="text-xl font-bold mb-4">Class Roster</h2>
-        <div className="bg-white rounded-lg shadow">
-          <table className="min-w-full">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left p-4">Last Name</th>
-                <th className="text-left p-4">First Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students?.map((student) => (
-                <tr key={student._id} className="border-b hover:bg-gray-50">
-                  <td className="p-4">{student.lastName}</td>
-                  <td className="p-4">{student.firstName}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   );
 };
