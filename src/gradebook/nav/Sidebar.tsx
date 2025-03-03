@@ -3,11 +3,40 @@ import React, { useEffect } from "react";
 import classNames from "classnames";
 import { useNavigate } from "react-router";
 
+interface NavItemProps {
+  icon: React.ReactNode;
+  label: string;
+  path: string;
+  isCollapsed: boolean;
+  isSelected: boolean;
+  isLoadingAnimation: boolean;
+}
+
+const NavItem = ({ icon, label, path, isCollapsed, isSelected, isLoadingAnimation }: NavItemProps) => {
+  const navigate = useNavigate();
+  
+  const tabClasses = classNames("flex items-center gap-2 p-2 rounded cursor-pointer", {
+    "text-gray-600": !isSelected,
+    "bg-blue-100": isSelected,
+    "hover:bg-gray-100": !isSelected,
+    "mt-4": label === "Gradebook",
+  });
+
+  return (
+    <div onClick={() => navigate(path)} className={tabClasses}>
+      <div className="shrink-0 cursor-pointer">{icon}</div>
+      {!isCollapsed && !isLoadingAnimation && <span>{label}</span>}
+    </div>
+  );
+};
+
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = React.useState(() => {
     const saved = localStorage.getItem('sidebarCollapsed');
     return saved ? JSON.parse(saved) : false;
   });
+  const [loadingAnimation, setLoadingAnimation] = React.useState(false);
+
   const navigate = useNavigate();
   const path = window.location.pathname;
   const selectedTab = path.split("/").pop() || "Gradebook";
@@ -18,22 +47,21 @@ const Sidebar = () => {
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
+    setLoadingAnimation(true);
+    setTimeout(() => {
+      setLoadingAnimation(false);
+    }, 100);
   };
 
-  const tabClasses = (tab: string) => {
-    const isSelected = selectedTab.toLowerCase() === tab.toLowerCase();
-    return classNames("flex items-center gap-2 p-2  rounded cursor-pointer", {
-      "text-gray-600": !isSelected,
-      "bg-blue-100": isSelected,
-      "hover:bg-gray-100": !isSelected
-    });
-  };
+  const navClasses = classNames("space-y-4 w-full", {
+    "flex flex-col items-center": isCollapsed,
+  });
 
   return (
-    <div className={`transition-all duration-300 bg-white border-r-2 border-gray-300 p-4 relative ${isCollapsed ? 'w-16' : 'w-48'}`}>
-      <div className="flex items-center gap-2 mb-6">
+    <div className={`transition-all duration-300 bg-white border-r-2 border-gray-300 p-2 relative ${isCollapsed ? 'w-16' : 'w-48'}`}>
+      {/* <div className="flex items-center gap-2">
         <div className="flex items-center gap-2" onClick={() => navigate("/gradebook/class")}>
-          {!isCollapsed && (
+          {!isCollapsed && !loadingAnimation && (
             <h2 className="text-xl font-semibold">Calculus II</h2>
           )}
         </div>
@@ -43,38 +71,66 @@ const Sidebar = () => {
         >
           {isCollapsed ? <FaChevronRight size={16} /> : <FaChevronLeft size={16} />}
         </button>
-      </div>
-      
-        <nav className="space-y-2">
-          <div onClick={() => navigate("/gradebook")} className={tabClasses("Gradebook")}>
-            <FaBook size={24} className="shrink-0 cursor-pointer" />
-            {!isCollapsed && <span>Gradebook</span>}
-          </div>
-          <div onClick={() => navigate("/schedule")} className={tabClasses("Schedule")}>
-            <FaCalendarAlt size={24} className="shrink-0 cursor-pointer" />
-            {!isCollapsed && <span>Schedule</span>}
-          </div>
-          <div onClick={() => navigate("/assignments")} className={tabClasses("Assignments")}>
-            <FaTasks size={24} className="shrink-0 cursor-pointer" />
-            {!isCollapsed && <span>Assignments</span>}
-          </div>
-          <div onClick={() => navigate("/students")} className={tabClasses("Students")}>
-            <FaUsers size={24} className="shrink-0 cursor-pointer" />
-            {!isCollapsed && <span>Students</span>}
-          </div>
-          <div onClick={() => navigate("/attendance")} className={tabClasses("Attendance")}>
-            <FaClipboardCheck size={24} className="shrink-0 cursor-pointer" />
-            {!isCollapsed && <span>Attendance</span>}
-          </div>
-          <div onClick={() => navigate("/quizes")} className={tabClasses("Quizes")}>
-            <FaQuestionCircle size={24} className="shrink-0 cursor-pointer" />
-            {!isCollapsed && <span>Quizes</span>}
-          </div>
-          <div onClick={() => navigate("/settings")} className={tabClasses("Settings")}>
-            <FaCog size={24} className="shrink-0 cursor-pointer" />
-            {!isCollapsed && <span>Settings</span>}
-          </div>
-        </nav>
+      </div> */}
+
+      <nav className={navClasses}>
+        <NavItem 
+          icon={<FaBook size={24} />} 
+          label="Gradebook" 
+          path="/gradebook" 
+          isCollapsed={isCollapsed} 
+          isSelected={selectedTab.toLowerCase() === "gradebook"} 
+          isLoadingAnimation={loadingAnimation}
+        />
+        <NavItem 
+          icon={<FaCalendarAlt size={24} />} 
+          label="Schedule" 
+          path="/schedule" 
+          isCollapsed={isCollapsed} 
+          isSelected={selectedTab.toLowerCase() === "schedule"} 
+          isLoadingAnimation={loadingAnimation}
+        />
+        <NavItem 
+          icon={<FaTasks size={24} />} 
+          label="Assignments" 
+          path="/assignments" 
+          isCollapsed={isCollapsed} 
+          isSelected={selectedTab.toLowerCase() === "assignments"} 
+          isLoadingAnimation={loadingAnimation}
+        />
+        <NavItem 
+          icon={<FaUsers size={24} />} 
+          label="Students" 
+          path="/students" 
+          isCollapsed={isCollapsed} 
+          isSelected={selectedTab.toLowerCase() === "students"} 
+          isLoadingAnimation={loadingAnimation}
+        />
+        <NavItem 
+          icon={<FaClipboardCheck size={24} />} 
+          label="Attendance" 
+          path="/attendance" 
+          isCollapsed={isCollapsed} 
+          isSelected={selectedTab.toLowerCase() === "attendance"} 
+          isLoadingAnimation={loadingAnimation}
+        />
+        <NavItem 
+          icon={<FaQuestionCircle size={24} />} 
+          label="Quizes" 
+          path="/quizes" 
+          isCollapsed={isCollapsed} 
+          isSelected={selectedTab.toLowerCase() === "quizes"} 
+          isLoadingAnimation={loadingAnimation}
+        />
+        <NavItem 
+          icon={<FaCog size={24} />} 
+          label="Settings" 
+          path="/settings" 
+          isCollapsed={isCollapsed} 
+          isSelected={selectedTab.toLowerCase() === "settings"} 
+          isLoadingAnimation={loadingAnimation}
+        />
+      </nav>
     </div>
   );
 };
