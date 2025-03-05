@@ -1,47 +1,25 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
-import { Doc } from '../../../convex/_generated/dataModel';
+import { Doc, Id } from '../../../convex/_generated/dataModel';
 import Table from '../common/Table';
-import EditableTableRow, { FieldConfig } from '../common/EditableTableRow';
 import { Student, TableColumn } from '../../../types';
 
 const Students = () => {
   const students = useQuery(api.gradebook.getClassStudents);
-  const addStudent = useMutation(api.gradebook.addStudent);
-  const updateStudent = useMutation(api.gradebook.updateStudent);
-  const [newStudents, setNewStudents] = useState<Array<Student & {isNew: boolean}>>([]);
+  const addStudent = useMutation(api.gradebook.addClassStudent);
+  const deleteStudent = useMutation(api.gradebook.deleteClassStudent);
   
-  const handleSave = async (data: Student) => {
-    // if (data.firstName.trim() && data.lastName.trim()) {
-    //   if (data.isNew) {
-    //     // Add new student
-    //     await addStudent({ 
-    //       firstName: data.firstName, 
-    //       lastName: data.lastName 
-    //     });
-    //     // Remove from newStudents
-    //     setNewStudents(newStudents.filter(s => s.id !== data.id));
-    //   } else if ('_id' in data) {
-    //     // Update existing student
-    //     await updateStudent({
-    //       id: data._id,
-    //       firstName: data.firstName,
-    //       lastName: data.lastName
-    //     });
-    //   }
-    //   // Remove from editing state
-    //   const newEditingIds = new Set(editingIds);
-    //   newEditingIds.delete(data.id);
-    //   setEditingIds(newEditingIds);
-    // }
+  const handleAdd = async (data: Student) => {
+    console.log({data});
+    await addStudent({ 
+      firstName: data.firstName, 
+      lastName: data.lastName 
+    });
   };
 
-  const handleCancel = (id: number, isNew: boolean) => {
-    if (isNew) {
-      // Remove new student
-      setNewStudents(newStudents.filter(s => s.id !== id));
-    }
+  const handleDelete = async (student: Student) => {
+    await deleteStudent({ id: student._id as Id<'students'> });
   };
 
   const tableColumns: TableColumn[] = [
@@ -50,16 +28,17 @@ const Students = () => {
     { key: 'grade', label: 'Class Grade', placeholder: '-' }
   ];
 
-  // Combine existing students with new students for the list
-  const allStudents = [...(students || []), ...newStudents];
+  const mappedStudents = students ? students.map(student => ({ ...student, isNew: false })) : [];
 
   return (
     <div className="p-6 w-2/3">
-      <Table<Student> 
+      <Table<Student & {isNew: boolean}> 
         columns={tableColumns}
-        list={students || []}
+        list={mappedStudents}
         listName="Students"
-        emptyMessage="No students found"
+        emptyMessage="No students found for this class, add a student to get started."
+        handleAdd={handleAdd}
+        handleDelete={handleDelete}
       />
     </div>
   );

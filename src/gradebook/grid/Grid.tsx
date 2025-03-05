@@ -8,7 +8,7 @@ import { api } from "../../../convex/_generated/api";
 const Grid = () => {
   const assignments = useQuery(api.gradebook.getAssignments);
   if (!assignments) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (

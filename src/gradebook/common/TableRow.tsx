@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import { TableColumn } from '../../../types';
+import { TableColumn, TableItem } from '../../../types';
 import { FaCheck } from 'react-icons/fa';
 import { FaXmark } from "react-icons/fa6";
 
@@ -25,21 +25,30 @@ const TableCell = ({ itemValue, column, isEditing, setEditedItem, editedItem }: 
 };
 
 
-interface TableRowProps {
+interface TableRowProps<T> {
   className?: string;
   onClick?: () => void;
   tableColumns: TableColumn[];
-  item: any;
+  item: T;
+  handleAdd: (item: T) => void;
+  handleCancel: (item: T) => void;
 }
 
-const TableRow = ({ 
+const TableRow = <T extends {_id: string, isNew: boolean} & Record<string, any>,>({ 
   className = '', 
   tableColumns,
   onClick,
-  item
-}: TableRowProps) => {
+  item,
+  handleAdd,
+  handleCancel
+}: TableRowProps<T>) => {
   const [isEditing, setIsEditing] = useState(item.isNew);
-  const [editedItem, setEditedItem] = useState(item);
+  const [editedItem, setEditedItem] = useState<T>(item);
+
+  const handleAddClick = () => {
+    handleAdd(editedItem);
+    setIsEditing(false);
+  }
 
   return (
     <tr 
@@ -49,18 +58,16 @@ const TableRow = ({
       {tableColumns.map((column, index) => (
         <TableCell key={index} itemValue={editedItem[column.key]} column={column} isEditing={isEditing} setEditedItem={setEditedItem} editedItem={editedItem} />
       ))}
-      <div className="flex justify-end mr-4 items-center h-16">
-        <button onClick={() => setIsEditing(!isEditing)}>
-          {isEditing && (
+      <td className="flex justify-end mr-4 items-center h-16">
+        <button>
             <div className="flex  justify-between w-16">
-              {/* Checkmark */}
-              <FaCheck className="text-green-500 w-6 h-6" />
-              {/* X */}
-              <FaXmark className="text-red-500 w-6 h-6" />
+              {isEditing && (
+                <FaCheck className="text-green-500 w-6 h-6" onClick={handleAddClick}/>
+              )}
+              <FaXmark className="text-red-500 w-6 h-6" onClick={() => handleCancel(editedItem)}/>
             </div>
-          )}
         </button>
-      </div>
+      </td>
     </tr>
   );
 };

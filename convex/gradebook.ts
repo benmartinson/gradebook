@@ -52,3 +52,13 @@ export const addClassStudent = mutation({
     await ctx.db.insert("students", { firstName: args.firstName, lastName: args.lastName });
   },
 });
+
+export const deleteClassStudent = mutation({
+  args: {
+    id: v.id("students"),
+  },
+  handler: async (ctx, args) => {
+    console.log({args});
+    await ctx.db.delete(args.id);
+  },
+});

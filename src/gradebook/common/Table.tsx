@@ -9,24 +9,28 @@ interface TableProps<T> {
   className?: string;
   emptyMessage?: string;
   disableAdd?: boolean;
+  handleAdd: (item: T) => void;
+  handleDelete: (item: T) => void;
 }
 
-function Table<T>({ 
+const Table = <T extends {_id: any, isNew: boolean},>({ 
   columns, 
   list,
   listName,
   className = '', 
   emptyMessage = 'No data found',
   disableAdd = false,
-}: TableProps<T>) {
-  const [internalList, setInternalList] = useState<T[]>(list);
+  handleAdd,
+  handleDelete
+}: TableProps<T>) => {
+  const [internalList, setInternalList] = useState<T[]>(list || []);
   const [fakeId, setFakeId] = useState(0);
   
   useEffect(() => {
     setInternalList(list);
   }, [list]);
 
-  const handleAdd = () => {
+  const handleAddNewItem = () => {
     const newItem = {} as Record<string, any>;
     columns.forEach(column => {
       newItem[column.key] = '';
@@ -34,10 +38,18 @@ function Table<T>({
     newItem.isNew = true;
     newItem.id = fakeId;
     setFakeId(fakeId + 1);
-    setInternalList([...internalList, newItem as unknown as T]);
+    setInternalList([...internalList, newItem as T]);
+  }
+
+  const handleCancel = (item: T) => {
+    if (item.isNew) {
+      setInternalList(internalList.filter(i => i._id !== item._id));
+    } else {
+      handleDelete(item);
+    }
   }
   
-  const isEmpty = internalList.length === 0;
+  const isEmpty = internalList?.length === 0;
 
   return (
     <div className="w-full">
@@ -46,7 +58,7 @@ function Table<T>({
         {!disableAdd && (
           <button
             className="bg-green-500 hover:bg-green-600 text-white rounded-full p-2 flex items-center cursor-pointer"
-            onClick={handleAdd}
+            onClick={handleAddNewItem}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -74,17 +86,17 @@ function Table<T>({
                   {column.label}
                 </th>
               ))}
+              <th className="text-left p-4">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {isEmpty ? (
+            {internalList.map(item => <TableRow<T> item={item} tableColumns={columns} handleAdd={handleAdd} handleCancel={handleCancel} />)}
+            {isEmpty && (
               <tr>
-                <td colSpan={columns.length} className="text-center p-4">
+                <td colSpan={columns.length + 1} className="text-center p-4 text-gray-500">
                   {emptyMessage}
                 </td>
               </tr>
-            ) : (
-              internalList.map(item => <TableRow item={item} tableColumns={columns} />)
             )}
           </tbody>
         </table>
@@ -93,4 +105,4 @@ function Table<T>({
   );
 }
 
-export default Table; 
+export default Table;

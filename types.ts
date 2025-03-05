@@ -1,5 +1,5 @@
 export type Assignment = {
-  id: number;
+  id: string;
   description: string;
   assignmentType: number;
   weight: number;
@@ -11,22 +11,27 @@ export type Assignment = {
 };
 
 export type AssignmentType = {
-  id: number;
+  id: string;
   description: 'quiz' | 'exam' | 'project' | 'homework' | 'other';
   weight: number;
   color: string;
 };
 
 export type Student = {
-  id: number;
+  _id: string;
   firstName: string;
   lastName: string;
 };
 
 export type AssignmentGrade = {
-  studentId: number;
-  assignmentId: number;
+  studentid: string;
+  assignmentid: string;
   rawScore: number;
+};
+
+export type TableItem = {
+  id: string;
+  isNew?: boolean;
 };
 
 export type TableColumn = {
