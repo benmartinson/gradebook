@@ -7,7 +7,7 @@ const AssignmentInfo = ({ assignment }: { assignment: Assignment }) => {
 
   return (
     <th className="">
-      <div className="flex flex-col bg-[#F6F6F4] rounded-lg p-2 w-28 h-24">
+      <div className="flex flex-col bg-[#fffde7] border border-[#fff176] rounded-lg p-2 w-28 h-24">
         <div className={`text-xs uppercase font-semibold text-white bg-[#EB5160] w-fit px-1 mb-1 text-left`}>
           {assignmentType?.description}
         </div>
@@ -16,7 +16,7 @@ const AssignmentInfo = ({ assignment }: { assignment: Assignment }) => {
           {assignment.description}
         </div>
         
-        <div className="text-xs text-gray-600 text-left">
+        <div className="text-xs opacity-50 text-left">
           {moment(assignment.dueDate).format("MMM D") || "N/A"}
         </div>
       </div>

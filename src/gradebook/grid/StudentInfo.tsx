@@ -4,8 +4,8 @@ import { Student } from '../../../types';
 const StudentInfo = ({ student }: { student: Student }) => {
 
   return (
-      <td className="h-10">
-        <div className="flex items-center gap-2 bg-white rounded-lg p-1">
+      <td className="min-h-10 h-10">
+        <div className="flex items-center gap-2 bg-white rounded-lg">
           <div className="text-gray-400">
             <FaUserCircle size={38} />
           </div>

@@ -9,8 +9,7 @@ export const addAssignment = mutation({
     maxPoints: v.number(),
     dueDate: v.string(),
     assignedDate: v.string(),
-    notes: v.string(),
-    isExtraCredit: v.boolean(),
+    notes: v.optional(v.string()),
   },
 
   handler: async (ctx, args) => {
@@ -21,9 +20,17 @@ export const addAssignment = mutation({
       maxPoints: args.maxPoints,
       dueDate: args.dueDate,
       assignedDate: args.assignedDate,
-      notes: args.notes,
-      isExtraCredit: args.isExtraCredit,
+      notes: args.notes || "",
     });
+  },
+});
+
+export const deleteAssignment = mutation({
+  args: {
+    id: v.id("assignments"),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id);
   },
 });
 

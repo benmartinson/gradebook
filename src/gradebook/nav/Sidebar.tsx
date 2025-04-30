@@ -10,21 +10,24 @@ interface NavItemProps {
   isCollapsed: boolean;
   isSelected: boolean;
   isLoadingAnimation: boolean;
+  isDisabled?: boolean;
 }
 
-const NavItem = ({ icon, label, path, isCollapsed, isSelected, isLoadingAnimation }: NavItemProps) => {
+const NavItem = ({ icon, label, path, isCollapsed, isSelected, isLoadingAnimation, isDisabled }: NavItemProps) => {
   const navigate = useNavigate();
   
-  const tabClasses = classNames("flex items-center gap-2 p-2 rounded cursor-pointer", {
+  const tabClasses = classNames("flex items-center gap-2 p-2 rounded", {
     "text-gray-600": !isSelected,
     "bg-blue-100": isSelected,
     "hover:bg-gray-100": !isSelected,
     "mt-4": label === "Gradebook",
+    "opacity-50": isDisabled,
+    "cursor-pointer": !isDisabled,
   });
 
   return (
-    <div onClick={() => navigate(path)} className={tabClasses}>
-      <div className="shrink-0 cursor-pointer">{icon}</div>
+    <div onClick={() => !isDisabled && navigate(path)} className={tabClasses}>
+      <div className="shrink-0">{icon}</div>
       {!isCollapsed && !isLoadingAnimation && <span>{label}</span>}
     </div>
   );
@@ -57,8 +60,13 @@ const Sidebar = () => {
     "flex flex-col items-center": isCollapsed,
   });
 
+  const containerClasses = classNames("transition-all duration-300 bg-white border-r-2 border-gray-300 p-2 relative", {
+    "w-16": isCollapsed,
+    "w-48": !isCollapsed,
+  });
+
   return (
-    <div className={`transition-all duration-300 bg-white border-r-2 border-gray-300 p-2 relative ${isCollapsed ? 'w-16' : 'w-48'}`}>
+    <div className={containerClasses}>
       {/* <div className="flex items-center gap-2">
         <div className="flex items-center gap-2" onClick={() => navigate("/gradebook/class")}>
           {!isCollapsed && !loadingAnimation && (
@@ -102,6 +110,7 @@ const Sidebar = () => {
           icon={<FaClipboardCheck size={24} />} 
           label="Attendance" 
           path="/attendance" 
+          isDisabled={true}
           isCollapsed={isCollapsed} 
           isSelected={selectedTab.toLowerCase() === "attendance"} 
           isLoadingAnimation={loadingAnimation}
@@ -110,6 +119,7 @@ const Sidebar = () => {
           icon={<FaQuestionCircle size={24} />} 
           label="Quizes" 
           path="/quizes" 
+          isDisabled={true}
           isCollapsed={isCollapsed} 
           isSelected={selectedTab.toLowerCase() === "quizes"} 
           isLoadingAnimation={loadingAnimation}
@@ -118,6 +128,7 @@ const Sidebar = () => {
           icon={<FaCog size={24} />} 
           label="Settings" 
           path="/settings" 
+          isDisabled={true}
           isCollapsed={isCollapsed} 
           isSelected={selectedTab.toLowerCase() === "settings"} 
           isLoadingAnimation={loadingAnimation}

@@ -4,6 +4,7 @@ import { api } from '../../../convex/_generated/api';
 import { Doc, Id } from '../../../convex/_generated/dataModel';
 import Table from '../common/Table';
 import { Student, TableColumn } from '../../../types';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 const Students = () => {
   const students = useQuery(api.gradebook.getClassStudents);
@@ -30,9 +31,12 @@ const Students = () => {
 
   const mappedStudents = students ? students.map(student => ({ ...student, isNew: false })) : [];
 
+  if (!students) {
+    return <LoadingSpinner />;
+  }
 
   return (
-    <div className="p-6 w-2/3">
+    <div className=" w-2/3  min-h-[80vh] max-h-[80vh]">
       <Table<Student & {isNew: boolean}> 
         columns={tableColumns}
         list={mappedStudents}

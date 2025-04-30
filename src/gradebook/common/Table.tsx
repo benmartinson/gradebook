@@ -21,7 +21,7 @@ const Table = <T extends {_id: any, isNew: boolean},>({
   emptyMessage = 'No data found',
   disableAdd = false,
   handleAdd,
-  handleDelete
+  handleDelete,
 }: TableProps<T>) => {
   const [internalList, setInternalList] = useState<T[]>(list || []);
   const [fakeId, setFakeId] = useState(0);
@@ -54,10 +54,10 @@ const Table = <T extends {_id: any, isNew: boolean},>({
   }
   
   const isEmpty = internalList?.length === 0;
-  
+
   return (
     <div className="w-full">
-      <div className="mb-6 flex justify-between items-center">
+      <div className="px-5 flex justify-between items-center bg-white h-20">
         <h1 className="text-2xl font-bold">{listName}</h1>
         {!disableAdd && (
           <button
@@ -78,25 +78,25 @@ const Table = <T extends {_id: any, isNew: boolean},>({
         )}
       </div>
       {!isEmpty && (
-        <div className={`bg-white rounded-lg shadow ${className}`}>
-          <table className="min-w-full table-fixed">
-            <thead className="">
-              <tr className="border-b">
-                {columns.map((column, index) => (
-                  <th 
-                    key={index} 
-                    className={`text-left p-4 ${column.width}`}
-                  >
-                    {column.label}
-                  </th>
-                ))}
-                <th className="text-left p-4 min-w-16 max-w-16"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {internalList.map(item => <TableRow<T> item={item} tableColumns={columns} handleAdd={handleAdd} handleCancel={handleCancel} />)}
-            </tbody>
-          </table>
+        <div className={`bg-white rounded-lg ${className} px-6 flex-1  min-h-[80vh] max-h-[80vh] overflow-y-auto`}>
+            <table className="min-w-full table-fixed">
+              <thead className="sticky top-0 bg-white">
+                <tr className="border-b">
+                  {columns.map((column, index) => (
+                    <th 
+                      key={index} 
+                      className={`text-left p-4 ${column.width}`}
+                    >
+                      {column.label}
+                    </th>
+                  ))}
+                  <th className="text-left p-4 min-w-16 max-w-16"></th>
+                </tr>
+              </thead>
+              <tbody className="overflow-y-auto">
+                {internalList.map(item => <TableRow<T> item={item} tableColumns={columns} handleAdd={handleAdd} handleCancel={handleCancel} />)}
+              </tbody>
+            </table>
         </div>
       )}
     </div>

@@ -5,10 +5,29 @@ import AssignmentInfo from "./AssignmentInfo";
 import StudentGrade from "./StudentGrade";
 import StudentInfo from "./StudentInfo";
 import { api } from "../../../convex/_generated/api";
+import { useEffect, useState } from "react";
+import LoadingSpinner from '../common/LoadingSpinner';
 
 const Grid = () => {
   const assignments = useQuery(api.gradebook.getAssignments);
   const students = useQuery(api.gradebook.getClassStudents);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (students && assignments) {
+      setIsLoading(false);
+    }
+  }, [students, assignments]);
+
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <LoadingSpinner />
+      </>
+    );
+  }
 
   if (!students?.length) {
     return (
@@ -26,29 +45,45 @@ const Grid = () => {
   }
 
   return (
-    <>
+    <div className="">
       <Navbar />
-      <div className="p-4 overflow-auto">
-        <table className="border-separate border-spacing-2" cellPadding={4} cellSpacing={0}>
-          <tr>
-            <th className="">{/* Empty Spacer */}</th>
-            {assignments.map((assignment) => (
-              <AssignmentInfo key={assignment.id} assignment={assignment} />
-            ))}
-          </tr>
-
-          {students.map((student) => (
-            <tr key={student.id}>
-              <StudentInfo key={student.id} student={student} />
-
-              {assignments.map((assignment) => (
-                <StudentGrade key={assignment.id} assignment={assignment} student={student} />
+      <div className="p-4 overflow-auto flex justify-center items-center w-[90vw]  overflow-hidden">
+        <div className="flex w-full min-h-[80vh] max-h-[80vh]">
+          {/* Fixed Student Info Table */}
+          <div className="sticky left-0 z-10 bg-white w-fit">
+            <table className="border-separate border-spacing-2" cellPadding={4} cellSpacing={0}>
+              <tr>
+                <th className="h-24">{/* Empty Spacer */}</th>
+              </tr>
+              {students.map((student) => (
+                <tr key={student.id}>
+                  <StudentInfo key={student.id} student={student} />
+                </tr>
               ))}
-            </tr>
-          ))}
-        </table>
+            </table>
+          </div>
+
+          {/* Scrollable Grades Table */}
+          <div className="overflow-x-auto">
+            <table className="border-separate border-spacing-2" cellPadding={4} cellSpacing={0}>
+              <tr>
+                {assignments.map((assignment) => (
+                  <AssignmentInfo key={assignment.id} assignment={assignment} />
+                ))}
+              </tr>
+
+              {students.map((student) => (
+                <tr key={student.id}>
+                  {assignments.map((assignment) => (
+                    <StudentGrade key={assignment.id} assignment={assignment} student={student} />
+                  ))}
+                </tr>
+              ))}
+            </table>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
