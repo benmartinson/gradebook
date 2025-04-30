@@ -43,6 +43,7 @@ const Grid = () => {
   if (!assignments) {
     return null;
   }
+  console.log({assignments, students});
 
   return (
     <div className="">
@@ -75,7 +76,7 @@ const Grid = () => {
               {students.map((student) => (
                 <tr key={student.id}>
                   {assignments.map((assignment) => (
-                    <StudentGrade key={assignment.id} assignment={assignment} student={student} />
+                    <StudentGrade key={assignment._id+student._id} assignment={assignment} student={student} />
                   ))}
                 </tr>
               ))}
@@ -84,6 +85,7 @@ const Grid = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 

@@ -36,7 +36,7 @@ const Students = () => {
   }
 
   return (
-    <div className=" w-2/3  min-h-[80vh] max-h-[80vh]">
+    <div className="min-h-[80vh] max-h-[80vh]">
       <Table<Student & {isNew: boolean}> 
         columns={tableColumns}
         list={mappedStudents}

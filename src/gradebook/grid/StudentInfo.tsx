@@ -5,7 +5,7 @@ const StudentInfo = ({ student }: { student: Student }) => {
 
   return (
       <td className="min-h-10 h-10">
-        <div className="flex items-center gap-2 bg-white rounded-lg">
+        <div className="flex items-center gap-2 bg-white rounded-lg p-[2px]">
           <div className="text-gray-400">
             <FaUserCircle size={38} />
           </div>

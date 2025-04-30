@@ -9,6 +9,8 @@
     "predev": "convex dev --once"
   },
   "dependencies": {
+    "@dicebear/avatars": "^4.10.8",
+    "@dicebear/avatars-initials-sprites": "^4.10.8",
     "@faker-js/faker": "^8.0.2",
     "@tailwindcss/vite": "^4.0.9",
     "@types/react-datepicker": "^6.2.0",

@@ -1,5 +1,5 @@
 export type Assignment = {
-  id: string;
+  _id: string;
   description: string;
   assignmentType: string;
   weight: number;
