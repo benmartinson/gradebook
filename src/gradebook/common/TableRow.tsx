@@ -11,14 +11,14 @@ const TableCell = ({ itemValue, column, isEditing, setEditedItem, editedItem }: 
 
   if (isEditing) {
     return (
-      <td className={`p-4 ring-none`}>
+      <td className={`p-4 ring-none ${column.width}`}>
         <input type="text" value={itemValue} onChange={handleChange} placeholder={column.placeholder} className="ring-none focus:ring-0 focus:outline-none"/>
       </td>
     );
   }
 
   return (
-    <td className={`p-4`}>
+    <td className={`p-4 ${column.width}`}>
       {itemValue}
     </td>
   );
@@ -61,8 +61,10 @@ const TableRow = <T extends {_id: string, isNew: boolean} & Record<string, any>,
       <td className="flex justify-end mr-4 items-center h-16">
         <button>
             <div className="flex  justify-between w-16">
-              {isEditing && (
+              {isEditing ?(
                 <FaCheck className="text-green-500 w-6 h-6" onClick={handleAddClick}/>
+              ) : (
+                <div className="w-6 h-6"/>
               )}
               <FaXmark className="text-red-500 w-6 h-6" onClick={() => handleCancel(editedItem)}/>
             </div>

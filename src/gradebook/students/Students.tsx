@@ -23,12 +23,13 @@ const Students = () => {
   };
 
   const tableColumns: TableColumn[] = [
-    { key: 'firstName', label: 'First Name', placeholder: 'First Name' },
-    { key: 'lastName', label: 'Last Name', placeholder: 'Last Name' },
-    { key: 'grade', label: 'Class Grade', placeholder: '-' }
+    { key: 'firstName', label: 'First Name', placeholder: 'First Name', width: 'min-w-40 max-w-40' },
+    { key: 'lastName', label: 'Last Name', placeholder: 'Last Name', width: 'min-w-40 max-w-40' },
+    { key: 'grade', label: 'Class Grade', placeholder: '-', width: 'min-w-40 max-w-40' }
   ];
 
   const mappedStudents = students ? students.map(student => ({ ...student, isNew: false })) : [];
+
 
   return (
     <div className="p-6 w-2/3">

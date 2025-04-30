@@ -83,14 +83,6 @@ const Sidebar = () => {
           isLoadingAnimation={loadingAnimation}
         />
         <NavItem 
-          icon={<FaCalendarAlt size={24} />} 
-          label="Schedule" 
-          path="/schedule" 
-          isCollapsed={isCollapsed} 
-          isSelected={selectedTab.toLowerCase() === "schedule"} 
-          isLoadingAnimation={loadingAnimation}
-        />
-        <NavItem 
           icon={<FaTasks size={24} />} 
           label="Assignments" 
           path="/assignments" 

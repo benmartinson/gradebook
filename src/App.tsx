@@ -5,6 +5,7 @@ import Grid from "./gradebook/grid/Grid";
 import ClassPage from "./gradebook/ClassPage";
 import Students from "./gradebook/students/Students";
 import Placeholder from "./gradebook/Placeholder";
+import Assignments from "./assignments/Assignments";
 export default function App() {
   return (
     <BrowserRouter>
@@ -13,7 +14,7 @@ export default function App() {
           <Route path="/class" element={<GradebookPage><ClassPage /></GradebookPage>} />
           <Route path="/students" element={<GradebookPage><Students /></GradebookPage>} />
           <Route path="/attendance" element={<GradebookPage><Placeholder /></GradebookPage>} />
-          <Route path="/assignments" element={<GradebookPage><Placeholder /></GradebookPage>} />
+          <Route path="/assignments" element={<GradebookPage><Assignments /></GradebookPage>} />
           <Route path="/schedule" element={<GradebookPage><Placeholder /></GradebookPage>} />
           <Route path="/quizes" element={<GradebookPage><Placeholder /></GradebookPage>} />
           <Route path="/settings" element={<GradebookPage><Placeholder /></GradebookPage>} />

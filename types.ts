@@ -1,7 +1,7 @@
 export type Assignment = {
   id: string;
   description: string;
-  assignmentType: number;
+  assignmentType: string;
   weight: number;
   maxPoints: number;
   dueDate: string;
@@ -38,6 +38,8 @@ export type TableColumn = {
   key: string;
   label: string;
   placeholder: string;
+  width?: string;
+  type?: 'number' | 'text' | 'date' | 'checkbox';
 };
 
 

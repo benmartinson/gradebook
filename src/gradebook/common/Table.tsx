@@ -31,6 +31,10 @@ const Table = <T extends {_id: any, isNew: boolean},>({
   }, [list]);
 
   const handleAddNewItem = () => {
+    if (internalList.some(item => item.isNew)) {
+      return;
+    }
+    
     const newItem = {} as Record<string, any>;
     columns.forEach(column => {
       newItem[column.key] = '';
@@ -50,7 +54,7 @@ const Table = <T extends {_id: any, isNew: boolean},>({
   }
   
   const isEmpty = internalList?.length === 0;
-
+  
   return (
     <div className="w-full">
       <div className="mb-6 flex justify-between items-center">
@@ -73,34 +77,28 @@ const Table = <T extends {_id: any, isNew: boolean},>({
           </button>
         )}
       </div>
-
-      <div className={`bg-white rounded-lg shadow ${className}`}>
-        <table className="min-w-full table-fixed">
-          <thead>
-            <tr className="border-b">
-              {columns.map((column, index) => (
-                <th 
-                  key={index} 
-                  className={`text-left p-4`}
-                >
-                  {column.label}
-                </th>
-              ))}
-              <th className="text-left p-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {internalList.map(item => <TableRow<T> item={item} tableColumns={columns} handleAdd={handleAdd} handleCancel={handleCancel} />)}
-            {isEmpty && (
-              <tr>
-                <td colSpan={columns.length + 1} className="text-center p-4 text-gray-500">
-                  {emptyMessage}
-                </td>
+      {!isEmpty && (
+        <div className={`bg-white rounded-lg shadow ${className}`}>
+          <table className="min-w-full table-fixed">
+            <thead className="">
+              <tr className="border-b">
+                {columns.map((column, index) => (
+                  <th 
+                    key={index} 
+                    className={`text-left p-4 ${column.width}`}
+                  >
+                    {column.label}
+                  </th>
+                ))}
+                <th className="text-left p-4 min-w-16 max-w-16"></th>
               </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {internalList.map(item => <TableRow<T> item={item} tableColumns={columns} handleAdd={handleAdd} handleCancel={handleCancel} />)}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
