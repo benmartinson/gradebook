@@ -94,6 +94,7 @@ const Sidebar = () => {
           icon={<FaTasks size={24} />} 
           label="Assignments" 
           path="/assignments" 
+          isDisabled={true}
           isCollapsed={isCollapsed} 
           isSelected={selectedTab.toLowerCase() === "assignments"} 
           isLoadingAnimation={loadingAnimation}
@@ -102,6 +103,7 @@ const Sidebar = () => {
           icon={<FaUsers size={24} />} 
           label="Students" 
           path="/students" 
+          isDisabled={true}
           isCollapsed={isCollapsed} 
           isSelected={selectedTab.toLowerCase() === "students"} 
           isLoadingAnimation={loadingAnimation}

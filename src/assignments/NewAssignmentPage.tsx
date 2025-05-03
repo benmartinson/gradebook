@@ -2,28 +2,33 @@ import { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useNavigate } from "react-router";
-import BackToScoresButton from "./BackToScoresButton";
+import BackToScoresButton from "../gradebook/BackToScoresButton";
 
 const NewAssignmentPage = () => {
   const addAssignment = useMutation(api.gradebook.addAssignment);
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     description: "",
-    dueDate: new Date().toISOString().split('T')[0],
+    dueDate: new Date().toISOString().split("T")[0],
     assignmentType: "homework",
     weight: 100,
     maxPoints: 100,
-    assignedDate: new Date().toISOString().split('T')[0],
+    assignedDate: new Date().toISOString().split("T")[0],
     notes: "",
     isExtraCredit: false,
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
@@ -37,14 +42,15 @@ const NewAssignmentPage = () => {
     <div className="w-full p-6">
       <div className="w-1/2 mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">New Assignment</h1>
-        <BackToScoresButton />
       </div>
 
       <div className="w-1/2 mr-auto">
         <form onSubmit={handleCreateAssignment} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Description
+              </label>
               <input
                 type="text"
                 name="description"
@@ -56,7 +62,9 @@ const NewAssignmentPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Assignment Type</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Assignment Type
+              </label>
               <select
                 name="assignmentType"
                 value={formData.assignmentType}
@@ -71,7 +79,9 @@ const NewAssignmentPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Assigned Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Assigned Date
+              </label>
               <input
                 type="date"
                 name="assignedDate"
@@ -83,7 +93,9 @@ const NewAssignmentPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Due Date
+              </label>
               <input
                 type="date"
                 name="dueDate"
@@ -95,7 +107,9 @@ const NewAssignmentPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Max Points</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Max Points
+              </label>
               <input
                 type="number"
                 name="maxPoints"
@@ -107,7 +121,9 @@ const NewAssignmentPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Weight</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Weight
+              </label>
               <input
                 type="number"
                 name="weight"
@@ -120,7 +136,9 @@ const NewAssignmentPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Notes
+            </label>
             <textarea
               name="notes"
               value={formData.notes}
@@ -138,7 +156,9 @@ const NewAssignmentPage = () => {
               onChange={handleInputChange}
               className="rounded border-gray-300"
             />
-            <label className="text-sm font-medium text-gray-700">Extra Credit</label>
+            <label className="text-sm font-medium text-gray-700">
+              Extra Credit
+            </label>
           </div>
 
           <div className="flex justify-end mt-6">
@@ -155,4 +175,4 @@ const NewAssignmentPage = () => {
   );
 };
 
-export default NewAssignmentPage; 
+export default NewAssignmentPage;

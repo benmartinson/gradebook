@@ -1,7 +1,7 @@
-import React from 'react';
-import { useQuery } from 'convex/react';
-import { api } from '../../convex/_generated/api';
-import BackToScoresButton from './BackToScoresButton';
+import React from "react";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import BackToScoresButton from "./BackToScoresButton";
 
 const ClassPage = () => {
   const students = useQuery(api.gradebook.getClassStudents);
@@ -10,9 +10,8 @@ const ClassPage = () => {
     <div className="p-6 w-2/3">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Class Summary</h1>
-        <BackToScoresButton />
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow p-4">
           <h2 className="font-medium mb-3">Course Information</h2>
@@ -36,4 +35,4 @@ const ClassPage = () => {
   );
 };
 
-export default ClassPage; 
+export default ClassPage;

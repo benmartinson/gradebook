@@ -8,6 +8,7 @@ import { api } from "../../../convex/_generated/api";
 import { useEffect, useState } from "react";
 import LoadingSpinner from '../common/LoadingSpinner';
 
+
 const Grid = () => {
   const assignments = useQuery(api.gradebook.getAssignments);
   const students = useQuery(api.gradebook.getClassStudents);
@@ -43,7 +44,6 @@ const Grid = () => {
   if (!assignments) {
     return null;
   }
-  console.log({assignments, students});
 
   return (
     <div className="">

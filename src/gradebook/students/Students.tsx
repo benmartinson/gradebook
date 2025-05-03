@@ -12,7 +12,6 @@ const Students = () => {
   const deleteStudent = useMutation(api.gradebook.deleteClassStudent);
   
   const handleAdd = async (data: Student) => {
-    console.log({data});
     await addStudent({ 
       firstName: data.firstName, 
       lastName: data.lastName 

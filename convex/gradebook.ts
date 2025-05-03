@@ -56,7 +56,10 @@ export const addClassStudent = mutation({
     lastName: v.string(),
   },
   handler: async (ctx, args) => {
-    await ctx.db.insert("students", { firstName: args.firstName, lastName: args.lastName });
+    await ctx.db.insert("students", {
+      firstName: args.firstName,
+      lastName: args.lastName,
+    });
   },
 });
 
@@ -65,7 +68,6 @@ export const deleteClassStudent = mutation({
     id: v.id("students"),
   },
   handler: async (ctx, args) => {
-    console.log({args});
     await ctx.db.delete(args.id);
   },
 });
@@ -100,5 +102,26 @@ export const getGrades = query({
   handler: async (ctx) => {
     const grades = await ctx.db.query("grades").collect();
     return grades;
+  },
+});
+
+export const getAssignment = query({
+  args: {
+    id: v.id("assignments"),
+  },
+  handler: async (ctx, args) => {
+    const assignment = await ctx.db.get(args.id);
+    return assignment;
+  },
+});
+
+export const updateAssignment = mutation({
+  args: {
+    field: v.string(),
+    value: v.any(),
+    id: v.id("assignments"),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, { [args.field]: args.value });
   },
 });

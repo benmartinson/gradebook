@@ -32,7 +32,7 @@ const Navbar = () => {
           <div>Date Order</div>
           <FaSort size={20} />
         </button>
-        
+
         <div className="w-48">
           <Select
             options={gradingPeriods}
@@ -41,7 +41,7 @@ const Navbar = () => {
             className="text-sm"
           />
         </div>
-        
+
         <div className="w-48">
           <Select
             options={assignmentTypes}
@@ -50,6 +50,12 @@ const Navbar = () => {
             className="text-sm"
           />
         </div>
+        <button
+          className="flex items-center gap-1 bg-[#52b788] text-white hover:bg-[#40916c] rounded-lg px-4 py-2 h-8 text-sm cursor-pointer"
+          onClick={() => navigate("/new-assignment")}
+        >
+          <div>Add Assignment</div>
+        </button>
       </div>
     </div>
   );

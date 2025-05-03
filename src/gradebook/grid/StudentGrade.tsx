@@ -13,7 +13,6 @@ const StudentGrade = ({ assignment, student }: { assignment: Assignment, student
   const [isSaving, setIsSaving] = useState(false);
   const [editedScore, setEditedScore] = useState("");
   const [hasEdited, setHasEdited] = useState(false);
-  console.log({student, assignment});
   
   const grade = grades?.find(
     g => g.studentId === student._id && g.assignmentId === assignment._id
