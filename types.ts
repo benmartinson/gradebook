@@ -12,7 +12,7 @@ export type Assignment = {
 
 export type AssignmentType = {
   id: string;
-  description: 'quiz' | 'exam' | 'project' | 'homework' | 'other';
+  description: "quiz" | "exam" | "project" | "homework" | "other";
   weight: number;
   color: string;
 };
@@ -21,12 +21,6 @@ export type Student = {
   _id: string;
   firstName: string;
   lastName: string;
-};
-
-export type AssignmentGrade = {
-  studentid: string;
-  assignmentid: string;
-  rawScore: number;
 };
 
 export type TableItem = {
@@ -39,7 +33,11 @@ export type TableColumn = {
   label: string;
   placeholder: string;
   width?: string;
-  type?: 'number' | 'text' | 'date' | 'checkbox';
+  type?: "number" | "text" | "date" | "checkbox";
 };
 
-
+export type Grade = {
+  studentId: string;
+  assignmentId: string;
+  rawScore: number;
+};

@@ -1,5 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { Assignment, Student, Grade } from "../types";
 
 export const addAssignment = mutation({
   args: {
@@ -12,7 +13,7 @@ export const addAssignment = mutation({
     notes: v.optional(v.string()),
   },
 
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<void> => {
     await ctx.db.insert("assignments", {
       description: args.description,
       assignmentType: args.assignmentType,
@@ -29,14 +30,14 @@ export const deleteAssignment = mutation({
   args: {
     id: v.id("assignments"),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<void> => {
     await ctx.db.delete(args.id);
   },
 });
 
 export const getAssignments = query({
   args: {},
-  handler: async (ctx) => {
+  handler: async (ctx): Promise<Assignment[]> => {
     const assignments = await ctx.db.query("assignments").collect();
     return assignments;
   },
@@ -44,7 +45,7 @@ export const getAssignments = query({
 
 export const getClassStudents = query({
   args: {},
-  handler: async (ctx) => {
+  handler: async (ctx): Promise<Student[]> => {
     const students = await ctx.db.query("students").collect();
     return students;
   },
@@ -55,7 +56,7 @@ export const addClassStudent = mutation({
     firstName: v.string(),
     lastName: v.string(),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<void> => {
     await ctx.db.insert("students", {
       firstName: args.firstName,
       lastName: args.lastName,
@@ -67,7 +68,7 @@ export const deleteClassStudent = mutation({
   args: {
     id: v.id("students"),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<void> => {
     await ctx.db.delete(args.id);
   },
 });
@@ -78,7 +79,7 @@ export const addGrade = mutation({
     assignmentId: v.id("assignments"),
     rawScore: v.number(),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<void> => {
     await ctx.db.insert("grades", {
       studentId: args.studentId,
       assignmentId: args.assignmentId,
@@ -92,14 +93,14 @@ export const updateGrade = mutation({
     id: v.id("grades"),
     rawScore: v.number(),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<void> => {
     await ctx.db.patch(args.id, { rawScore: args.rawScore });
   },
 });
 
 export const getGrades = query({
   args: {},
-  handler: async (ctx) => {
+  handler: async (ctx): Promise<Grade[]> => {
     const grades = await ctx.db.query("grades").collect();
     return grades;
   },
@@ -109,7 +110,7 @@ export const getAssignment = query({
   args: {
     id: v.id("assignments"),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<Assignment> => {
     const assignment = await ctx.db.get(args.id);
     return assignment;
   },
@@ -121,7 +122,7 @@ export const updateAssignment = mutation({
     value: v.any(),
     id: v.id("assignments"),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<void> => {
     await ctx.db.patch(args.id, { [args.field]: args.value });
   },
 });

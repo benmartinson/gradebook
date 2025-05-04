@@ -47,13 +47,22 @@ export default function App() {
           }
         />
         <Route
-          path="/assignment/:id"
+          path="/assignment/:id/grades"
           element={
             <GradebookPage>
-              <AssignmentPageContainer />
+              <AssignmentPageContainer activeTab="grades" />
             </GradebookPage>
           }
         />
+        <Route
+          path="/assignment/:id"
+          element={
+            <GradebookPage>
+              <AssignmentPageContainer activeTab="details" />
+            </GradebookPage>
+          }
+        />
+
         <Route
           path="/assignments"
           element={

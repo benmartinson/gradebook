@@ -22,7 +22,6 @@ const setForm = (assignment: Assignment) => {
 };
 
 const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
-  console.log(assignment);
   const { id } = useParams();
   const [hasMadeChanges, setHasMadeChanges] = useState(false);
   const updateAssignment = useMutation(api.gradebook.updateAssignment);
@@ -64,14 +63,6 @@ const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
       setSavedFields((prev) => ({ ...prev, [field]: false }));
     }, 1500);
   };
-
-  const saveButtonClasses = classNames(
-    "bg-[#52b788]  text-white px-6 py-2 rounded-md transition-colors",
-    {
-      "hover:bg-[#40916c] cursor-pointer": hasMadeChanges,
-      "opacity-50 cursor-default": !hasMadeChanges,
-    }
-  );
 
   if (!assignment) {
     return <LoadingSpinner />;
