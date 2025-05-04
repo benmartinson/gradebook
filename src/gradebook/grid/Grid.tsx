@@ -49,55 +49,49 @@ const Grid = () => {
   return (
     <div className="">
       <Navbar />
-      <div className="p-4 overflow-auto flex justify-center items-center w-[90vw]  overflow-hidden">
-        <div className="flex w-full min-h-[80vh] max-h-[80vh]">
-          {/* Fixed Student Info Table */}
-          <div className="sticky left-0 z-10 bg-white w-fit">
-            <table
-              className="border-separate border-spacing-2"
-              cellPadding={4}
-              cellSpacing={0}
-            >
+      <div className="p-4 flex justify-center items-center w-[90vw]">
+        <div className="w-full min-h-[80vh] max-h-[80vh] overflow-auto">
+          <table
+            className="border-separate border-spacing-0.5"
+            cellPadding={2}
+            cellSpacing={0}
+          >
+            <thead>
               <tr>
-                <th className="h-24">{/* Empty Spacer */}</th>
-              </tr>
-              {students.map((student) => (
-                <tr key={student._id}>
-                  <StudentInfo key={student._id} student={student} />
-                </tr>
-              ))}
-            </table>
-          </div>
+                {/* Top-left corner cell */}
+                <th className="sticky top-0 left-0 z-30 bg-white h-24 w-[200px]">
+                  {/* Empty corner */}
+                </th>
 
-          {/* Scrollable Grades Table */}
-          <div className="overflow-x-auto">
-            <table
-              className="border-separate border-spacing-2"
-              cellPadding={4}
-              cellSpacing={0}
-            >
-              <tr>
+                {/* Fixed header row */}
                 {assignments.map((assignment) => (
-                  <AssignmentInfo
+                  <th
                     key={assignment._id}
-                    assignment={assignment}
-                  />
+                    className="sticky top-0 z-20 bg-white"
+                  >
+                    <AssignmentInfo assignment={assignment} />
+                  </th>
                 ))}
               </tr>
-
+            </thead>
+            <tbody>
               {students.map((student) => (
-                <tr key={student.id}>
+                <tr key={student._id}>
+                  {/* Fixed first column */}
+                  <td className="sticky left-0 z-20 bg-white">
+                    <StudentInfo student={student} />
+                  </td>
+
+                  {/* Student grades */}
                   {assignments.map((assignment) => (
-                    <StudentGrade
-                      key={assignment._id + student._id}
-                      assignment={assignment}
-                      student={student}
-                    />
+                    <td key={assignment._id}>
+                      <StudentGrade assignment={assignment} student={student} />
+                    </td>
                   ))}
                 </tr>
               ))}
-            </table>
-          </div>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

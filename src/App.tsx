@@ -8,6 +8,7 @@ import Placeholder from "./gradebook/Placeholder";
 import Assignments from "./assignments/Assignments";
 import AssignmentPage from "./assignments/AssignmentDetails";
 import AssignmentPageContainer from "./assignments/AssignmentPageContainer";
+import AssignmentGrades from "./assignments/AssignmentGrades";
 
 export default function App() {
   return (
