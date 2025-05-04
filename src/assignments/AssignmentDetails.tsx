@@ -53,6 +53,9 @@ const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
     field: string;
     value: any;
   }) => {
+    if (field === "maxPoints" || field === "weight") {
+      value = parseInt(value);
+    }
     await updateAssignment({
       field,
       value,

@@ -14,8 +14,6 @@ const StudentGrade = ({
 }) => {
   const grades = useQuery(api.gradebook.getGrades);
   const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedScore, setEditedScore] = useState("");
 
   const grade = grades?.find(
     (g) => g.studentId === student._id && g.assignmentId === assignment._id
@@ -32,7 +30,7 @@ const StudentGrade = ({
     >
       <div className="flex p-2 w-28 items-center justify-center relative">
         <div className="flex items-center gap-1">
-          <div className="font-semibold">{grade?.rawScore ?? "-"}</div>
+          <div className="">{grade?.rawScore ?? "-"}</div>
           <span className="absolute right-5 top-0 bottom-0 flex items-center justify-center">
             <FaPencilAlt className="text-gray-400 text-sm group-hover:block hidden" />
           </span>

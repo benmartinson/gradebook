@@ -1,4 +1,17 @@
-import { FaBook, FaChevronLeft, FaChevronRight, FaCompress, FaExpand, FaCompass, FaCalendarAlt, FaTasks, FaUsers, FaClipboardCheck, FaQuestionCircle, FaCog } from "react-icons/fa";
+import {
+  FaBook,
+  FaChevronLeft,
+  FaChevronRight,
+  FaCompress,
+  FaExpand,
+  FaCompass,
+  FaCalendarAlt,
+  FaTasks,
+  FaUsers,
+  FaClipboardCheck,
+  FaQuestionCircle,
+  FaCog,
+} from "react-icons/fa";
 import React, { useEffect } from "react";
 import classNames from "classnames";
 import { useNavigate } from "react-router";
@@ -13,9 +26,17 @@ interface NavItemProps {
   isDisabled?: boolean;
 }
 
-const NavItem = ({ icon, label, path, isCollapsed, isSelected, isLoadingAnimation, isDisabled }: NavItemProps) => {
+const NavItem = ({
+  icon,
+  label,
+  path,
+  isCollapsed,
+  isSelected,
+  isLoadingAnimation,
+  isDisabled,
+}: NavItemProps) => {
   const navigate = useNavigate();
-  
+
   const tabClasses = classNames("flex items-center gap-2 p-2 rounded", {
     "text-gray-600": !isSelected,
     "bg-blue-100": isSelected,
@@ -35,7 +56,7 @@ const NavItem = ({ icon, label, path, isCollapsed, isSelected, isLoadingAnimatio
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = React.useState(() => {
-    const saved = localStorage.getItem('sidebarCollapsed');
+    const saved = localStorage.getItem("sidebarCollapsed");
     return saved ? JSON.parse(saved) : false;
   });
   const [loadingAnimation, setLoadingAnimation] = React.useState(false);
@@ -45,7 +66,7 @@ const Sidebar = () => {
   const selectedTab = path.split("/").pop() || "Gradebook";
 
   useEffect(() => {
-    localStorage.setItem('sidebarCollapsed', JSON.stringify(isCollapsed));
+    localStorage.setItem("sidebarCollapsed", JSON.stringify(isCollapsed));
   }, [isCollapsed]);
 
   const toggleCollapse = () => {
@@ -60,10 +81,13 @@ const Sidebar = () => {
     "flex flex-col items-center": isCollapsed,
   });
 
-  const containerClasses = classNames("transition-all duration-300 bg-white border-r-2 border-gray-300 p-2 relative", {
-    "w-16": isCollapsed,
-    "w-48": !isCollapsed,
-  });
+  const containerClasses = classNames(
+    "transition-all duration-300 bg-white border-r-2 border-gray-300 p-2 relative",
+    {
+      "w-16": isCollapsed,
+      "w-48": !isCollapsed,
+    }
+  );
 
   return (
     <div className={containerClasses}>
@@ -82,57 +106,57 @@ const Sidebar = () => {
       </div> */}
 
       <nav className={navClasses}>
-        <NavItem 
-          icon={<FaBook size={24} />} 
-          label="Gradebook" 
-          path="/gradebook" 
-          isCollapsed={isCollapsed} 
-          isSelected={selectedTab.toLowerCase() === "gradebook"} 
+        <NavItem
+          icon={<FaBook size={24} />}
+          label="Gradebook"
+          path="/gradebook"
+          isCollapsed={isCollapsed}
+          isSelected={selectedTab.toLowerCase() === "gradebook"}
           isLoadingAnimation={loadingAnimation}
         />
-        <NavItem 
-          icon={<FaTasks size={24} />} 
-          label="Assignments" 
-          path="/assignments" 
+        <NavItem
+          icon={<FaTasks size={24} />}
+          label="Assignments"
+          path="/assignments"
           isDisabled={true}
-          isCollapsed={isCollapsed} 
-          isSelected={selectedTab.toLowerCase() === "assignments"} 
+          isCollapsed={isCollapsed}
+          isSelected={selectedTab.toLowerCase() === "assignments"}
           isLoadingAnimation={loadingAnimation}
         />
-        <NavItem 
-          icon={<FaUsers size={24} />} 
-          label="Students" 
-          path="/students" 
-          isDisabled={true}
-          isCollapsed={isCollapsed} 
-          isSelected={selectedTab.toLowerCase() === "students"} 
+        <NavItem
+          icon={<FaUsers size={24} />}
+          label="Students"
+          path="/students"
+          isDisabled={false}
+          isCollapsed={isCollapsed}
+          isSelected={selectedTab.toLowerCase() === "students"}
           isLoadingAnimation={loadingAnimation}
         />
-        <NavItem 
-          icon={<FaClipboardCheck size={24} />} 
-          label="Attendance" 
-          path="/attendance" 
+        <NavItem
+          icon={<FaClipboardCheck size={24} />}
+          label="Attendance"
+          path="/attendance"
           isDisabled={true}
-          isCollapsed={isCollapsed} 
-          isSelected={selectedTab.toLowerCase() === "attendance"} 
+          isCollapsed={isCollapsed}
+          isSelected={selectedTab.toLowerCase() === "attendance"}
           isLoadingAnimation={loadingAnimation}
         />
-        <NavItem 
-          icon={<FaQuestionCircle size={24} />} 
-          label="Quizes" 
-          path="/quizes" 
+        <NavItem
+          icon={<FaQuestionCircle size={24} />}
+          label="Quizes"
+          path="/quizes"
           isDisabled={true}
-          isCollapsed={isCollapsed} 
-          isSelected={selectedTab.toLowerCase() === "quizes"} 
+          isCollapsed={isCollapsed}
+          isSelected={selectedTab.toLowerCase() === "quizes"}
           isLoadingAnimation={loadingAnimation}
         />
-        <NavItem 
-          icon={<FaCog size={24} />} 
-          label="Settings" 
-          path="/settings" 
+        <NavItem
+          icon={<FaCog size={24} />}
+          label="Settings"
+          path="/settings"
           isDisabled={true}
-          isCollapsed={isCollapsed} 
-          isSelected={selectedTab.toLowerCase() === "settings"} 
+          isCollapsed={isCollapsed}
+          isSelected={selectedTab.toLowerCase() === "settings"}
           isLoadingAnimation={loadingAnimation}
         />
       </nav>
@@ -140,4 +164,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;
