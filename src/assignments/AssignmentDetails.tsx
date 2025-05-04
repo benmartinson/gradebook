@@ -24,7 +24,7 @@ const setForm = (assignment: Assignment) => {
 const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
   const { id } = useParams();
   const [hasMadeChanges, setHasMadeChanges] = useState(false);
-  const updateAssignment = useMutation(api.gradebook.updateAssignment);
+  const updateAssignment = useMutation(api.assignments.updateAssignment);
   const [formData, setFormData] = useState(setForm({} as any));
   const [savedFields, setSavedFields] = useState<{ [key: string]: boolean }>(
     {}

@@ -14,7 +14,7 @@ import {
 } from "react-icons/fa";
 import React, { useEffect } from "react";
 import classNames from "classnames";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 interface NavItemProps {
   icon: React.ReactNode;
@@ -62,6 +62,7 @@ const Sidebar = () => {
   const [loadingAnimation, setLoadingAnimation] = React.useState(false);
 
   const navigate = useNavigate();
+  const { class_id } = useParams();
   const path = window.location.pathname;
   const selectedTab = path.split("/").pop() || "Gradebook";
 
@@ -109,7 +110,7 @@ const Sidebar = () => {
         <NavItem
           icon={<FaBook size={24} />}
           label="Gradebook"
-          path="/gradebook"
+          path={`/class/${class_id}/gradebook`}
           isCollapsed={isCollapsed}
           isSelected={selectedTab.toLowerCase() === "gradebook"}
           isLoadingAnimation={loadingAnimation}
@@ -126,7 +127,7 @@ const Sidebar = () => {
         <NavItem
           icon={<FaUsers size={24} />}
           label="Students"
-          path="/students"
+          path={`/class/${class_id}/students`}
           isDisabled={false}
           isCollapsed={isCollapsed}
           isSelected={selectedTab.toLowerCase() === "students"}

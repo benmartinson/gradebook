@@ -13,7 +13,10 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
-import type * as gradebook from "../gradebook.js";
+import type * as assignments from "../assignments.js";
+import type * as classes from "../classes.js";
+import type * as grades from "../grades.js";
+import type * as students from "../students.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -24,7 +27,10 @@ import type * as gradebook from "../gradebook.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  gradebook: typeof gradebook;
+  assignments: typeof assignments;
+  classes: typeof classes;
+  grades: typeof grades;
+  students: typeof students;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import BackToScoresButton from "../gradebook/BackToScoresButton";
 
 const NewAssignmentPage = () => {
-  const addAssignment = useMutation(api.gradebook.addAssignment);
+  const addAssignment = useMutation(api.assignments.addAssignment);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({

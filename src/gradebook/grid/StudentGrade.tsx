@@ -3,7 +3,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const StudentGrade = ({
   assignment,
@@ -12,15 +12,16 @@ const StudentGrade = ({
   assignment: Assignment;
   student: Student;
 }) => {
-  const grades = useQuery(api.gradebook.getGrades);
+  const grades = useQuery(api.grades.getGrades);
   const navigate = useNavigate();
+  const { class_id } = useParams();
 
   const grade = grades?.find(
     (g) => g.studentId === student._id && g.assignmentId === assignment._id
   );
 
   const handleClick = () => {
-    navigate(`/assignment/${assignment._id}/grades`);
+    navigate(`/class/${class_id}/assignment/${assignment._id}/grades`);
   };
 
   return (

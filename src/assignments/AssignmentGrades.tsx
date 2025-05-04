@@ -33,10 +33,10 @@ const dropboxStatusOptions = [
 ];
 
 const AssignmentGrades = ({ assignment }: { assignment: Assignment }) => {
-  const grades = useQuery(api.gradebook.getGrades);
-  const students = useQuery(api.gradebook.getClassStudents);
-  const addGrade = useMutation(api.gradebook.addGrade);
-  const updateGrade = useMutation(api.gradebook.updateGrade);
+  const grades = useQuery(api.grades.getGrades);
+  const students = useQuery(api.students.getStudents);
+  const addGrade = useMutation(api.grades.addGrade);
+  const updateGrade = useMutation(api.grades.updateGrade);
   const [publishedStates, setPublishedStates] = useState<
     Record<string, boolean>
   >({});

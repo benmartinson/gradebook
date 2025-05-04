@@ -14,20 +14,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/gradebook" replace />} />
         <Route
-          path="/gradebook"
+          path="/class/:class_id/gradebook"
           element={
             <GradebookPage>
               <Grid />
-            </GradebookPage>
-          }
-        />
-        <Route
-          path="/class"
-          element={
-            <GradebookPage>
-              <ClassPage />
             </GradebookPage>
           }
         />
@@ -48,7 +39,7 @@ export default function App() {
           }
         />
         <Route
-          path="/assignment/:id/grades"
+          path="class/:class_id/assignment/:id/grades"
           element={
             <GradebookPage>
               <AssignmentPageContainer activeTab="grades" />
@@ -56,7 +47,7 @@ export default function App() {
           }
         />
         <Route
-          path="/assignment/:id"
+          path="class/:class_id/assignment/:id"
           element={
             <GradebookPage>
               <AssignmentPageContainer activeTab="details" />
@@ -65,7 +56,7 @@ export default function App() {
         />
 
         <Route
-          path="/assignments"
+          path="class/:class_id/assignments"
           element={
             <GradebookPage>
               <Assignments />
@@ -73,7 +64,7 @@ export default function App() {
           }
         />
         <Route
-          path="/new-assignment"
+          path="class/:class_id/new-assignment"
           element={
             <GradebookPage>
               <NewAssignmentPage />
@@ -81,7 +72,7 @@ export default function App() {
           }
         />
         <Route
-          path="/schedule"
+          path="class/:class_id/schedule"
           element={
             <GradebookPage>
               <Placeholder />
@@ -89,7 +80,7 @@ export default function App() {
           }
         />
         <Route
-          path="/quizes"
+          path="class/:class_id/quizes"
           element={
             <GradebookPage>
               <Placeholder />
@@ -97,7 +88,7 @@ export default function App() {
           }
         />
         <Route
-          path="/settings"
+          path="class/:class_id/settings"
           element={
             <GradebookPage>
               <Placeholder />

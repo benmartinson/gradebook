@@ -4,7 +4,7 @@ import { api } from "../../convex/_generated/api";
 import BackToScoresButton from "./BackToScoresButton";
 
 const ClassPage = () => {
-  const students = useQuery(api.gradebook.getClassStudents);
+  const students = useQuery(api.students.getStudents);
 
   return (
     <div className="p-6 w-2/3">
