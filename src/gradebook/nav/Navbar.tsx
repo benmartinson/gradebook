@@ -31,20 +31,7 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
   const addAssignment = useMutation(api.assignments.addAssignment);
 
   return (
-    <div className="flex justify-between items-center py-1 px-6 border-b-2 border-gray-200 min-h-12">
-      {classInfo?.name && (
-        <div className="flex items-center gap-2 bg-[#52b788] px-3 py-1 rounded-lg cursor-pointer group">
-          <div className="text-md font-semibold text-white">
-            {classInfo?.name}
-          </div>
-          <button
-            className="p-1.5 text-gray-600 group-hover:text-[#52b788] bg-gray-100 rounded-full  transition-colors"
-            title="Switch Class"
-          >
-            <FaExchangeAlt size={12} />
-          </button>
-        </div>
-      )}
+    <div className="flex justify-end items-center py-1  border-b-2 border-gray-200 h-12 -mr-4 pr-2">
       <div className="flex items-center gap-3">
         {showGridControls && (
           <button className="text-gray-600 hover:text-gray-800 flex items-center gap-1 text-sm">

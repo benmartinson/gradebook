@@ -56,30 +56,30 @@ const Grid = () => {
   }
 
   return (
-    <div className="">
+    <div className="w-full h-full overflow-hidden flex flex-col pr-4 pb-4">
       <Navbar showGridControls={true} />
-      <div className="p-4 flex justify-center items-center w-[90vw]">
-        <div
-          className="w-full min-h-[80vh] max-h-[80vh] overflow-auto hide-scrollbars "
-          style={{
-            msOverflowStyle: "none",
-            scrollbarWidth: "none",
-          }}
-        >
-          {/* Horizontal shield */}
-          <div className="  -mt-[2px] h-[2px] w-full pointer-events-none z-40 bg-white sticky top-0 left-0"></div>
 
+      <div
+        className="flex h-full overflow-scroll mt-4 ml-4"
+        style={{
+          msOverflowStyle: "none",
+          scrollbarWidth: "none",
+        }}
+      >
+        {/* Horizontal shield */}
+        <div className="flex flex-col">
+          <div className="-mt-[2px] min-h-[2px] h-[2px] min-w-full w-full pointer-events-none z-40 bg-white sticky top-0 left-0"></div>
           <div className="flex">
             {/* Vertical shield - prevents horizontal jiggle */}
             <div className="top-0 left-0 min-w-[2px] -ml-[2px] h-[80vh] bg-white sticky z-40 pointer-events-none"></div>
 
             <table
-              className="border-separate border-spacing-0.5"
+              className="border-separate border-spacing-0.5 pr-2 pb-2"
               cellPadding={2}
               cellSpacing={0}
             >
               <thead>
-                <tr className="sticky z-30 top-0.5 left-0.5">
+                <tr className="sticky z-30 top-0 left-0.5">
                   <th className="sticky left-0.5 z-30 bg-white h-24"></th>
 
                   {assignments.map((assignment) => (

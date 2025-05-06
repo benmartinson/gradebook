@@ -11,10 +11,14 @@ import {
   FaClipboardCheck,
   FaQuestionCircle,
   FaCog,
+  FaExchangeAlt,
 } from "react-icons/fa";
 import React, { useEffect } from "react";
 import classNames from "classnames";
 import { useNavigate, useParams } from "react-router";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
+import { Id } from "../../../convex/_generated/dataModel";
 
 interface NavItemProps {
   icon: React.ReactNode;
@@ -63,6 +67,9 @@ const Sidebar = () => {
 
   const navigate = useNavigate();
   const { class_id } = useParams();
+  const classInfo = useQuery(api.classes.getClassInfo, {
+    id: class_id as Id<"classes">,
+  });
   const path = window.location.pathname;
   const selectedTab = path.split("/").pop() || "Gradebook";
 
@@ -92,19 +99,29 @@ const Sidebar = () => {
 
   return (
     <div className={containerClasses}>
-      {/* <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2" onClick={() => navigate("/gradebook/class")}>
-          {!isCollapsed && !loadingAnimation && (
-            <h2 className="text-xl font-semibold">Calculus II</h2>
-          )}
-        </div>
-        <button 
-          onClick={toggleCollapse} 
-          className="absolute -right-[16px] top-3 rounded-full w-8 h-8 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
+      <div className="mb-2">
+        <button
+          className="w-full p-2 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+          title="Switch Class"
+          onClick={() => navigate("/class-list")}
         >
-          {isCollapsed ? <FaChevronRight size={16} /> : <FaChevronLeft size={16} />}
+          <FaExchangeAlt size={16} />
+          {!isCollapsed && !loadingAnimation && (
+            <span className="text-sm font-medium">Switch Class</span>
+          )}
         </button>
-      </div> */}
+      </div>
+
+      <button
+        onClick={toggleCollapse}
+        className="absolute -right-[16px] top-3 rounded-full w-8 h-8 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
+      >
+        {isCollapsed ? (
+          <FaChevronRight size={16} />
+        ) : (
+          <FaChevronLeft size={16} />
+        )}
+      </button>
 
       <nav className={navClasses}>
         <NavItem
