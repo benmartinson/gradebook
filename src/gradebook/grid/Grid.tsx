@@ -31,23 +31,23 @@ const Grid = () => {
 
   if (isLoading) {
     return (
-      <>
+      <div className="flex flex-col h-full w-full">
         <Navbar />
         <LoadingSpinner />
-      </>
+      </div>
     );
   }
 
   if (!students?.length) {
     return (
-      <>
+      <div className="flex flex-col h-full w-full">
         <Navbar />
         <div className="p-4 overflow-auto">
           <h1 className="text-2xl font-semibold text-center text-gray-500 mt-16">
             No students are enrolled in this class.
           </h1>
         </div>
-      </>
+      </div>
     );
   }
 
@@ -66,8 +66,8 @@ const Grid = () => {
           scrollbarWidth: "none",
         }}
       >
-        {/* Horizontal shield */}
         <div className="flex flex-col">
+          {/* Horizontal shield */}
           <div className="-mt-[2px] min-h-[2px] h-[2px] min-w-full w-full pointer-events-none z-40 bg-white sticky top-0 left-0"></div>
           <div className="flex">
             {/* Vertical shield - prevents horizontal jiggle */}

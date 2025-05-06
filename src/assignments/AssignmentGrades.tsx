@@ -116,7 +116,13 @@ const AssignmentGrades = ({ assignment }: { assignment: Assignment }) => {
         </div>
 
         {/* Student Rows */}
-        <div className="flex flex-col w-full h-[calc(100vh-250px)] overflow-y-scroll">
+        <div
+          className="flex flex-col w-full h-[calc(100vh-250px)] overflow-y-scroll"
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
+        >
           {studentGrades.map((student) => (
             <div
               key={student._id}

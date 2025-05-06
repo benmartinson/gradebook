@@ -5,6 +5,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { Id } from "../../../convex/_generated/dataModel";
+import BackToScoresButton from "../BackToScoresButton";
 
 const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
   const addAssignment = useMutation(api.assignments.addAssignment);
 
   return (
-    <div className="flex justify-end items-center py-1  border-b-2 border-gray-200 h-12 -mr-4 pr-2">
+    <div className="flex w-full justify-end items-center py-1  border-b-2 border-gray-200 h-12 -mr-4 pr-2 min-h-12">
       <div className="flex items-center gap-3">
         {showGridControls && (
           <button className="text-gray-600 hover:text-gray-800 flex items-center gap-1 text-sm">
@@ -64,6 +65,12 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
           >
             <FaPlus size={16} />
           </button>
+        )}
+        {!showGridControls && (
+          <div className="flex items-center gap-2">
+            <BackToScoresButton />
+            <div className="w-px bg-gray-300"></div>
+          </div>
         )}
       </div>
     </div>

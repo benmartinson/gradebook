@@ -97,24 +97,28 @@ const Sidebar = () => {
     }
   );
 
+  const classSwitchClasses = classNames(
+    "p-2 rounded-lg h-10 bg-gray-100 hover:bg-gray-200 flex items-center justify-center gap-2 transition-colors cursor-pointer",
+    {
+      "w-[90%]": !isCollapsed,
+    }
+  );
+
   return (
     <div className={containerClasses}>
-      <div className="mb-2">
-        <button
-          className="w-full p-2 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center gap-2 transition-colors cursor-pointer"
-          title="Switch Class"
-          onClick={() => navigate("/class-list")}
-        >
-          <FaExchangeAlt size={16} />
-          {!isCollapsed && !loadingAnimation && (
-            <span className="text-sm font-medium">Switch Class</span>
-          )}
-        </button>
-      </div>
+      <button
+        className={classSwitchClasses}
+        onClick={() => navigate("/class-list")}
+      >
+        <FaExchangeAlt size={16} />
+        {!isCollapsed && !loadingAnimation && (
+          <span className="text-sm font-medium">{classInfo?.name}</span>
+        )}
+      </button>
 
       <button
         onClick={toggleCollapse}
-        className="absolute -right-[16px] top-3 rounded-full w-8 h-8 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
+        className="absolute -right-[16px] top-2 rounded-full w-8 h-8 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
       >
         {isCollapsed ? (
           <FaChevronRight size={16} />

@@ -22,20 +22,20 @@ const AssignmentPageContainer = ({
 
   if (!assignment) {
     return (
-      <>
+      <div className="flex w-full flex-col h-full">
         <Navbar />
         <LoadingSpinner />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="flex w-full flex-col h-full">
       <Navbar />
-      <div className="flex flex-col h-[calc(100vh-100px)] overflow-hidden">
+      <div className="flex flex-col">
         <div className="flex justify-between w-full p-6">
           <div className="font-bold text-2xl">{assignment?.description}</div>
-          <div className="flex border border-gray-300 rounded-lg overflow-hidden">
+          <div className="flex border border-gray-300 rounded-lg">
             <button
               onClick={() => navigate(`/class/${class_id}/assignment/${id}`)}
               className={`px-4 py-2 text-sm font-medium transition-colors ${
@@ -66,7 +66,7 @@ const AssignmentPageContainer = ({
         )}
         {activeTab === "grades" && <AssignmentGrades assignment={assignment} />}
       </div>
-    </>
+    </div>
   );
 };
 
