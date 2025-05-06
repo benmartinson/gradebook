@@ -33,15 +33,15 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
   return (
     <div className="flex justify-between items-center py-1 px-6 border-b-2 border-gray-200 min-h-12">
       {classInfo?.name && (
-        <div className="flex items-center gap-2">
-          <div className="flex items-center bg-white px-3 py-1 rounded-lg">
-            <div className="text-xl font-semibold">{classInfo?.name}</div>
+        <div className="flex items-center gap-2 bg-[#52b788] px-3 py-1 rounded-lg cursor-pointer group">
+          <div className="text-md font-semibold text-white">
+            {classInfo?.name}
           </div>
           <button
-            className="p-1.5 text-gray-600 hover:text-[#52b788] bg-gray-100 rounded-full cursor-pointer transition-colors"
+            className="p-1.5 text-gray-600 group-hover:text-[#52b788] bg-gray-100 rounded-full  transition-colors"
             title="Switch Class"
           >
-            <FaExchangeAlt size={16} />
+            <FaExchangeAlt size={12} />
           </button>
         </div>
       )}
@@ -72,7 +72,7 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
         </div> */}
         {showGridControls && (
           <button
-            className="flex items-center gap-1 bg-[#4caf73] text-white hover:bg-[#40916c] rounded-lg px-3 py-1 h-7 text-sm cursor-pointer"
+            className="flex items-center gap-1 bg-white border-2 border-gray-500 hover:border-black text-gray-500 hover:text-black rounded-full px-3 py-1 h-7 text-sm cursor-pointer"
             onClick={() => navigate(`/class/${class_id}/new-assignment`)}
           >
             <FaPlus size={16} />
