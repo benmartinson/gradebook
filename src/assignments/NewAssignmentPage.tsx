@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useNavigate } from "react-router";
+import Select, { ActionMeta, SingleValue } from "react-select";
+import { assignmentTypes } from "../constants";
+import { AssignmentType as AssignmentTypeInterface } from "../../types";
 import BackToScoresButton from "../gradebook/BackToScoresButton";
 import Navbar from "../gradebook/nav/Navbar";
 
@@ -20,6 +23,13 @@ const NewAssignmentPage = () => {
     isExtraCredit: false,
   });
 
+  const assignmentTypeOptions: { value: string; label: string }[] =
+    assignmentTypes.map((type: AssignmentTypeInterface) => ({
+      value: type.description,
+      label:
+        type.description.charAt(0).toUpperCase() + type.description.slice(1),
+    }));
+
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -33,9 +43,23 @@ const NewAssignmentPage = () => {
     }));
   };
 
+  const handleSelectChange = (
+    selectedOption: SingleValue<{ value: string; label: string }>,
+    actionMeta: ActionMeta<{ value: string; label: string }>
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [actionMeta.name!]: selectedOption ? selectedOption.value : "",
+    }));
+  };
+
   const handleCreateAssignment = (e: React.FormEvent) => {
     e.preventDefault();
-    addAssignment(formData);
+    const dataToSend = {
+      ...formData,
+      assignmentType: formData.assignmentType || "homework",
+    };
+    addAssignment(dataToSend);
     navigate("/gradebook");
   };
 
@@ -43,11 +67,11 @@ const NewAssignmentPage = () => {
     <div className="w-full flex flex-col">
       <Navbar />
       <div className="w-full p-6">
-        <div className="w-1/2 mb-6 flex items-center justify-between">
+        <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold">New Assignment</h1>
         </div>
 
-        <div className="w-1/2 mr-auto">
+        <div className="mr-auto">
           <form onSubmit={handleCreateAssignment} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -68,17 +92,18 @@ const NewAssignmentPage = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Assignment Type
                 </label>
-                <select
+                <Select
                   name="assignmentType"
-                  value={formData.assignmentType}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                >
-                  <option value="homework">Homework</option>
-                  <option value="quiz">Quiz</option>
-                  <option value="test">Test</option>
-                  <option value="project">Project</option>
-                </select>
+                  options={assignmentTypeOptions}
+                  value={assignmentTypeOptions.find(
+                    (option: { value: string; label: string }) =>
+                      option.value === formData.assignmentType
+                  )}
+                  onChange={handleSelectChange}
+                  className="w-full basic-single"
+                  classNamePrefix="select"
+                  required
+                />
               </div>
 
               <div>

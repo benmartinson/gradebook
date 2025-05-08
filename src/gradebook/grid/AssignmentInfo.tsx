@@ -1,6 +1,6 @@
 import { FaPencilAlt } from "react-icons/fa";
 import { Assignment } from "../../../types";
-import { assignmentTypes } from "../../mocks";
+import { assignmentTypes } from "../../constants";
 import moment from "moment";
 import { useNavigate, useParams } from "react-router";
 
@@ -21,11 +21,12 @@ const AssignmentInfo = ({ assignment }: { assignment: Assignment }) => {
         }
       >
         <div
-          className={`text-xs uppercase font-semibold text-white bg-[#EB5160] w-fit px-1 mb-1 text-left`}
+          className="text-xs uppercase font-semibold text-white w-fit px-1 mb-1 text-left capitalize"
+          style={{ backgroundColor: color }}
         >
           {assignmentType?.description}
         </div>
-        <FaPencilAlt className="text-gray-400 text-sm group-hover:block absolute right-2 top-3 hidden group-hover:block" />
+        <FaPencilAlt className="text-gray-400 text-sm group-hover:block absolute right-1 top-2 hidden group-hover:block" />
 
         <div className="text-sm font-extrabold text-gray-700 mb-2 text-left h-12 leading-[16px] overflow-hidden text-ellipsis line-clamp-3">
           {assignment.description}

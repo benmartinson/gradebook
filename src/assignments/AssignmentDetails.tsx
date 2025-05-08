@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { useEffect, useState } from "react";
+import Select, { ActionMeta, SingleValue } from "react-select";
+import { assignmentTypes } from "../constants"; // Corrected import path
+import { AssignmentType as AssignmentTypeInterface } from "../../types";
 import LoadingSpinner from "../gradebook/common/LoadingSpinner";
 import { Assignment } from "../../types";
 import classNames from "classnames";
@@ -11,7 +14,7 @@ import AssignmentPageContainer from "./AssignmentPageContainer";
 const setForm = (assignment: Assignment) => {
   return {
     description: assignment?.description || "",
-    assignmentType: assignment?.assignmentType || "",
+    assignmentType: assignment?.assignmentType || 1,
     assignedDate: assignment?.assignedDate || "",
     dueDate: assignment?.dueDate || "",
     maxPoints: assignment?.maxPoints || "",
@@ -34,6 +37,14 @@ const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
     setFormData(setForm(assignment));
   }, [assignment]);
 
+  const assignmentTypeOptions: { value: string; label: string; id: number }[] =
+    assignmentTypes.map((type: AssignmentTypeInterface) => ({
+      value: type.description,
+      id: type.id,
+      label:
+        type.description.charAt(0).toUpperCase() + type.description.slice(1),
+    }));
+
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -44,6 +55,25 @@ const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
       [e.target.name]: e.target.value,
     });
     setHasMadeChanges(true);
+  };
+
+  const handleSelectChange = (
+    selectedOption: SingleValue<{ value: string; label: string; id: number }>,
+    actionMeta: ActionMeta<{ value: string; label: string; id: number }>
+  ) => {
+    const fieldName = actionMeta.name!;
+    const valueToSet = selectedOption
+      ? selectedOption.id
+      : assignmentTypes.length > 0
+        ? assignmentTypes[0].id
+        : 1;
+
+    setFormData((prev) => ({
+      ...prev,
+      [fieldName]: valueToSet,
+    }));
+    setHasMadeChanges(true);
+    handleUpdateAssignment({ field: fieldName, value: valueToSet });
   };
 
   const handleUpdateAssignment = async ({
@@ -109,18 +139,16 @@ const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
                 </span>
               )}
             </label>
-            <input
-              type="text"
+            <Select
               name="assignmentType"
-              value={formData.assignmentType}
-              onChange={handleInputChange}
-              onBlur={() =>
-                handleUpdateAssignment({
-                  field: "assignmentType",
-                  value: formData.assignmentType,
-                })
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              options={assignmentTypeOptions}
+              value={assignmentTypeOptions.find(
+                (option: { value: string; label: string; id: number }) =>
+                  option.id === formData.assignmentType
+              )}
+              onChange={handleSelectChange}
+              className="w-full basic-single"
+              classNamePrefix="select"
               required
             />
           </div>

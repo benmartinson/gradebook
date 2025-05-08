@@ -1,7 +1,7 @@
 export type Assignment = {
   _id: string;
   description: string;
-  assignmentType: string;
+  assignmentType: AssignmentType["id"];
   weight: number;
   maxPoints: number;
   dueDate: string;
@@ -11,7 +11,7 @@ export type Assignment = {
 };
 
 export type AssignmentType = {
-  id: string;
+  id: number;
   description: "quiz" | "exam" | "project" | "homework" | "other";
   weight: number;
   color: string;

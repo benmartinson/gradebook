@@ -67,54 +67,47 @@ const Grid = () => {
         }}
       >
         <div className="flex flex-col">
-          {/* Shields removed */}
-          <div className="flex">
-            {/* Shields removed */}
-            <table className="border-collapse w-full">
-              <thead>
-                <tr className="sticky top-0 z-20 bg-white">
-                  <th className="sticky left-0 z-30 bg-white h-24 p-[2px]"></th>
+          <table className="border-collapse w-full">
+            <thead>
+              <tr className="sticky top-0 z-20 bg-white">
+                <th className="sticky left-0 z-30 bg-white h-24 p-[2px]"></th>
+
+                {assignments.map((assignment) => (
+                  <th key={assignment._id} className="bg-white p-[2px]">
+                    <AssignmentInfo assignment={assignment} />
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student, idx) => (
+                <tr key={student._id}>
+                  <td className="sticky left-0 z-10 bg-white p-[2px]">
+                    <div className="flex justify-between">
+                      {" "}
+                      {/* pl-[2px] removed from here */}
+                      <div className="bg-white">
+                        <StudentInfo student={student} />
+                      </div>
+                      <div className="bg-white">
+                        <ClassGrade
+                          student={student}
+                          grades={grades}
+                          assignments={assignments}
+                        />
+                      </div>
+                    </div>
+                  </td>
 
                   {assignments.map((assignment) => (
-                    <th key={assignment._id} className="bg-white p-[2px]">
-                      <AssignmentInfo assignment={assignment} />
-                    </th>
+                    <td key={assignment._id} className="p-[2px]">
+                      <StudentGrade assignment={assignment} student={student} />
+                    </td>
                   ))}
                 </tr>
-              </thead>
-              <tbody>
-                {students.map((student, idx) => (
-                  <tr key={student._id}>
-                    <td className="sticky left-0 z-10 bg-white p-[2px]">
-                      <div className="flex justify-between">
-                        {" "}
-                        {/* pl-[2px] removed from here */}
-                        <div className="bg-white">
-                          <StudentInfo student={student} />
-                        </div>
-                        <div className="bg-white">
-                          <ClassGrade
-                            student={student}
-                            grades={grades}
-                            assignments={assignments}
-                          />
-                        </div>
-                      </div>
-                    </td>
-
-                    {assignments.map((assignment) => (
-                      <td key={assignment._id} className="p-[2px]">
-                        <StudentGrade
-                          assignment={assignment}
-                          student={student}
-                        />
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

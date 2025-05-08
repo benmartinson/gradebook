@@ -50,36 +50,3 @@ export const students: Student[] = [
     lastName: "Donovan",
   },
 ];
-
-export const assignmentTypes: AssignmentType[] = [
-  {
-    id: "1",
-    description: "quiz",
-    color: "#EB5160",
-    weight: 100,
-  },
-  {
-    id: "2",
-    description: "exam",
-    color: "red",
-    weight: 100,
-  },
-  {
-    id: "3",
-    description: "project",
-    color: "green",
-    weight: 100,
-  },
-  {
-    id: "4",
-    description: "homework",
-    color: "yellow",
-    weight: 100,
-  },
-  {
-    id: "5",
-    description: "other",
-    color: "purple",
-    weight: 100,
-  },
-];
