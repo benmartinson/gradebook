@@ -79,14 +79,11 @@ const Grid = () => {
               cellSpacing={0}
             >
               <thead>
-                <tr className="sticky z-30 top-0 left-0.5">
+                <tr className="sticky z-30 top-[2px] left-0.5">
                   <th className="sticky left-0.5 z-30 bg-white h-24"></th>
 
                   {assignments.map((assignment) => (
-                    <th
-                      key={assignment._id}
-                      className="sticky top-0 z-20 bg-white"
-                    >
+                    <th key={assignment._id} className="bg-white">
                       <AssignmentInfo assignment={assignment} />
                     </th>
                   ))}

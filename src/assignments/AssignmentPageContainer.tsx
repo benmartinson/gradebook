@@ -15,12 +15,14 @@ const AssignmentPageContainer = ({
   activeTab: "details" | "grades";
 }) => {
   const { id, class_id } = useParams();
+  const grades = useQuery(api.grades.getGrades);
+  const students = useQuery(api.students.getStudents);
   const navigate = useNavigate();
   const assignment = useQuery(api.assignments.getAssignment, {
     id: id as Id<"assignments">,
   });
 
-  if (!assignment) {
+  if (!assignment || !grades || !students) {
     return (
       <div className="flex w-full flex-col h-full">
         <Navbar />
@@ -64,7 +66,13 @@ const AssignmentPageContainer = ({
         {activeTab === "details" && (
           <AssignmentDetails assignment={assignment} />
         )}
-        {activeTab === "grades" && <AssignmentGrades assignment={assignment} />}
+        {activeTab === "grades" && (
+          <AssignmentGrades
+            assignment={assignment}
+            grades={grades}
+            students={students}
+          />
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "convex/react";
-import { Assignment } from "../../types";
+import { Assignment, Student, Grade } from "../../types";
 import { api } from "../../convex/_generated/api";
 import LoadingSpinner from "../gradebook/common/LoadingSpinner";
 import { getStudentGradesObject } from "../helpers";
@@ -32,9 +32,15 @@ const dropboxStatusOptions = [
   { value: "not_turned_in", label: "Not Turned In" },
 ];
 
-const AssignmentGrades = ({ assignment }: { assignment: Assignment }) => {
-  const grades = useQuery(api.grades.getGrades);
-  const students = useQuery(api.students.getStudents);
+const AssignmentGrades = ({
+  assignment,
+  grades,
+  students,
+}: {
+  assignment: Assignment;
+  grades: Grade[];
+  students: Student[];
+}) => {
   const addGrade = useMutation(api.grades.addGrade);
   const updateGrade = useMutation(api.grades.updateGrade);
   const [publishedStates, setPublishedStates] = useState<
