@@ -67,23 +67,16 @@ const Grid = () => {
         }}
       >
         <div className="flex flex-col">
-          {/* Horizontal shield */}
-          <div className="-mt-[2px] min-h-[2px] h-[2px] min-w-full w-full pointer-events-none z-40 bg-white sticky top-0 left-0"></div>
+          {/* Shields removed */}
           <div className="flex">
-            {/* Vertical shield - prevents horizontal jiggle */}
-            <div className="top-0 left-0 min-w-[2px] -ml-[2px] h-[80vh] bg-white sticky z-40 pointer-events-none"></div>
-
-            <table
-              className="border-separate border-spacing-0.5 pr-2 pb-2"
-              cellPadding={2}
-              cellSpacing={0}
-            >
+            {/* Shields removed */}
+            <table className="border-collapse w-full">
               <thead>
-                <tr className="sticky z-30 top-[2px] left-0.5">
-                  <th className="sticky left-0.5 z-30 bg-white h-24"></th>
+                <tr className="sticky top-0 z-20 bg-white">
+                  <th className="sticky left-0 z-30 bg-white h-24 p-[2px]"></th>
 
                   {assignments.map((assignment) => (
-                    <th key={assignment._id} className="bg-white">
+                    <th key={assignment._id} className="bg-white p-[2px]">
                       <AssignmentInfo assignment={assignment} />
                     </th>
                   ))}
@@ -92,8 +85,10 @@ const Grid = () => {
               <tbody>
                 {students.map((student, idx) => (
                   <tr key={student._id}>
-                    <td className="sticky left-0.5 z-20 bg-white p-0 border-0 pl-[2px]">
+                    <td className="sticky left-0 z-10 bg-white p-[2px]">
                       <div className="flex justify-between">
+                        {" "}
+                        {/* pl-[2px] removed from here */}
                         <div className="bg-white">
                           <StudentInfo student={student} />
                         </div>
@@ -108,7 +103,7 @@ const Grid = () => {
                     </td>
 
                     {assignments.map((assignment) => (
-                      <td key={assignment._id}>
+                      <td key={assignment._id} className="p-[2px]">
                         <StudentGrade
                           assignment={assignment}
                           student={student}

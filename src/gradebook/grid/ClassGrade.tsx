@@ -22,10 +22,10 @@ const ClassGrade = ({
 
   return (
     <td
-      className="bg-[#e3f2fd] border border-[#64b5f6] rounded-lg h-10"
+      className="bg-[#e3f2fd] rounded-lg h-10"
       // onClick={handleClick}
     >
-      <div className="flex p-2 w-28 items-center justify-center relative">
+      <div className="flex p-2 w-28 items-center border border-[#64b5f6] rounded-lg justify-center relative">
         <div className="flex items-center gap-1">
           <div className="font-semibold">{classGrade ?? "-"}</div>
         </div>

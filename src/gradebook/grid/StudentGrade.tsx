@@ -26,10 +26,10 @@ const StudentGrade = ({
 
   return (
     <td
-      className="bg-[#F6F6F4] border border-[#E6E6E4] rounded-lg h-10 cursor-pointer group"
+      className="bg-[#F6F6F4] rounded-lg h-10 cursor-pointer group"
       onClick={handleClick}
     >
-      <div className="flex p-2 w-28 items-center justify-center relative">
+      <div className="flex p-2 w-28 items-center border border-[#E6E6E4] rounded-lg justify-center relative">
         <div className="flex items-center gap-1">
           <div className="">{grade?.rawScore ?? "-"}</div>
           <span className="absolute right-5 top-0 bottom-0 flex items-center justify-center">
