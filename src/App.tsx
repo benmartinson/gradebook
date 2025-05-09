@@ -15,6 +15,12 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route
+          path="/"
+          element={
+            <Navigate to="/class/jn7b7h4tb5vm4std60sfddkjfn7f9yb9/gradebook" />
+          }
+        />
+        <Route
           path="/class/:class_id/gradebook"
           element={
             <GradebookPage>
