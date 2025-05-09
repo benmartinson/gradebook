@@ -56,17 +56,17 @@ const Grid = () => {
   }
 
   return (
-    <div className="w-full h-full overflow-hidden flex flex-col pr-4 pb-4">
+    <div className="w-full h-full overflow-hidden flex flex-col pb-4">
       <Navbar showGridControls={true} />
 
       <div
-        className="flex h-full overflow-scroll mt-4 ml-4"
+        className="flex h-full overflow-scroll mt-4 ml-4 mr-4"
         style={{
           msOverflowStyle: "none",
           scrollbarWidth: "none",
         }}
       >
-        <div className="flex flex-col">
+        <div className="flex flex-col pr-4">
           <table className="border-collapse w-full">
             <thead>
               <tr className="sticky top-0 z-20 bg-white">

@@ -16,14 +16,9 @@ const Assignments = () => {
   const addAssignment = useMutation(api.assignments.addAssignment);
   const deleteAssignment = useMutation(api.assignments.deleteAssignment);
 
-  const handleAdd = async (data: AssignmentFormData) => {
-    const parsedData: Assignment = {
-      ...data,
-      maxPoints: parseInt(data.maxPoints, 10),
-      weight: parseFloat(data.weight),
-    };
-
-    await addAssignment(parsedData);
+  const handleAdd = async (item: Assignment & { isNew: boolean }) => {
+    const { _id, isNew, ...assignmentPayload } = item;
+    await addAssignment(assignmentPayload);
   };
 
   const handleDelete = async (assignment: Assignment) => {
@@ -83,7 +78,7 @@ const Assignments = () => {
 
   return (
     <div className="w-full  min-h-[80vh] max-h-[80vh]">
-      <Table<Assignment & { isNew?: boolean }>
+      <Table<Assignment & { isNew: boolean }>
         columns={tableColumns}
         list={mappedAssignments}
         listName="Assignments"

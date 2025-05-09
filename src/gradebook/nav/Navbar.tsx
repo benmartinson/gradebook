@@ -32,7 +32,7 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
   const addAssignment = useMutation(api.assignments.addAssignment);
 
   return (
-    <div className="flex w-full justify-end items-center py-1  border-b-2 border-gray-200 h-12 -mr-4 pr-2 min-h-12">
+    <div className="flex w-full justify-end items-center py-1  border-b-2 border-gray-200 h-12 -mr-4 pr-4 min-h-12">
       <div className="flex items-center gap-3">
         {showGridControls && (
           <button className="text-gray-600 hover:text-gray-800 flex items-center gap-1 text-sm">

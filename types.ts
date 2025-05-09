@@ -37,6 +37,7 @@ export type TableColumn = {
 };
 
 export type Grade = {
+  _id: string;
   studentId: string;
   assignmentId: string;
   rawScore: number;

@@ -4,7 +4,7 @@ import { api } from "../../convex/_generated/api";
 import { useNavigate } from "react-router";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { assignmentTypes } from "../constants";
-import { AssignmentType as AssignmentTypeInterface } from "../../types";
+import { AssignmentType } from "../../types";
 import BackToScoresButton from "../gradebook/BackToScoresButton";
 import Navbar from "../gradebook/nav/Navbar";
 
@@ -15,7 +15,7 @@ const NewAssignmentPage = () => {
   const [formData, setFormData] = useState({
     description: "",
     dueDate: new Date().toISOString().split("T")[0],
-    assignmentType: "homework",
+    assignmentType: 1,
     weight: 100,
     maxPoints: 100,
     assignedDate: new Date().toISOString().split("T")[0],
@@ -23,12 +23,15 @@ const NewAssignmentPage = () => {
     isExtraCredit: false,
   });
 
-  const assignmentTypeOptions: { value: string; label: string }[] =
-    assignmentTypes.map((type: AssignmentTypeInterface) => ({
-      value: type.description,
-      label:
-        type.description.charAt(0).toUpperCase() + type.description.slice(1),
-    }));
+  const assignmentTypeOptions = assignmentTypes.map((type: AssignmentType) => ({
+    value: type.id.toString(),
+    label: type.description,
+  }));
+
+  const selectedAssignmentType = assignmentTypeOptions.find(
+    (option: { value: string; label: string }) =>
+      option.value === formData.assignmentType.toString()
+  );
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -57,7 +60,7 @@ const NewAssignmentPage = () => {
     e.preventDefault();
     const dataToSend = {
       ...formData,
-      assignmentType: formData.assignmentType || "homework",
+      assignmentType: formData.assignmentType || 1,
     };
     addAssignment(dataToSend);
     navigate("/gradebook");
@@ -95,10 +98,7 @@ const NewAssignmentPage = () => {
                 <Select
                   name="assignmentType"
                   options={assignmentTypeOptions}
-                  value={assignmentTypeOptions.find(
-                    (option: { value: string; label: string }) =>
-                      option.value === formData.assignmentType
-                  )}
+                  value={selectedAssignmentType}
                   onChange={handleSelectChange}
                   className="w-full basic-single"
                   classNamePrefix="select"

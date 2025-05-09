@@ -2,6 +2,7 @@ import { Assignment, Grade, AssignmentType, Student } from "../types";
 
 export const grades: Grade[] = [
   {
+    _id: "1",
     studentId: "1",
     assignmentId: "1",
     rawScore: 95,
@@ -12,7 +13,7 @@ export const assignments: Assignment[] = [
   {
     _id: "1",
     description: "Derivatives",
-    assignmentType: "quiz",
+    assignmentType: 1,
     weight: 100,
     maxPoints: 100,
     dueDate: "2025-01-01",
@@ -23,7 +24,7 @@ export const assignments: Assignment[] = [
   {
     _id: "2",
     description: "Quiz 1",
-    assignmentType: "quiz",
+    assignmentType: 1,
     weight: 100,
     maxPoints: 100,
     dueDate: "2025-01-01",

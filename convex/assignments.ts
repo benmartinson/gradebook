@@ -5,7 +5,7 @@ import { Assignment, Student, Grade } from "../types";
 export const addAssignment = mutation({
   args: {
     description: v.string(),
-    assignmentType: v.string(),
+    assignmentType: v.number(),
     weight: v.number(),
     maxPoints: v.number(),
     dueDate: v.string(),
