@@ -9,8 +9,33 @@ import Assignments from "./assignments/Assignments";
 import AssignmentPage from "./assignments/AssignmentDetails";
 import AssignmentPageContainer from "./assignments/AssignmentPageContainer";
 import AssignmentGrades from "./assignments/AssignmentGrades";
+import { ConvexReactClient } from "convex/react";
+import { api as mainApi } from "../convex/_generated/api";
+import { useEffect } from "react";
 
-export default function App() {
+const otherAppUrl = "https://festive-grouse-756.convex.cloud";
+
+const convexOtherApp = new ConvexReactClient(otherAppUrl);
+async function fetchDataFromOtherApp() {
+  try {
+    const appSettings = await convexOtherApp.query(
+      "appSetting:getAppSettingsByAppConfigId"
+    );
+    console.log(appSettings);
+    return appSettings;
+  } catch (error) {
+    console.error("Failed to fetch from other app:", error);
+    throw error;
+  }
+}
+interface AppSettingsProps {
+  appConfigId: string;
+}
+export default function App({ appConfigId }: AppSettingsProps) {
+  useEffect(() => {
+    const settings = fetchDataFromOtherApp();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

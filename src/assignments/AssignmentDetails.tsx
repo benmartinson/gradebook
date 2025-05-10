@@ -4,7 +4,7 @@ import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { useEffect, useState } from "react";
 import Select, { ActionMeta, SingleValue } from "react-select";
-import { assignmentTypes } from "../constants"; // Corrected import path
+import { assignmentTypes } from "../constants";
 import { AssignmentType as AssignmentTypeInterface } from "../../types";
 import LoadingSpinner from "../gradebook/common/LoadingSpinner";
 import { Assignment } from "../../types";
