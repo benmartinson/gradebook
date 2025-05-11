@@ -4,7 +4,6 @@ import { useSettingValue } from "../../appStore";
 
 const StudentInfo = ({ student }: { student: Student }) => {
   const showPhoto = useSettingValue("show_photo");
-  console.log(showPhoto);
   return (
     <td className="min-h-10 h-10 pr-3">
       <div className="flex items-center gap-2 bg-white rounded-lg p-[2px]">

@@ -11,6 +11,6 @@ export const useAppStore = create<AppState>((set) => ({
 }));
 
 export const useSettingValue = (key: string) => {
-  const settings = useAppStore.getState().settings;
+  const settings = useAppStore((state) => state.settings);
   return settings.find((setting) => setting.systemValue === key)?.enabled;
 };
