@@ -12,6 +12,7 @@ import AssignmentGrades from "./assignments/AssignmentGrades";
 import { ConvexReactClient } from "convex/react";
 import { api as mainApi } from "../convex/_generated/api";
 import { useEffect } from "react";
+import { useAppStore } from "./appStore";
 
 const otherAppUrl = "https://festive-grouse-756.convex.cloud";
 
@@ -19,7 +20,8 @@ const convexOtherApp = new ConvexReactClient(otherAppUrl);
 async function fetchDataFromOtherApp() {
   try {
     const appSettings = await convexOtherApp.query(
-      "appSetting:getAppSettingsByAppConfigId"
+      "appSetting:getAppSettingsByAppConfigId" as any,
+      { appConfigId: "kd7d796ngp0zgax7c82qtq4fvd7fnxyr" }
     );
     console.log(appSettings);
     return appSettings;
@@ -28,13 +30,16 @@ async function fetchDataFromOtherApp() {
     throw error;
   }
 }
-interface AppSettingsProps {
-  appConfigId: string;
-}
-export default function App({ appConfigId }: AppSettingsProps) {
+
+export default function App() {
+  const setSettings = useAppStore((state) => state.setSettings);
   useEffect(() => {
-    const settings = fetchDataFromOtherApp();
-  }, []);
+    const fetchData = async () => {
+      const settings = await fetchDataFromOtherApp();
+      setSettings(settings);
+    };
+    fetchData();
+  }, [setSettings]);
 
   return (
     <BrowserRouter>

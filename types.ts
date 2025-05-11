@@ -42,3 +42,12 @@ export type Grade = {
   assignmentId: string;
   rawScore: number;
 };
+
+export type AppSetting = {
+  descriptionLabel: string;
+  systemValue: string;
+  category: string;
+  appConfigId: string;
+  enabled: boolean;
+  teacherCanUpdate: boolean;
+};
