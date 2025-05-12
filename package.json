@@ -9,6 +9,7 @@
     "predev": "convex dev --once"
   },
   "dependencies": {
+    "@auth/core": "^0.37.4",
     "@convex-dev/auth": "^0.0.83",
     "@dicebear/avatars": "^4.10.8",
     "@dicebear/avatars-initials-sprites": "^4.10.8",

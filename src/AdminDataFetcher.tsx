@@ -2,7 +2,11 @@ import { ConvexReactClient, ConvexProvider, useQuery } from "convex/react";
 import { useEffect } from "react";
 import { useAppStore } from "./appStore";
 
-const otherAppUrl = "https://festive-grouse-756.convex.cloud";
+const otherAppUrl = import.meta.env.VITE_REACT_APP_ADMIN_URL;
+
+if (!otherAppUrl) {
+  throw new Error("VITE_REACT_APP_ADMIN_URL is not set");
+}
 
 const convexOtherApp = new ConvexReactClient(otherAppUrl);
 

@@ -6,7 +6,7 @@ import Students from "./gradebook/students/Students";
 import Placeholder from "./gradebook/Placeholder";
 import Assignments from "./assignments/Assignments";
 import AssignmentPageContainer from "./assignments/AssignmentPageContainer";
-import AdminDataFetcher from "./adminDataFetcher";
+import AdminDataFetcher from "./AdminDataFetcher";
 
 export default function App() {
   return (
