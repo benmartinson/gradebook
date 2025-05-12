@@ -137,24 +137,6 @@ const Sidebar = () => {
           isLoadingAnimation={loadingAnimation}
         />
         <NavItem
-          icon={<FaTasks size={24} />}
-          label="Assignments"
-          path="/assignments"
-          isDisabled={true}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "assignments"}
-          isLoadingAnimation={loadingAnimation}
-        />
-        <NavItem
-          icon={<FaUsers size={24} />}
-          label="Students"
-          path={`/class/${class_id}/students`}
-          isDisabled={false}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "students"}
-          isLoadingAnimation={loadingAnimation}
-        />
-        <NavItem
           icon={<FaClipboardCheck size={24} />}
           label="Attendance"
           path="/attendance"
