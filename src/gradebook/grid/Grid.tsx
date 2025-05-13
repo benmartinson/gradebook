@@ -10,11 +10,13 @@ import LoadingSpinner from "../common/LoadingSpinner";
 import ClassGrade from "./ClassGrade";
 import { useParams } from "react-router-dom";
 import { Id } from "../../../convex/_generated/dataModel";
-
+import { useSettingValue, useAppStore } from "../../appStore";
 const Grid = () => {
   const assignments = useQuery(api.assignments.getAssignments);
   const students = useQuery(api.students.getStudents);
   const grades = useQuery(api.grades.getGrades);
+  const showClassGrade = useSettingValue("show_class_grade");
+  const { dateOrderAsc } = useAppStore();
 
   const { class_id } = useParams();
   const classInfo = useQuery(api.classes.getClassInfo, {
@@ -55,6 +57,14 @@ const Grid = () => {
     return null;
   }
 
+  const sortedAssignments = assignments.sort((a, b) => {
+    if (dateOrderAsc) {
+      return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+    } else {
+      return new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime();
+    }
+  });
+
   return (
     <div className="w-full h-full overflow-hidden flex flex-col pb-4">
       <Navbar showGridControls={true} />
@@ -89,13 +99,15 @@ const Grid = () => {
                       <div className="bg-white">
                         <StudentInfo student={student} />
                       </div>
-                      <div className="bg-white">
-                        <ClassGrade
-                          student={student}
-                          grades={grades}
-                          assignments={assignments}
-                        />
-                      </div>
+                      {showClassGrade && (
+                        <div className="bg-white">
+                          <ClassGrade
+                            student={student}
+                            grades={grades}
+                            assignments={assignments}
+                          />
+                        </div>
+                      )}
                     </div>
                   </td>
 

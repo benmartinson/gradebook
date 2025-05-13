@@ -7,9 +7,11 @@ import { assignmentTypes } from "../constants";
 import { AssignmentType } from "../../types";
 import BackToScoresButton from "../gradebook/BackToScoresButton";
 import Navbar from "../gradebook/nav/Navbar";
+import { useSettingValue } from "../appStore";
 
 const NewAssignmentPage = () => {
   const addAssignment = useMutation(api.assignments.addAssignment);
+  const allowAddAssignment = useSettingValue("allow_assignment_adding");
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -65,6 +67,15 @@ const NewAssignmentPage = () => {
     addAssignment(dataToSend);
     navigate("/gradebook");
   };
+
+  if (!allowAddAssignment) {
+    return (
+      <div className="w-full flex flex-col">
+        <Navbar />
+        <div className="w-full p-6">You are not allowed to add assignments</div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex flex-col">
