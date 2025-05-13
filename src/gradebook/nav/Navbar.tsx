@@ -49,7 +49,7 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
   });
 
   return (
-    <div className="flex w-full justify-end items-center py-1  border-b-2 border-gray-200 h-12 -mr-4 pr-4 min-h-12">
+    <div className="flex w-full justify-end items-center py-1  md:border-b-2 border-gray-200 h-12 -mr-4 pr-4 min-h-12">
       <div className="flex items-center gap-3">
         {showGridControls && showDateOrder && (
           <button

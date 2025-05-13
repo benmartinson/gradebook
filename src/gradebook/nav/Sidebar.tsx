@@ -45,7 +45,7 @@ const NavItem = ({
     "text-gray-600": !isSelected,
     "bg-blue-100": isSelected,
     "hover:bg-gray-100": !isSelected,
-    "mt-4": label === "Gradebook",
+    "md:mt-4": label === "Gradebook",
     "opacity-50": isDisabled,
     "cursor-pointer": !isDisabled,
   });
@@ -85,12 +85,8 @@ const Sidebar = () => {
     }, 100);
   };
 
-  const navClasses = classNames("space-y-4 w-full", {
-    "flex flex-col items-center": isCollapsed,
-  });
-
   const containerClasses = classNames(
-    "transition-all duration-300 bg-white border-r-2 border-gray-300 p-2 relative",
+    "flex md:flex-col max-md:gap-10 max-md:justify-center max-md:gap-4 max-md:w-full max-md:h-14 transition-all duration-300 bg-white md:border-r-2 max-md:border-b-2 border-gray-300 p-2 relative",
     {
       "w-16": isCollapsed,
       "w-48": !isCollapsed,
@@ -106,10 +102,7 @@ const Sidebar = () => {
 
   return (
     <div className={containerClasses}>
-      <button
-        className={classSwitchClasses}
-        onClick={() => navigate("/class-list")}
-      >
+      <button className={classSwitchClasses} onClick={() => {}}>
         <FaExchangeAlt size={16} />
         {!isCollapsed && !loadingAnimation && (
           <span className="text-sm font-medium">{classInfo?.name}</span>
@@ -118,7 +111,7 @@ const Sidebar = () => {
 
       <button
         onClick={toggleCollapse}
-        className="absolute -right-[16px] top-2 rounded-full w-8 h-8 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
+        className="md:absolute max-md:hidden -right-[16px] top-2 rounded-full w-8 h-8 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
       >
         {isCollapsed ? (
           <FaChevronRight size={16} />
@@ -127,43 +120,41 @@ const Sidebar = () => {
         )}
       </button>
 
-      <nav className={navClasses}>
-        <NavItem
-          icon={<FaBook size={24} />}
-          label="Gradebook"
-          path={`/class/${class_id}/gradebook`}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "gradebook"}
-          isLoadingAnimation={loadingAnimation}
-        />
-        <NavItem
-          icon={<FaClipboardCheck size={24} />}
-          label="Attendance"
-          path="/attendance"
-          isDisabled={true}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "attendance"}
-          isLoadingAnimation={loadingAnimation}
-        />
-        <NavItem
-          icon={<FaQuestionCircle size={24} />}
-          label="Quizes"
-          path="/quizes"
-          isDisabled={true}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "quizes"}
-          isLoadingAnimation={loadingAnimation}
-        />
-        <NavItem
-          icon={<FaCog size={24} />}
-          label="Settings"
-          path="/settings"
-          isDisabled={true}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "settings"}
-          isLoadingAnimation={loadingAnimation}
-        />
-      </nav>
+      <NavItem
+        icon={<FaBook size={24} />}
+        label="Gradebook"
+        path={`/class/${class_id}/gradebook`}
+        isCollapsed={isCollapsed}
+        isSelected={selectedTab.toLowerCase() === "gradebook"}
+        isLoadingAnimation={loadingAnimation}
+      />
+      <NavItem
+        icon={<FaClipboardCheck size={24} />}
+        label="Attendance"
+        path="/attendance"
+        isDisabled={true}
+        isCollapsed={isCollapsed}
+        isSelected={selectedTab.toLowerCase() === "attendance"}
+        isLoadingAnimation={loadingAnimation}
+      />
+      <NavItem
+        icon={<FaQuestionCircle size={24} />}
+        label="Quizes"
+        path="/quizes"
+        isDisabled={true}
+        isCollapsed={isCollapsed}
+        isSelected={selectedTab.toLowerCase() === "quizes"}
+        isLoadingAnimation={loadingAnimation}
+      />
+      <NavItem
+        icon={<FaCog size={24} />}
+        label="Settings"
+        path="/settings"
+        isDisabled={true}
+        isCollapsed={isCollapsed}
+        isSelected={selectedTab.toLowerCase() === "settings"}
+        isLoadingAnimation={loadingAnimation}
+      />
     </div>
   );
 };

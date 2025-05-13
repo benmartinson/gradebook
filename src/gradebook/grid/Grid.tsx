@@ -8,15 +8,18 @@ import { api } from "../../../convex/_generated/api";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "../common/LoadingSpinner";
 import ClassGrade from "./ClassGrade";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Id } from "../../../convex/_generated/dataModel";
 import { useSettingValue, useAppStore } from "../../appStore";
+import { Assignment } from "../../../types";
+
 const Grid = () => {
-  const assignments = useQuery(api.assignments.getAssignments);
+  const assignmentsData = useQuery(api.assignments.getAssignments);
   const students = useQuery(api.students.getStudents);
   const grades = useQuery(api.grades.getGrades);
   const showClassGrade = useSettingValue("show_class_grade");
   const { dateOrderAsc } = useAppStore();
+  const navigate = useNavigate();
 
   const { class_id } = useParams();
   const classInfo = useQuery(api.classes.getClassInfo, {
@@ -26,10 +29,10 @@ const Grid = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (students && assignments && grades) {
+    if (students && assignmentsData && grades) {
       setIsLoading(false);
     }
-  }, [students, assignments, grades]);
+  }, [students, assignmentsData, grades]);
 
   if (isLoading) {
     return (
@@ -53,11 +56,11 @@ const Grid = () => {
     );
   }
 
-  if (!assignments || !grades) {
+  if (!assignmentsData || !grades) {
     return null;
   }
 
-  const sortedAssignments = assignments.sort((a, b) => {
+  const sortedAssignments: Assignment[] = [...assignmentsData].sort((a, b) => {
     if (dateOrderAsc) {
       return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
     } else {
@@ -65,12 +68,16 @@ const Grid = () => {
     }
   });
 
+  const handleCardClick = (assignmentId: Id<"assignments">) => {
+    navigate(`/class/${class_id}/assignment/${assignmentId}`);
+  };
+
   return (
     <div className="w-full h-full overflow-hidden flex flex-col pb-4">
       <Navbar showGridControls={true} />
 
       <div
-        className="flex h-full overflow-scroll mt-4 ml-4 mr-4"
+        className="hidden md:flex h-full overflow-scroll mt-4 ml-4 mr-4"
         style={{
           msOverflowStyle: "none",
           scrollbarWidth: "none",
@@ -82,7 +89,7 @@ const Grid = () => {
               <tr className="sticky top-0 z-20 bg-white">
                 <th className="sticky left-0 z-30 bg-white h-24 p-[2px]"></th>
 
-                {assignments.map((assignment) => (
+                {sortedAssignments.map((assignment) => (
                   <th key={assignment._id} className="bg-white p-[2px]">
                     <AssignmentInfo assignment={assignment} />
                   </th>
@@ -95,7 +102,6 @@ const Grid = () => {
                   <td className="sticky left-0 z-10 bg-white p-[2px]">
                     <div className="flex justify-between">
                       {" "}
-                      {/* pl-[2px] removed from here */}
                       <div className="bg-white">
                         <StudentInfo student={student} />
                       </div>
@@ -104,14 +110,14 @@ const Grid = () => {
                           <ClassGrade
                             student={student}
                             grades={grades}
-                            assignments={assignments}
+                            assignments={sortedAssignments}
                           />
                         </div>
                       )}
                     </div>
                   </td>
 
-                  {assignments.map((assignment) => (
+                  {sortedAssignments.map((assignment) => (
                     <td key={assignment._id} className="p-[2px]">
                       <StudentGrade assignment={assignment} student={student} />
                     </td>
@@ -121,6 +127,28 @@ const Grid = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="md:hidden flex flex-col space-y-3 overflow-y-auto p-4  pt-0">
+        {sortedAssignments.map((assignment) => (
+          <div
+            key={assignment._id}
+            className="bg-white border border-gray-200 rounded-lg p-4 shadow hover:shadow-md cursor-pointer"
+            onClick={() => handleCardClick(assignment._id as Id<"assignments">)}
+          >
+            <div className="font-semibold text-gray-800 truncate mb-1">
+              {assignment.description}
+            </div>
+            <div className="text-sm text-gray-500">
+              Due: {new Date(assignment.dueDate).toLocaleDateString()}
+            </div>
+          </div>
+        ))}
+        {sortedAssignments.length === 0 && (
+          <div className="text-center text-gray-500 mt-8">
+            No assignments found.
+          </div>
+        )}
       </div>
     </div>
   );
