@@ -85,9 +85,10 @@ const Sidebar = () => {
   );
 
   const classSwitchClasses = classNames(
-    "p-2 md:w-7 rounded-lg h-10 bg-gray-100 hover:bg-gray-200 flex items-center justify-center gap-2 transition-colors cursor-pointer",
+    "p-2 rounded-lg h-10 bg-gray-100 hover:bg-gray-200 flex items-center justify-center gap-2 transition-colors cursor-pointer",
     {
-      "w-[90%]": !isCollapsed,
+      "md:w-7": isCollapsed,
+      "md:w-[90%]": !isCollapsed,
     }
   );
 

@@ -35,7 +35,7 @@ const AssignmentPageContainer = ({
     <div className="flex w-full flex-col h-full">
       <Navbar />
       <div className="flex flex-col">
-        <div className="flex justify-between w-full p-6">
+        <div className="flex justify-between w-full p-6 max-md:pt-1">
           <div className="font-bold text-2xl">{assignment?.description}</div>
           <div className="flex border border-gray-300 rounded-lg">
             <button
