@@ -102,182 +102,166 @@ const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
   }
 
   return (
-    <div className="w-full mr-auto p-6 pt-0">
-      <>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              Description
-              {savedFields.description && (
-                <span className="text-green-600 text-xs font-normal">
-                  Saved!
-                </span>
-              )}
-            </label>
-            <input
-              type="text"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              onBlur={() =>
-                handleUpdateAssignment({
-                  field: "description",
-                  value: formData.description,
-                })
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              Assignment Type
-              {savedFields.assignmentType && (
-                <span className="text-green-600 text-xs font-normal">
-                  Saved!
-                </span>
-              )}
-            </label>
-            <Select
-              name="assignmentType"
-              options={assignmentTypeOptions}
-              value={assignmentTypeOptions.find(
-                (option: { value: string; label: string; id: number }) =>
-                  option.id === formData.assignmentType
-              )}
-              onChange={handleSelectChange}
-              className="w-full basic-single"
-              classNamePrefix="select"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              Assigned Date
-              {savedFields.assignedDate && (
-                <span className="text-green-600 text-xs font-normal">
-                  Saved!
-                </span>
-              )}
-            </label>
-            <input
-              type="date"
-              name="assignedDate"
-              value={formData.assignedDate}
-              onChange={handleInputChange}
-              onBlur={() =>
-                handleUpdateAssignment({
-                  field: "assignedDate",
-                  value: formData.assignedDate,
-                })
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              Due Date
-              {savedFields.dueDate && (
-                <span className="text-green-600 text-xs font-normal">
-                  Saved!
-                </span>
-              )}
-            </label>
-            <input
-              type="date"
-              name="dueDate"
-              value={formData.dueDate}
-              onChange={handleInputChange}
-              onBlur={() =>
-                handleUpdateAssignment({
-                  field: "dueDate",
-                  value: formData.dueDate,
-                })
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              Max Points
-              {savedFields.maxPoints && (
-                <span className="text-green-600 text-xs font-normal">
-                  Saved!
-                </span>
-              )}
-            </label>
-            <input
-              type="number"
-              name="maxPoints"
-              value={formData.maxPoints}
-              onChange={handleInputChange}
-              onBlur={() =>
-                handleUpdateAssignment({
-                  field: "maxPoints",
-                  value: formData.maxPoints,
-                })
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              Weight
-              {savedFields.weight && (
-                <span className="text-green-600 text-xs font-normal">
-                  Saved!
-                </span>
-              )}
-            </label>
-            <input
-              type="number"
-              name="weight"
-              value={formData.weight}
-              onChange={handleInputChange}
-              onBlur={() =>
-                handleUpdateAssignment({
-                  field: "weight",
-                  value: formData.weight,
-                })
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              Notes
-              {savedFields.notes && (
-                <span className="text-green-600 text-xs font-normal">
-                  Saved!
-                </span>
-              )}
-            </label>
-            <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleInputChange}
-              onBlur={() =>
-                handleUpdateAssignment({
-                  field: "notes",
-                  value: formData.notes,
-                })
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              rows={3}
-            />
-          </div>
+    <div className="w-full mr-auto p-6 pt-0 overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-md:flex max-md:flex-col overflow-scroll max-md:h-[calc(100vh-250px)]">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+            Description
+            {savedFields.description && (
+              <span className="text-green-600 text-xs font-normal">Saved!</span>
+            )}
+          </label>
+          <input
+            type="text"
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            onBlur={() =>
+              handleUpdateAssignment({
+                field: "description",
+                value: formData.description,
+              })
+            }
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            required
+          />
         </div>
-      </>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+            Assignment Type
+            {savedFields.assignmentType && (
+              <span className="text-green-600 text-xs font-normal">Saved!</span>
+            )}
+          </label>
+          <Select
+            name="assignmentType"
+            options={assignmentTypeOptions}
+            value={assignmentTypeOptions.find(
+              (option: { value: string; label: string; id: number }) =>
+                option.id === formData.assignmentType
+            )}
+            onChange={handleSelectChange}
+            className="w-full basic-single"
+            classNamePrefix="select"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+            Assigned Date
+            {savedFields.assignedDate && (
+              <span className="text-green-600 text-xs font-normal">Saved!</span>
+            )}
+          </label>
+          <input
+            type="date"
+            name="assignedDate"
+            value={formData.assignedDate}
+            onChange={handleInputChange}
+            onBlur={() =>
+              handleUpdateAssignment({
+                field: "assignedDate",
+                value: formData.assignedDate,
+              })
+            }
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+            Due Date
+            {savedFields.dueDate && (
+              <span className="text-green-600 text-xs font-normal">Saved!</span>
+            )}
+          </label>
+          <input
+            type="date"
+            name="dueDate"
+            value={formData.dueDate}
+            onChange={handleInputChange}
+            onBlur={() =>
+              handleUpdateAssignment({
+                field: "dueDate",
+                value: formData.dueDate,
+              })
+            }
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+            Max Points
+            {savedFields.maxPoints && (
+              <span className="text-green-600 text-xs font-normal">Saved!</span>
+            )}
+          </label>
+          <input
+            type="number"
+            name="maxPoints"
+            value={formData.maxPoints}
+            onChange={handleInputChange}
+            onBlur={() =>
+              handleUpdateAssignment({
+                field: "maxPoints",
+                value: formData.maxPoints,
+              })
+            }
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+            Weight
+            {savedFields.weight && (
+              <span className="text-green-600 text-xs font-normal">Saved!</span>
+            )}
+          </label>
+          <input
+            type="number"
+            name="weight"
+            value={formData.weight}
+            onChange={handleInputChange}
+            onBlur={() =>
+              handleUpdateAssignment({
+                field: "weight",
+                value: formData.weight,
+              })
+            }
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+            Notes
+            {savedFields.notes && (
+              <span className="text-green-600 text-xs font-normal">Saved!</span>
+            )}
+          </label>
+          <textarea
+            name="notes"
+            value={formData.notes}
+            onChange={handleInputChange}
+            onBlur={() =>
+              handleUpdateAssignment({
+                field: "notes",
+                value: formData.notes,
+              })
+            }
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            rows={3}
+          />
+        </div>
+      </div>
     </div>
   );
 };

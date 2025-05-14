@@ -24,8 +24,12 @@ const StudentInfo = ({ student }: { student: Student }) => {
         )}
 
         <div className="flex flex-col leading-[18px]">
-          <span className="font-bold text-gray-800">{student.firstName}</span>
-          <span className="text-gray-600">{student.lastName}</span>
+          <span className="block font-bold text-gray-800 overflow-hidden whitespace-nowrap text-ellipsis">
+            {student.firstName}
+          </span>
+          <span className="block text-gray-600 max-w-[100px] overflow-hidden whitespace-nowrap text-ellipsis">
+            {student.lastName}
+          </span>
         </div>
       </div>
     </td>
