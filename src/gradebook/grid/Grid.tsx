@@ -28,7 +28,7 @@ const Grid = () => {
     }
   }, [students, assignmentsData, grades]);
 
-  if (isLoading) {
+  if (isLoading || !students) {
     return (
       <div className="flex flex-col h-full w-full">
         <Navbar />
@@ -37,7 +37,7 @@ const Grid = () => {
     );
   }
 
-  if (!students?.length) {
+  if (!students.length && !isLoading) {
     return (
       <div className="flex flex-col h-full w-full">
         <Navbar />
