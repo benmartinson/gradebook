@@ -46,7 +46,9 @@ const NavItem = ({
   return (
     <div onClick={() => !isDisabled && navigate(path)} className={tabClasses}>
       <div className="shrink-0">{icon}</div>
-      {!isCollapsed && !isLoadingAnimation && <span>{label}</span>}
+      {!isCollapsed && !isLoadingAnimation && (
+        <span className="max-md:hidden">{label}</span>
+      )}
     </div>
   );
 };
@@ -80,7 +82,7 @@ const Sidebar = () => {
   const containerClasses = classNames(
     "flex md:flex-col  gap-3 max-md:gap-10 max-md:justify-center max-md:gap-4 max-md:w-full max-md:h-14 transition-all duration-300 bg-white md:border-r-2 max-md:border-b-2 border-gray-300 p-2 relative",
     {
-      "w-48": !isCollapsed,
+      "md:w-48": !isCollapsed,
     }
   );
 
@@ -97,7 +99,9 @@ const Sidebar = () => {
       <button className={classSwitchClasses} onClick={() => {}}>
         <FaExchangeAlt size={16} />
         {!isCollapsed && !loadingAnimation && (
-          <span className="text-sm font-medium">{classInfo?.name}</span>
+          <span className="text-sm max-md:hidden font-medium">
+            {classInfo?.name}
+          </span>
         )}
       </button>
 
