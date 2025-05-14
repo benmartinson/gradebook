@@ -41,6 +41,8 @@ export type Grade = {
   studentId: string;
   assignmentId: string;
   rawScore: number;
+  completionStatus?: string;
+  dropboxStatus?: string;
 };
 
 export type AppSetting = {

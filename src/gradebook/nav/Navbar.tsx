@@ -21,7 +21,7 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
   const classInfo = useQuery(api.classes.getClassInfo, {
     id: class_id as Id<"classes">,
   });
-  const { dateOrderAsc, setDateOrderAsc } = useAppStore();
+  const { dateOrderAsc, setDateOrderAsc, isLoading } = useAppStore();
 
   const showDateOrder = useSettingValue("show_date_order_button");
   const allowAddAssignment = useSettingValue("allow_assignment_adding");
@@ -86,7 +86,7 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
             <FaPlus size={16} />
           </button>
         )}
-        {!showGridControls && (
+        {!showGridControls && !isLoading && (
           <div className="flex items-center gap-2">
             <BackToScoresButton />
             <div className="w-px bg-gray-300"></div>

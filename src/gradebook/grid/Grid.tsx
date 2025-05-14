@@ -18,15 +18,9 @@ const Grid = () => {
   const students = useQuery(api.students.getStudents);
   const grades = useQuery(api.grades.getGrades);
   const showClassGrade = useSettingValue("show_class_grade");
-  const { dateOrderAsc } = useAppStore();
+  const { dateOrderAsc, isLoading, setIsLoading } = useAppStore();
   const navigate = useNavigate();
-
   const { class_id } = useParams();
-  const classInfo = useQuery(api.classes.getClassInfo, {
-    id: class_id as Id<"classes">,
-  });
-
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (students && assignmentsData && grades) {

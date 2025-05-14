@@ -2,12 +2,6 @@ import {
   FaBook,
   FaChevronLeft,
   FaChevronRight,
-  FaCompress,
-  FaExpand,
-  FaCompass,
-  FaCalendarAlt,
-  FaTasks,
-  FaUsers,
   FaClipboardCheck,
   FaQuestionCircle,
   FaCog,
@@ -45,7 +39,6 @@ const NavItem = ({
     "text-gray-600": !isSelected,
     "bg-blue-100": isSelected,
     "hover:bg-gray-100": !isSelected,
-    "md:mt-4": label === "Gradebook",
     "opacity-50": isDisabled,
     "cursor-pointer": !isDisabled,
   });
@@ -65,7 +58,6 @@ const Sidebar = () => {
   });
   const [loadingAnimation, setLoadingAnimation] = React.useState(false);
 
-  const navigate = useNavigate();
   const { class_id } = useParams();
   const classInfo = useQuery(api.classes.getClassInfo, {
     id: class_id as Id<"classes">,
@@ -86,15 +78,14 @@ const Sidebar = () => {
   };
 
   const containerClasses = classNames(
-    "flex md:flex-col max-md:gap-10 max-md:justify-center max-md:gap-4 max-md:w-full max-md:h-14 transition-all duration-300 bg-white md:border-r-2 max-md:border-b-2 border-gray-300 p-2 relative",
+    "flex md:flex-col  gap-3 max-md:gap-10 max-md:justify-center max-md:gap-4 max-md:w-full max-md:h-14 transition-all duration-300 bg-white md:border-r-2 max-md:border-b-2 border-gray-300 p-2 relative",
     {
-      "w-16": isCollapsed,
       "w-48": !isCollapsed,
     }
   );
 
   const classSwitchClasses = classNames(
-    "p-2 rounded-lg h-10 bg-gray-100 hover:bg-gray-200 flex items-center justify-center gap-2 transition-colors cursor-pointer",
+    "p-2 md:w-7 rounded-lg h-10 bg-gray-100 hover:bg-gray-200 flex items-center justify-center gap-2 transition-colors cursor-pointer",
     {
       "w-[90%]": !isCollapsed,
     }

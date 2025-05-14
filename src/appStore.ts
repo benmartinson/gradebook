@@ -5,9 +5,13 @@ interface AppState {
   setSettings: (settings: AppSetting[]) => void;
   dateOrderAsc: boolean;
   setDateOrderAsc: (dateOrderAsc: boolean) => void;
+  isLoading: boolean;
+  setIsLoading: (isLoading: boolean) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
+  isLoading: true,
+  setIsLoading: (isLoading: boolean) => set({ isLoading }),
   settings: [],
   setSettings: (settings) =>
     set({
