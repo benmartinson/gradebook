@@ -19,10 +19,6 @@ function FetchAndSetSettings() {
 
   useEffect(() => {
     if (appSettingsFromOtherApp !== undefined) {
-      console.log(
-        "Fetched settings from other app (real-time):",
-        appSettingsFromOtherApp
-      );
       setSettings(appSettingsFromOtherApp);
     }
   }, [appSettingsFromOtherApp, setSettings]);

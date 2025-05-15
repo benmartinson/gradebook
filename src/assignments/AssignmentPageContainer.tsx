@@ -3,11 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import LoadingSpinner from "../gradebook/common/LoadingSpinner";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import AssignmentDetails from "./AssignmentDetails";
 import AssignmentGrades from "./AssignmentGrades";
 import BackToScoresButton from "../gradebook/BackToScoresButton";
 import Navbar from "../gradebook/nav/Navbar";
+import { useAppStore } from "../appStore";
 
 const AssignmentPageContainer = ({
   activeTab,
@@ -18,9 +19,14 @@ const AssignmentPageContainer = ({
   const grades = useQuery(api.grades.getGrades);
   const students = useQuery(api.students.getStudents);
   const navigate = useNavigate();
+  const { setIsLoading } = useAppStore();
   const assignment = useQuery(api.assignments.getAssignment, {
     id: id as Id<"assignments">,
   });
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [assignment, grades, students]);
 
   if (!assignment || !grades || !students) {
     return (

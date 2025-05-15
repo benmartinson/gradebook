@@ -40,6 +40,7 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
     { value: "test", label: "Tests" },
     { value: "project", label: "Projects" },
   ];
+  console.log({ showGridControls, isLoading });
 
   const addAssignment = useMutation(api.assignments.addAssignment);
 
@@ -73,7 +74,6 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
         <div className="w-48">
           <Select
             options={assignmentTypes}
-            defaultValue={assignmentTypes[0]}
             placeholder="Assignment Type"
             className="text-sm"
           />

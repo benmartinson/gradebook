@@ -26,7 +26,7 @@ const AssignmentInfo = ({ assignment }: { assignment: Assignment }) => {
         >
           {assignmentType?.description}
         </div>
-        <FaPencilAlt className="text-gray-400 text-sm group-hover:block absolute right-1 top-2 hidden group-hover:block" />
+        <FaPencilAlt className="text-gray-400 text-sm group-hover:block absolute right-2 bottom-2 hidden group-hover:block" />
 
         <div className="text-sm font-extrabold text-gray-700 mb-2 text-left h-12 leading-[16px] overflow-hidden text-ellipsis line-clamp-3">
           {assignment.description}

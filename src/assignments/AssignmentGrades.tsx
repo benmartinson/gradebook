@@ -8,15 +8,7 @@ import StudentInfo from "../gradebook/grid/StudentInfo";
 import Select from "react-select";
 import { Switch } from "@headlessui/react";
 import { Id } from "../../convex/_generated/dataModel";
-import {
-  FaComment,
-  FaCommentAlt,
-  FaComments,
-  FaRegComment,
-  FaRegFile,
-  FaRegFileCode,
-  FaRegFilePdf,
-} from "react-icons/fa";
+import { FaRegComment } from "react-icons/fa";
 
 const completionStatusOptions = [
   { value: "pending", label: "Pending" },
@@ -106,12 +98,24 @@ const AssignmentGrades = ({
     <div className="p-6 pt-0">
       <div className="flex flex-col w-full">
         {/* Headers */}
-        <div className="max-md:hidden flex border-b border-gray-300 p-4 font-light text-sm opacity-50">
-          <div className="w-34 mr-2"></div>
-          <div className="w-30 flex text-left">Grade</div>
-          <div className="w-52 flex text-left">Completion Status</div>
-          <div className="w-24 flex items-center justify-center">Published</div>
-          <div className="w-24 flex items-center justify-center">Feedback</div>
+        <div
+          className="max-md:hidden grid border-b border-gray-300 p-4 font-light text-sm opacity-50"
+          style={{
+            gridTemplateColumns:
+              "minmax(120px, 1fr) minmax(50px, 0.5fr) minmax(75px, 1.5fr) minmax(50px, 0.5fr) minmax(50px, 0.75fr) 0.25fr",
+            gap: "4px",
+          }}
+        >
+          <div className="text-left">Student</div>
+          <div className="text-left flex items-center">Grade</div>
+          <div className="text-left flex items-center">Completion Status</div>
+          <div className="text-left flex items-center justify-center">
+            Published
+          </div>
+          <div className="text-left flex items-center justify-center">
+            Feedback
+          </div>
+          <div></div>
         </div>
 
         {/* Student Rows */}
@@ -128,14 +132,20 @@ const AssignmentGrades = ({
               className="flex flex-col md:flex-row border-t border-gray-300 p-4"
             >
               {/* Desktop view */}
-              <div className="hidden md:flex flex-row w-full items-center">
-                <div className="w-34 overflow-hidden mr-2">
+              <div
+                className="hidden md:grid w-full items-center"
+                style={{
+                  gridTemplateColumns:
+                    "minmax(120px, 1fr) minmax(50px, 0.5fr) minmax(75px, 1.5fr) minmax(50px, 0.5fr) minmax(50px, 0.75fr) 0.25fr",
+                  gap: "4px",
+                }}
+              >
+                <div>
                   <StudentInfo student={student} />
                 </div>
-                <div className="w-30 flex items-left">
+                <div className="flex items-center">
                   <input
-                    type="number"
-                    className="w-20 px-2 py-1 border rounded text-left"
+                    className="px-2 w-4/5 max-w-16 py-1 border rounded text-left"
                     value={
                       editingGrades[student._id] ??
                       student.grade?.rawScore ??
@@ -152,15 +162,15 @@ const AssignmentGrades = ({
                     }}
                   />
                 </div>
-                <div className="w-52 flex items-center ">
+                <div className="flex items-center">
                   <Select
                     options={completionStatusOptions}
                     defaultValue={completionStatusOptions[0]}
-                    className="w-42"
+                    className="w-4/5"
                     isSearchable={false}
                   />
                 </div>
-                <div className="w-24 flex items-center justify-center">
+                <div className="flex items-center justify-center">
                   <Switch
                     checked={publishedStates[student._id] || false}
                     onChange={() => handlePublishedToggle(student._id)}
@@ -179,9 +189,10 @@ const AssignmentGrades = ({
                     />
                   </Switch>
                 </div>
-                <div className="w-24 flex items-center justify-center">
+                <div className="flex items-center justify-center">
                   <FaRegComment className="text-gray-500 text-2xl" />
                 </div>
+                <div></div>
               </div>
 
               {/* Mobile view */}

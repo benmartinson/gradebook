@@ -11,6 +11,8 @@ export const addAssignment = mutation({
     dueDate: v.string(),
     assignedDate: v.string(),
     notes: v.optional(v.string()),
+    klass: v.id("classes"),
+    isExtraCredit: v.boolean(),
   },
 
   handler: async (ctx, args): Promise<void> => {
@@ -22,6 +24,8 @@ export const addAssignment = mutation({
       dueDate: args.dueDate,
       assignedDate: args.assignedDate,
       notes: args.notes || "",
+      klass: args.klass,
+      isExtraCredit: args.isExtraCredit,
     });
   },
 });
@@ -39,7 +43,7 @@ export const getAssignments = query({
   args: {},
   handler: async (ctx): Promise<Assignment[]> => {
     const assignments = await ctx.db.query("assignments").collect();
-    return assignments;
+    return assignments as Assignment[];
   },
 });
 
@@ -49,7 +53,10 @@ export const getAssignment = query({
   },
   handler: async (ctx, args): Promise<Assignment> => {
     const assignment = await ctx.db.get(args.id);
-    return assignment;
+    if (!assignment) {
+      throw new Error(`Assignment with ID ${args.id} not found`);
+    }
+    return assignment as Assignment;
   },
 });
 
