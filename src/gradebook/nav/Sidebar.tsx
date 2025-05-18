@@ -13,6 +13,7 @@ import { useNavigate, useParams } from "react-router";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
+import ClassSwitcher from "./ClassSwitcher";
 
 interface NavItemProps {
   icon: React.ReactNode;
@@ -86,24 +87,13 @@ const Sidebar = () => {
     }
   );
 
-  const classSwitchClasses = classNames(
-    "p-2 rounded-lg h-10 bg-gray-100 hover:bg-gray-200 flex items-center justify-center gap-2 transition-colors cursor-pointer",
-    {
-      "md:w-7": isCollapsed,
-      "md:w-[90%]": !isCollapsed,
-    }
-  );
-
   return (
     <div className={containerClasses}>
-      <button className={classSwitchClasses} onClick={() => {}}>
-        <FaExchangeAlt size={16} />
-        {!isCollapsed && !loadingAnimation && (
-          <span className="text-sm max-md:hidden font-medium">
-            {classInfo?.name}
-          </span>
-        )}
-      </button>
+      <ClassSwitcher
+        isCollapsed={isCollapsed}
+        loadingAnimation={loadingAnimation}
+        classInfo={classInfo}
+      />
 
       <button
         onClick={toggleCollapse}

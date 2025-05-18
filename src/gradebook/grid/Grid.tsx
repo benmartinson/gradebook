@@ -14,13 +14,15 @@ import { useSettingValue, useAppStore } from "../../appStore";
 import { Assignment } from "../../../types";
 
 const Grid = () => {
-  const assignmentsData = useQuery(api.assignments.getAssignments);
+  const { class_id } = useParams();
+  const assignmentsData = useQuery(api.assignments.getAssignments, {
+    klass: class_id as Id<"classes">,
+  });
   const students = useQuery(api.students.getStudents);
   const grades = useQuery(api.grades.getGrades);
   const showClassGrade = useSettingValue("show_class_grade");
   const { dateOrderAsc, isLoading, setIsLoading } = useAppStore();
   const navigate = useNavigate();
-  const { class_id } = useParams();
 
   useEffect(() => {
     if (students && assignmentsData && grades) {

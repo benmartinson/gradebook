@@ -12,12 +12,13 @@ export default defineSchema({
     notes: v.string(),
     weight: v.float64(),
     isExtraCredit: v.optional(v.boolean()),
-  }),
+  }).index("byClass", ["klass"]),
   classes: defineTable({
     endDate: v.string(),
     name: v.string(),
     startDate: v.string(),
     teacher: v.string(),
+    classCode: v.optional(v.string()),
   }),
   grades: defineTable({
     assignmentId: v.string(),

@@ -53,9 +53,5 @@ export const getStudentClassGrade = (
     0
   );
 
-  if (student.firstName === "Julie") {
-    console.log({ assignmentGrades, weightedSum, totalWeight });
-  }
-
   return (weightedSum / totalWeight).toFixed(0);
 };

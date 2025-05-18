@@ -33,6 +33,7 @@ export const addAssignment = mutation({
 export const deleteAssignment = mutation({
   args: {
     id: v.id("assignments"),
+    klass: v.id("classes"),
   },
   handler: async (ctx, args): Promise<void> => {
     await ctx.db.delete(args.id);
@@ -40,9 +41,12 @@ export const deleteAssignment = mutation({
 });
 
 export const getAssignments = query({
-  args: {},
-  handler: async (ctx): Promise<Assignment[]> => {
-    const assignments = await ctx.db.query("assignments").collect();
+  args: { klass: v.id("classes") },
+  handler: async (ctx, args): Promise<Assignment[]> => {
+    const assignments = await ctx.db
+      .query("assignments")
+      .withIndex("byClass", (q) => q.eq("klass", args.klass))
+      .collect();
     return assignments as Assignment[];
   },
 });

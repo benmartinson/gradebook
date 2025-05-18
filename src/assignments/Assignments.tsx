@@ -5,6 +5,7 @@ import { Doc, Id } from "../../convex/_generated/dataModel";
 import Table from "../gradebook/common/Table";
 import { Assignment, TableColumn } from "../../types";
 import LoadingSpinner from "../gradebook/common/LoadingSpinner";
+import { useParams } from "react-router-dom";
 
 type AssignmentFormData = Omit<Assignment, "maxPoints" | "weight"> & {
   maxPoints: string;
@@ -12,17 +13,26 @@ type AssignmentFormData = Omit<Assignment, "maxPoints" | "weight"> & {
 };
 
 const Assignments = () => {
-  const assignments = useQuery(api.assignments.getAssignments);
+  const { class_id } = useParams();
+  const assignments = useQuery(api.assignments.getAssignments, {
+    klass: class_id as Id<"classes">,
+  });
   const addAssignment = useMutation(api.assignments.addAssignment);
   const deleteAssignment = useMutation(api.assignments.deleteAssignment);
 
   const handleAdd = async (item: Assignment & { isNew: boolean }) => {
     const { _id, isNew, ...assignmentPayload } = item;
-    await addAssignment(assignmentPayload);
+    await addAssignment({
+      ...assignmentPayload,
+      klass: class_id as Id<"classes">,
+    });
   };
 
   const handleDelete = async (assignment: Assignment) => {
-    await deleteAssignment({ id: assignment._id as Id<"assignments"> });
+    await deleteAssignment({
+      id: assignment._id as Id<"assignments">,
+      klass: class_id as Id<"classes">,
+    });
   };
 
   const tableColumns: TableColumn[] = [

@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { assignmentTypes } from "../constants";
 import { AssignmentType } from "../../types";
 import BackToScoresButton from "../gradebook/BackToScoresButton";
 import Navbar from "../gradebook/nav/Navbar";
 import { useSettingValue } from "../appStore";
+import { Id } from "../../convex/_generated/dataModel";
 
 const NewAssignmentPage = () => {
   const addAssignment = useMutation(api.assignments.addAssignment);
   const allowAddAssignment = useSettingValue("allow_assignment_adding");
   const navigate = useNavigate();
-
+  const { class_id } = useParams();
   const [formData, setFormData] = useState({
     description: "",
     dueDate: new Date().toISOString().split("T")[0],
@@ -63,6 +64,7 @@ const NewAssignmentPage = () => {
     const dataToSend = {
       ...formData,
       assignmentType: formData.assignmentType || 1,
+      klass: class_id as Id<"classes">,
     };
     addAssignment(dataToSend);
     navigate("/gradebook");
