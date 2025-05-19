@@ -29,14 +29,6 @@ export default function App() {
             }
           />
           <Route
-            path="/students"
-            element={
-              <GradebookPage>
-                <Students />
-              </GradebookPage>
-            }
-          />
-          <Route
             path="/attendance"
             element={
               <GradebookPage>

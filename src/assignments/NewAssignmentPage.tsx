@@ -64,7 +64,7 @@ const NewAssignmentPage = () => {
     const dataToSend = {
       ...formData,
       assignmentType: formData.assignmentType || 1,
-      klass: class_id as Id<"classes">,
+      classId: class_id as Id<"classes">,
     };
     addAssignment(dataToSend);
     navigate("/gradebook");

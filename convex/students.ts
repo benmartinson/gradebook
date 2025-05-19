@@ -1,24 +1,35 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
-import { Assignment, Student, Grade } from "../types";
+import { Student } from "../types";
 
-export const getStudents = query({
-  args: {},
-  handler: async (ctx): Promise<Student[]> => {
-    const students = await ctx.db.query("students").collect();
-    return students;
+export const getStudentsByClass = query({
+  args: {
+    classId: v.id("classes"),
+  },
+  handler: async (ctx, args): Promise<Student[]> => {
+    const enrollments = await ctx.db
+      .query("enrollments")
+      .withIndex("byClass", (q) => q.eq("classId", args.classId))
+      .collect();
+    const studentIds = enrollments.map((enrollment) => enrollment.studentId);
+    const students = await Promise.all(
+      studentIds.map((studentId) => ctx.db.get(studentId))
+    );
+    return students.filter((student) => student !== null) as Student[];
   },
 });
 
 export const addClassStudent = mutation({
   args: {
-    firstName: v.string(),
-    lastName: v.string(),
+    classId: v.id("classes"),
+    studentId: v.id("students"),
+    schoolYear: v.number(),
   },
   handler: async (ctx, args): Promise<void> => {
-    await ctx.db.insert("students", {
-      firstName: args.firstName,
-      lastName: args.lastName,
+    await ctx.db.insert("enrollments", {
+      classId: args.classId,
+      studentId: args.studentId,
+      schoolYear: args.schoolYear,
     });
   },
 });

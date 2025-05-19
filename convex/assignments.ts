@@ -11,7 +11,7 @@ export const addAssignment = mutation({
     dueDate: v.string(),
     assignedDate: v.string(),
     notes: v.optional(v.string()),
-    klass: v.id("classes"),
+    classId: v.id("classes"),
     isExtraCredit: v.boolean(),
   },
 
@@ -24,7 +24,7 @@ export const addAssignment = mutation({
       dueDate: args.dueDate,
       assignedDate: args.assignedDate,
       notes: args.notes || "",
-      klass: args.klass,
+      classId: args.classId,
       isExtraCredit: args.isExtraCredit,
     });
   },
@@ -33,7 +33,7 @@ export const addAssignment = mutation({
 export const deleteAssignment = mutation({
   args: {
     id: v.id("assignments"),
-    klass: v.id("classes"),
+    classId: v.id("classes"),
   },
   handler: async (ctx, args): Promise<void> => {
     await ctx.db.delete(args.id);
@@ -41,11 +41,11 @@ export const deleteAssignment = mutation({
 });
 
 export const getAssignments = query({
-  args: { klass: v.id("classes") },
+  args: { classId: v.id("classes") },
   handler: async (ctx, args): Promise<Assignment[]> => {
     const assignments = await ctx.db
       .query("assignments")
-      .withIndex("byClass", (q) => q.eq("klass", args.klass))
+      .withIndex("byClass", (q) => q.eq("classId", args.classId))
       .collect();
     return assignments as Assignment[];
   },

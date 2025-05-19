@@ -15,7 +15,7 @@ type AssignmentFormData = Omit<Assignment, "maxPoints" | "weight"> & {
 const Assignments = () => {
   const { class_id } = useParams();
   const assignments = useQuery(api.assignments.getAssignments, {
-    klass: class_id as Id<"classes">,
+    classId: class_id as Id<"classes">,
   });
   const addAssignment = useMutation(api.assignments.addAssignment);
   const deleteAssignment = useMutation(api.assignments.deleteAssignment);
@@ -24,14 +24,14 @@ const Assignments = () => {
     const { _id, isNew, ...assignmentPayload } = item;
     await addAssignment({
       ...assignmentPayload,
-      klass: class_id as Id<"classes">,
+      classId: class_id as Id<"classes">,
     });
   };
 
   const handleDelete = async (assignment: Assignment) => {
     await deleteAssignment({
       id: assignment._id as Id<"assignments">,
-      klass: class_id as Id<"classes">,
+      classId: class_id as Id<"classes">,
     });
   };
 

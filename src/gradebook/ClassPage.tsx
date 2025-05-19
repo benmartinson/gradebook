@@ -1,10 +1,14 @@
 import React from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import BackToScoresButton from "./BackToScoresButton";
+import { useParams } from "react-router-dom";
+import { Id } from "../../convex/_generated/dataModel";
 
 const ClassPage = () => {
-  const students = useQuery(api.students.getStudents);
+  const { class_id } = useParams();
+  const students = useQuery(api.students.getStudentsByClass, {
+    classId: class_id as Id<"classes">,
+  });
 
   return (
     <div className="p-6 w-2/3">

@@ -18,30 +18,10 @@ import classNames from "classnames";
 const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
   const navigate = useNavigate();
   const { class_id } = useParams();
-  const classInfo = useQuery(api.classes.getClassInfo, {
-    id: class_id as Id<"classes">,
-  });
   const { dateOrderAsc, setDateOrderAsc, isLoading } = useAppStore();
 
   const showDateOrder = useSettingValue("show_date_order_button");
   const allowAddAssignment = useSettingValue("allow_assignment_adding");
-
-  const gradingPeriods = [
-    { value: "q1", label: "Quarter 1" },
-    { value: "q2", label: "Quarter 2" },
-    { value: "q3", label: "Quarter 3" },
-    { value: "q4", label: "Quarter 4" },
-  ];
-
-  const assignmentTypes = [
-    { value: "all", label: "All Assignments" },
-    { value: "homework", label: "Homework" },
-    { value: "quiz", label: "Quizzes" },
-    { value: "test", label: "Tests" },
-    { value: "project", label: "Projects" },
-  ];
-
-  const addAssignment = useMutation(api.assignments.addAssignment);
 
   const barsIconClasses = classNames({
     "[clip-path:polygon(0%_100%,_100%_-20%,_100%_100%)]": dateOrderAsc,
@@ -61,22 +41,6 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
           </button>
         )}
 
-        {/* <div className="w-48">
-          <Select
-            options={gradingPeriods}
-            defaultValue={gradingPeriods[0]}
-            placeholder="Grading Period"
-            className="text-sm"
-          />
-        </div>
-
-        <div className="w-48">
-          <Select
-            options={assignmentTypes}
-            placeholder="Assignment Type"
-            className="text-sm"
-          />
-        </div> */}
         {showGridControls && allowAddAssignment && (
           <button
             className="flex items-center gap-1 bg-white border-2 border-gray-500 hover:border-black text-gray-500 hover:text-black rounded-full px-3 py-1 h-7 text-sm cursor-pointer"

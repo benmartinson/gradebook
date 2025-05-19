@@ -16,9 +16,11 @@ import { Assignment } from "../../../types";
 const Grid = () => {
   const { class_id } = useParams();
   const assignmentsData = useQuery(api.assignments.getAssignments, {
-    klass: class_id as Id<"classes">,
+    classId: class_id as Id<"classes">,
   });
-  const students = useQuery(api.students.getStudents);
+  const students = useQuery(api.students.getStudentsByClass, {
+    classId: class_id as Id<"classes">,
+  });
   const grades = useQuery(api.grades.getGrades);
   const showClassGrade = useSettingValue("show_class_grade");
   const { dateOrderAsc, isLoading, setIsLoading } = useAppStore();

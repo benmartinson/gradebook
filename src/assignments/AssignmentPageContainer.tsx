@@ -17,7 +17,9 @@ const AssignmentPageContainer = ({
 }) => {
   const { id, class_id } = useParams();
   const grades = useQuery(api.grades.getGrades);
-  const students = useQuery(api.students.getStudents);
+  const students = useQuery(api.students.getStudentsByClass, {
+    classId: class_id as Id<"classes">,
+  });
   const navigate = useNavigate();
   const { setIsLoading } = useAppStore();
   const assignment = useQuery(api.assignments.getAssignment, {

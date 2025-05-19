@@ -53,3 +53,19 @@ export type AppSetting = {
   enabled: boolean;
   teacherCanUpdate: boolean;
 };
+
+export type Enrollment = {
+  _id: string;
+  studentId: string;
+  classId: string;
+  schoolYear: number;
+};
+
+export type ClassStudent = {
+  enrollmentId: string;
+  studentId: string;
+  classId: string;
+  schoolYear: number;
+  firstName: string;
+  lastName: string;
+};
