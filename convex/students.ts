@@ -34,6 +34,32 @@ export const addClassStudent = mutation({
   },
 });
 
+export const updateStudent = mutation({
+  args: {
+    id: v.id("students"),
+    firstName: v.string(),
+    lastName: v.string(),
+    email: v.string(),
+    phone: v.string(),
+    address: v.string(),
+    city: v.string(),
+    state: v.string(),
+    zip: v.string(),
+  },
+  handler: async (ctx, args): Promise<void> => {
+    await ctx.db.patch(args.id, {
+      firstName: args.firstName,
+      lastName: args.lastName,
+      email: args.email,
+      phone: args.phone,
+      address: args.address,
+      city: args.city,
+      state: args.state,
+      zip: args.zip,
+    });
+  },
+});
+
 export const deleteClassStudent = mutation({
   args: {
     id: v.id("students"),

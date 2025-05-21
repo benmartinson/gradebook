@@ -45,3 +45,12 @@ export const addEnrollment = mutation({
     });
   },
 });
+
+export const removeEnrollment = mutation({
+  args: {
+    enrollmentId: v.id("enrollments"),
+  },
+  handler: async (ctx, args): Promise<void> => {
+    await ctx.db.delete(args.enrollmentId);
+  },
+});

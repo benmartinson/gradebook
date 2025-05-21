@@ -31,6 +31,12 @@ export default defineSchema({
   students: defineTable({
     firstName: v.string(),
     lastName: v.string(),
+    email: v.optional(v.string()),
+    phone: v.optional(v.string()),
+    address: v.optional(v.string()),
+    city: v.optional(v.string()),
+    state: v.optional(v.string()),
+    zip: v.optional(v.string()),
   }),
 
   enrollments: defineTable({

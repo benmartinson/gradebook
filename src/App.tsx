@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import GradebookPage from "./gradebook/GradebookPage";
 import NewAssignmentPage from "./assignments/NewAssignmentPage";
 import Grid from "./gradebook/grid/Grid";
-import Students from "./gradebook/students/Students";
 import Placeholder from "./gradebook/Placeholder";
 import Assignments from "./assignments/Assignments";
 import AssignmentPageContainer from "./assignments/AssignmentPageContainer";
