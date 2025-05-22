@@ -7,10 +7,14 @@ interface AppState {
   setDateOrderAsc: (dateOrderAsc: boolean) => void;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
+  parentDomain: string;
+  setParentDomain: (parentDomain: string) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
   isLoading: true,
+  parentDomain: "",
+  setParentDomain: (parentDomain: string) => set({ parentDomain }),
   setIsLoading: (isLoading: boolean) => set({ isLoading }),
   settings: [],
   setSettings: (settings) =>
