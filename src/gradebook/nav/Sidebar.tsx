@@ -14,6 +14,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import ClassSwitcher from "./ClassSwitcher";
+import UserMenu from "../../auth/UserMenu";
 
 interface NavItemProps {
   icon: React.ReactNode;
@@ -81,7 +82,7 @@ const Sidebar = () => {
   };
 
   const containerClasses = classNames(
-    "flex md:flex-col  gap-3 max-md:gap-10 max-md:justify-center max-md:gap-4 max-md:w-full max-md:h-14 transition-all duration-300 bg-white md:border-r-2 max-md:border-b-2 border-gray-300 p-2 relative",
+    "flex md:flex-col max-md:gap-10 max-md:justify-center max-md:gap-4 max-md:w-full max-md:h-14 transition-all duration-300 bg-white md:border-r-2 max-md:border-b-2 border-gray-300 p-2 relative md:justify-between",
     {
       "md:w-48": !isCollapsed,
     }
@@ -89,58 +90,67 @@ const Sidebar = () => {
 
   return (
     <div className={containerClasses}>
-      <ClassSwitcher
-        isCollapsed={isCollapsed}
-        loadingAnimation={loadingAnimation}
-        classInfo={classInfo}
-      />
+      <div className="flex md:flex-col gap-3">
+        <ClassSwitcher
+          isCollapsed={isCollapsed}
+          loadingAnimation={loadingAnimation}
+          classInfo={classInfo}
+        />
 
-      <button
-        onClick={toggleCollapse}
-        className="md:absolute max-md:hidden -right-[16px] top-2 rounded-full w-8 h-8 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
-      >
-        {isCollapsed ? (
-          <FaChevronRight size={16} />
-        ) : (
-          <FaChevronLeft size={16} />
-        )}
-      </button>
+        <button
+          onClick={toggleCollapse}
+          className="md:absolute max-md:hidden -right-[16px] top-2 rounded-full w-8 h-8 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
+        >
+          {isCollapsed ? (
+            <FaChevronRight size={16} />
+          ) : (
+            <FaChevronLeft size={16} />
+          )}
+        </button>
 
-      <NavItem
-        icon={<FaBook size={24} />}
-        label="Gradebook"
-        path={`/class/${class_id}/gradebook`}
-        isCollapsed={isCollapsed}
-        isSelected={selectedTab.toLowerCase() === "gradebook"}
-        isLoadingAnimation={loadingAnimation}
-      />
-      <NavItem
-        icon={<FaClipboardCheck size={24} />}
-        label="Attendance"
-        path="/attendance"
-        isDisabled={true}
-        isCollapsed={isCollapsed}
-        isSelected={selectedTab.toLowerCase() === "attendance"}
-        isLoadingAnimation={loadingAnimation}
-      />
-      <NavItem
-        icon={<FaQuestionCircle size={24} />}
-        label="Quizes"
-        path="/quizes"
-        isDisabled={true}
-        isCollapsed={isCollapsed}
-        isSelected={selectedTab.toLowerCase() === "quizes"}
-        isLoadingAnimation={loadingAnimation}
-      />
-      <NavItem
-        icon={<FaCog size={24} />}
-        label="Settings"
-        path="/settings"
-        isDisabled={true}
-        isCollapsed={isCollapsed}
-        isSelected={selectedTab.toLowerCase() === "settings"}
-        isLoadingAnimation={loadingAnimation}
-      />
+        <NavItem
+          icon={<FaBook size={24} />}
+          label="Gradebook"
+          path={`/class/${class_id}/gradebook`}
+          isCollapsed={isCollapsed}
+          isSelected={selectedTab.toLowerCase() === "gradebook"}
+          isLoadingAnimation={loadingAnimation}
+        />
+        <NavItem
+          icon={<FaClipboardCheck size={24} />}
+          label="Attendance"
+          path="/attendance"
+          isDisabled={true}
+          isCollapsed={isCollapsed}
+          isSelected={selectedTab.toLowerCase() === "attendance"}
+          isLoadingAnimation={loadingAnimation}
+        />
+        <NavItem
+          icon={<FaQuestionCircle size={24} />}
+          label="Quizes"
+          path="/quizes"
+          isDisabled={true}
+          isCollapsed={isCollapsed}
+          isSelected={selectedTab.toLowerCase() === "quizes"}
+          isLoadingAnimation={loadingAnimation}
+        />
+        <NavItem
+          icon={<FaCog size={24} />}
+          label="Settings"
+          path="/settings"
+          isDisabled={true}
+          isCollapsed={isCollapsed}
+          isSelected={selectedTab.toLowerCase() === "settings"}
+          isLoadingAnimation={loadingAnimation}
+        />
+      </div>
+
+      <div className="max-md:hidden">
+        <UserMenu
+          isCollapsed={isCollapsed}
+          loadingAnimation={loadingAnimation}
+        />
+      </div>
     </div>
   );
 };

@@ -12,6 +12,7 @@ import Placeholder from "./gradebook/Placeholder";
 import Assignments from "./assignments/Assignments";
 import AssignmentPageContainer from "./assignments/AssignmentPageContainer";
 import AdminDataFetcher from "./AdminDataFetcher";
+import AuthWrapper from "./auth/AuthWrapper";
 import { useAppStore } from "./appStore";
 import { useEffect } from "react";
 
@@ -132,7 +133,9 @@ export default function App() {
     <>
       <AdminDataFetcher />
       <BrowserRouter>
-        <AppRoutes />
+        <AuthWrapper>
+          <AppRoutes />
+        </AuthWrapper>
       </BrowserRouter>
     </>
   );
