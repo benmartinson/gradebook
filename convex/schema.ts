@@ -10,7 +10,8 @@ export default defineSchema({
     assignmentType: v.float64(),
     description: v.string(),
     dueDate: v.string(),
-    classId: v.id("classes"),
+    classId: v.optional(v.id("classes")),
+    klass: v.optional(v.string()),
     maxPoints: v.float64(),
     notes: v.string(),
     weight: v.float64(),
@@ -22,11 +23,12 @@ export default defineSchema({
     name: v.string(),
     startDate: v.string(),
     teacher: v.string(),
-    classCode: v.string(),
+    classCode: v.optional(v.string()),
   }),
 
   grades: defineTable({
     assignmentId: v.string(),
+    klass: v.optional(v.string()),
     rawScore: v.float64(),
     studentId: v.string(),
   }),
