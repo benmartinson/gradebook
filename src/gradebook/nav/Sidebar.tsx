@@ -90,7 +90,7 @@ const Sidebar = () => {
 
   return (
     <div className={containerClasses}>
-      <div className="flex md:flex-col gap-3">
+      <div className="flex md:flex-col gap-6 md:gap-3">
         <ClassSwitcher
           isCollapsed={isCollapsed}
           loadingAnimation={loadingAnimation}

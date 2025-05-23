@@ -19,6 +19,29 @@ export const getStudentsByClass = query({
   },
 });
 
+export const getAllStudents = query({
+  args: {},
+  handler: async (ctx): Promise<Student[]> => {
+    const students = await ctx.db.query("students").collect();
+    return students as Student[];
+  },
+});
+
+export const addStudent = mutation({
+  args: {
+    firstName: v.string(),
+    lastName: v.string(),
+  },
+  handler: async (ctx, args): Promise<Student> => {
+    const studentId = await ctx.db.insert("students", {
+      firstName: args.firstName,
+      lastName: args.lastName,
+    });
+    const student = await ctx.db.get(studentId);
+    return student as Student;
+  },
+});
+
 export const addClassStudent = mutation({
   args: {
     classId: v.id("classes"),

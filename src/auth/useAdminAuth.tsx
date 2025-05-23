@@ -15,7 +15,7 @@ export function useAdminAuth() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get("admin_session_id");
-    if (sessionId && !isAdminAuthenticated) {
+    if (sessionId) {
       setAdminSessionId(sessionId);
       validateAdminSession(sessionId);
     } else {
@@ -24,8 +24,6 @@ export function useAdminAuth() {
   }, []);
 
   const validateAdminSession = async (sessionId: string) => {
-    setIsValidatingAdmin(true);
-
     try {
       const validationResult = await adminConvexClient.query(
         "auth:validateSessionId" as any,
