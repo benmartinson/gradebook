@@ -15,6 +15,7 @@ import AdminDataFetcher from "./AdminDataFetcher";
 import AuthWrapper from "./auth/AuthWrapper";
 import { useAppStore } from "./appStore";
 import { useEffect } from "react";
+import AdminBadge from "./AdminBadge";
 
 function AppRoutes() {
   const setParentDomain = useAppStore((state) => state.setParentDomain);
@@ -36,7 +37,10 @@ function AppRoutes() {
       window.history.replaceState({}, "", url);
 
       if (window.parent && typeof window.location.href === "string") {
-        window.parent.postMessage(window.location.href, parentDomain);
+        const newLocation = new URL(
+          window.location.origin + window.location.pathname
+        );
+        window.parent.postMessage(newLocation.toString(), parentDomain);
       }
     }
   }, [location, parentDomain]);
@@ -54,6 +58,7 @@ function AppRoutes() {
           path="/class/:class_id/gradebook"
           element={
             <GradebookPage>
+              <AdminBadge />
               <Grid />
             </GradebookPage>
           }
@@ -62,6 +67,7 @@ function AppRoutes() {
           path="/attendance"
           element={
             <GradebookPage>
+              <AdminBadge />
               <Placeholder />
             </GradebookPage>
           }
@@ -70,6 +76,7 @@ function AppRoutes() {
           path="class/:class_id/assignment/:id/grades"
           element={
             <GradebookPage>
+              <AdminBadge />
               <AssignmentPageContainer activeTab="grades" />
             </GradebookPage>
           }
@@ -78,23 +85,17 @@ function AppRoutes() {
           path="class/:class_id/assignment/:id"
           element={
             <GradebookPage>
+              <AdminBadge />
               <AssignmentPageContainer activeTab="details" />
             </GradebookPage>
           }
         />
 
         <Route
-          path="class/:class_id/assignments"
-          element={
-            <GradebookPage>
-              <Assignments />
-            </GradebookPage>
-          }
-        />
-        <Route
           path="class/:class_id/new-assignment"
           element={
             <GradebookPage>
+              <AdminBadge />
               <NewAssignmentPage />
             </GradebookPage>
           }
@@ -103,6 +104,7 @@ function AppRoutes() {
           path="class/:class_id/schedule"
           element={
             <GradebookPage>
+              <AdminBadge />
               <Placeholder />
             </GradebookPage>
           }
@@ -111,6 +113,7 @@ function AppRoutes() {
           path="class/:class_id/quizes"
           element={
             <GradebookPage>
+              <AdminBadge />
               <Placeholder />
             </GradebookPage>
           }
@@ -119,6 +122,7 @@ function AppRoutes() {
           path="class/:class_id/settings"
           element={
             <GradebookPage>
+              <AdminBadge />
               <Placeholder />
             </GradebookPage>
           }

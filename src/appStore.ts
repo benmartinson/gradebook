@@ -9,6 +9,8 @@ interface AppState {
   setIsLoading: (isLoading: boolean) => void;
   parentDomain: string;
   setParentDomain: (parentDomain: string) => void;
+  isAdminAuthenticated: boolean;
+  setIsAdminAuthenticated: (isAdminAuthenticated: boolean) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -26,6 +28,9 @@ export const useAppStore = create<AppState>((set) => ({
     }),
   dateOrderAsc: true,
   setDateOrderAsc: (dateOrderAsc) => set({ dateOrderAsc }),
+  isAdminAuthenticated: false,
+  setIsAdminAuthenticated: (isAdminAuthenticated) =>
+    set({ isAdminAuthenticated }),
 }));
 
 export const useSettingValue = (key: string) => {
