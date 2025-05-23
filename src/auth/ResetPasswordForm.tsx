@@ -49,7 +49,10 @@ const ResetPasswordForm = ({ setFlow }: ResetPasswordFormProps) => {
         placeholder="Email"
         required
       />
-      <button className="bg-slate-700 text-white rounded-md py-2" type="submit">
+      <button
+        className="bg-slate-700 text-white dark:text-dark rounded-md py-2"
+        type="submit"
+      >
         Send password reset code
       </button>
       <span
