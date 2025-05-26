@@ -21,6 +21,7 @@ import type * as enrollments from "../enrollments.js";
 import type * as grades from "../grades.js";
 import type * as http from "../http.js";
 import type * as students from "../students.js";
+import type * as teachers from "../teachers.js";
 import type * as users from "../users.js";
 
 /**
@@ -40,6 +41,7 @@ declare const fullApi: ApiFromModules<{
   grades: typeof grades;
   http: typeof http;
   students: typeof students;
+  teachers: typeof teachers;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

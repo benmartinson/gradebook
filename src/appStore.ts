@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { AppSetting } from "../types";
+import { AppSetting, Klass } from "../types";
 interface AppState {
   settings: AppSetting[];
   setSettings: (settings: AppSetting[]) => void;
@@ -11,6 +11,8 @@ interface AppState {
   setParentDomain: (parentDomain: string) => void;
   isAdminAuthenticated: boolean;
   setIsAdminAuthenticated: (isAdminAuthenticated: boolean) => void;
+  classes: Klass[];
+  setClasses: (classes: Klass[]) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -31,6 +33,8 @@ export const useAppStore = create<AppState>((set) => ({
   isAdminAuthenticated: false,
   setIsAdminAuthenticated: (isAdminAuthenticated) =>
     set({ isAdminAuthenticated }),
+  classes: [],
+  setClasses: (classes) => set({ classes }),
 }));
 
 export const useSettingValue = (key: string) => {

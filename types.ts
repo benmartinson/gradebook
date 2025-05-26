@@ -69,3 +69,18 @@ export type ClassStudent = {
   firstName: string;
   lastName: string;
 };
+
+export type Klass = {
+  _id: string;
+  name: string;
+  endDate: string;
+  startDate: string;
+  classCode: string;
+  isDefault?: boolean;
+};
+
+export type Teacher = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+};

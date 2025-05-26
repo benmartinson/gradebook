@@ -142,10 +142,7 @@ const ResetPasswordForm = ({ setFlow }: ResetPasswordFormProps) => {
           required
         />
       </div>
-      <button
-        className="bg-slate-700 dark:bg-light text-light dark:text-dark rounded-md py-2"
-        type="submit"
-      >
+      <button className="bg-slate-700 text-white rounded-md py-2" type="submit">
         Reset password
       </button>
       <span

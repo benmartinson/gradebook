@@ -2,6 +2,7 @@ import Modal from "../common/Modal";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useNavigate } from "react-router-dom";
+import { useAppStore } from "../../appStore";
 
 const ClassSwitchModal = ({
   isOpen,
@@ -12,7 +13,7 @@ const ClassSwitchModal = ({
   setIsOpen: (isOpen: boolean) => void;
   currentClass: any;
 }) => {
-  const classes = useQuery(api.classes.getClasses);
+  const classes = useAppStore((state) => state.classes);
   const navigate = useNavigate();
   const onClose = () => {
     setIsOpen(false);
