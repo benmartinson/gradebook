@@ -1,6 +1,4 @@
 import Modal from "../common/Modal";
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../../appStore";
 
@@ -31,8 +29,10 @@ const ClassSwitchModal = ({
           <div className="flex justify-center py-4">
             <div className="animate-pulse w-8 h-8 rounded-full border-4 border-gray-300 border-t-slate-500"></div>
           </div>
-        ) : classes.length === 0 ? (
-          <p className="text-center text-gray-500 py-4">No classes available</p>
+        ) : classes.length === 1 ? (
+          <p className="text-center text-gray-500 py-4">
+            Contact your administrator to add more classes.
+          </p>
         ) : (
           <div className="grid grid-cols-1 gap-2">
             {classes

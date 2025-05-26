@@ -1,10 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import GradebookPage from "./gradebook/GradebookPage";
 import NewAssignmentPage from "./assignments/NewAssignmentPage";
 import Grid from "./gradebook/grid/Grid";
@@ -13,9 +7,8 @@ import AssignmentPageContainer from "./assignments/AssignmentPageContainer";
 import AdminDataFetcher from "./AdminDataFetcher";
 import AuthWrapper from "./auth/AuthWrapper";
 import { useAppStore } from "./appStore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AdminBadge from "./AdminBadge";
-import NoClassesPage from "./gradebook/common/NoClassesPage";
 
 function AppRoutes() {
   const setParentDomain = useAppStore((state) => state.setParentDomain);
