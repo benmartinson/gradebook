@@ -4,7 +4,7 @@
 User Credentials:
 ```
 Email: benmartinson92@gmail.com
-Password: Test123@@
+Password: Test123!
 ```
 
 ---
