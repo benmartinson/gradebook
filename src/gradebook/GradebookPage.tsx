@@ -27,7 +27,6 @@ const GradebookPage = ({ children }: { children: React.ReactNode }) => {
 
   const getClasses = useCallback(async () => {
     let classes;
-    console.log("isAdminAuthenticated", isAdminAuthenticated);
     if (isAdminAuthenticated) {
       classes = await convex.query(api.classes.getClasses);
     } else {
@@ -60,7 +59,6 @@ const GradebookPage = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (!class_id) {
-    console.log("defaultClass", defaultClass);
     if (defaultClass) {
       return <Navigate to={`/class/${defaultClass._id}/gradebook`} />;
     } else {

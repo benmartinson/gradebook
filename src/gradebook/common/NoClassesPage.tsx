@@ -3,7 +3,7 @@ import Navbar from "../nav/Navbar";
 
 const NoClassesPage = () => {
   return (
-    <GradebookPage emptySidebar>
+    <GradebookPage>
       <div className="w-full h-full overflow-hidden flex flex-col pb-4">
         <Navbar />
         <div className="flex flex-col items-center pt-20 h-full">
