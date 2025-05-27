@@ -1,4 +1,7 @@
+import { ReactMutation } from "convex/react";
+import { Id } from "../convex/_generated/dataModel";
 import { Assignment, Grade, Student } from "../types";
+import { FunctionReference } from "convex/server";
 
 export const getStudentGradesObject = (
   grades: Grade[],
@@ -54,4 +57,55 @@ export const getStudentClassGrade = (
   );
 
   return (weightedSum / totalWeight).toFixed(0);
+};
+
+export const updateOrAddGrade = async (
+  score: number,
+  assignmentId: string,
+  grades: Grade[],
+  studentId: string,
+  addGrade: ReactMutation<
+    FunctionReference<
+      "mutation",
+      "public",
+      {
+        assignmentId: Id<"assignments">;
+        rawScore: number;
+        studentId: Id<"students">;
+      },
+      null,
+      string | undefined
+    >
+  >,
+  updateGrade: ReactMutation<
+    FunctionReference<
+      "mutation",
+      "public",
+      {
+        id: Id<"grades">;
+        rawScore: number;
+      },
+      null,
+      string | undefined
+    >
+  >
+) => {
+  if (!isNaN(score) && score >= 0) {
+    const existingGrade = grades?.find(
+      (g) => g.studentId === studentId && g.assignmentId === assignmentId
+    );
+
+    if (existingGrade) {
+      await updateGrade({
+        id: existingGrade._id as Id<"grades">,
+        rawScore: score,
+      });
+    } else {
+      await addGrade({
+        studentId: studentId as Id<"students">,
+        assignmentId: assignmentId as Id<"assignments">,
+        rawScore: score,
+      });
+    }
+  }
 };

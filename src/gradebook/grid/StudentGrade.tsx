@@ -1,9 +1,13 @@
 import { Assignment, Student } from "../../../types";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { useState } from "react";
-import { FaPencilAlt } from "react-icons/fa";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { FaCheck, FaPencilAlt } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSettingValue } from "../../appStore";
+import { Id } from "../../../convex/_generated/dataModel";
+import { updateOrAddGrade } from "../../helpers";
+import classNames from "classnames";
 
 const StudentGrade = ({
   assignment,
@@ -15,25 +19,117 @@ const StudentGrade = ({
   const grades = useQuery(api.grades.getGrades);
   const navigate = useNavigate();
   const { class_id } = useParams();
-
+  const allowGridGrading = useSettingValue("allow_grid_grading");
+  const [isHovered, setIsHovered] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [editedGrade, setEditedGrade] = useState<string>("");
+  const addGrade = useMutation(api.grades.addGrade);
+  const updateGrade = useMutation(api.grades.updateGrade);
   const grade = grades?.find(
     (g) => g.studentId === student._id && g.assignmentId === assignment._id
   );
+  const [gradeValue, setGradeValue] = useState<string>(
+    grade?.rawScore?.toString() ?? ""
+  );
+  const hasEditedGrade = editedGrade !== "";
+
+  useEffect(() => {
+    if (allowGridGrading && isHovered && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [allowGridGrading, isHovered]);
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (isHovered && e.key === "Enter") {
+        handleGradeBlur();
+        setIsHovered(false);
+      }
+    },
+    [isHovered, editedGrade]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   const handleClick = () => {
-    navigate(`/class/${class_id}/assignment/${assignment._id}/grades`);
+    if (hasEditedGrade) {
+      handleGradeBlur();
+    } else {
+      navigate(`/class/${class_id}/assignment/${assignment._id}/grades`);
+    }
   };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedGrade(e.target.value.trim());
+    setGradeValue(e.target.value.trim());
+  };
+
+  const handleGradeBlur = async () => {
+    if (!hasEditedGrade) {
+      return;
+    }
+    const score = parseFloat(editedGrade);
+    await updateOrAddGrade(
+      score,
+      assignment._id,
+      grades ?? [],
+      student._id,
+      addGrade,
+      updateGrade
+    );
+    setEditedGrade("");
+  };
+
+  const shouldColorGrade = !allowGridGrading || !isHovered;
+  const gradeClasses = classNames("flex items-center gap-1 h-6", {
+    "text-red-400": shouldColorGrade && grade?.rawScore && grade.rawScore < 50,
+    "font-semibold":
+      shouldColorGrade &&
+      grade?.rawScore &&
+      grade.rawScore >= assignment.maxPoints,
+  });
 
   return (
     <td
       className="bg-[#F6F6F4] rounded-lg h-10 cursor-pointer group"
       onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="flex p-2 w-28 items-center border border-[#E6E6E4] rounded-lg justify-center relative">
-        <div className="flex items-center gap-1">
-          <div className="">{grade?.rawScore ?? "-"}</div>
-          <span className="absolute right-5 top-0 bottom-0 flex items-center justify-center">
-            <FaPencilAlt className="text-gray-400 text-sm group-hover:block hidden" />
+        <div className={gradeClasses}>
+          {allowGridGrading && isHovered ? (
+            <input
+              ref={inputRef}
+              className="flex w-12 h-6 bg-white  rounded-lg text-center"
+              value={gradeValue}
+              onChange={handleChange}
+              type="text"
+              onClick={(e) => e.stopPropagation()}
+              onBlur={() => handleGradeBlur()}
+            />
+          ) : (
+            <div className="">{grade?.rawScore ?? "-"}</div>
+          )}
+          <span className="absolute right-3 top-0 bottom-0 flex items-center justify-center">
+            {hasEditedGrade ? (
+              <FaCheck className="text-green-400 text-sm group-hover:block hidden" />
+            ) : (
+              <FaPencilAlt className="text-gray-400 text-sm group-hover:block hidden" />
+            )}
           </span>
         </div>
       </div>

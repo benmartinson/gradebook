@@ -2,7 +2,7 @@ import { useQuery, useMutation } from "convex/react";
 import { Assignment, Student, Grade } from "../../types";
 import { api } from "../../convex/_generated/api";
 import LoadingSpinner from "../gradebook/common/LoadingSpinner";
-import { getStudentGradesObject } from "../helpers";
+import { getStudentGradesObject, updateOrAddGrade } from "../helpers";
 import { useMemo, useState } from "react";
 import StudentInfo from "../gradebook/grid/StudentInfo";
 import Select from "react-select";
@@ -65,24 +65,14 @@ const AssignmentGrades = ({
 
   const handleGradeBlur = async (studentId: string) => {
     const score = parseFloat(editingGrades[studentId]);
-    if (!isNaN(score) && score >= 0) {
-      const existingGrade = grades?.find(
-        (g) => g.studentId === studentId && g.assignmentId === assignment._id
-      );
-
-      if (existingGrade) {
-        await updateGrade({
-          id: existingGrade._id as Id<"grades">,
-          rawScore: score,
-        });
-      } else {
-        await addGrade({
-          studentId: studentId as Id<"students">,
-          assignmentId: assignment._id as Id<"assignments">,
-          rawScore: score,
-        });
-      }
-    }
+    await updateOrAddGrade(
+      score,
+      assignment._id,
+      grades,
+      studentId,
+      addGrade,
+      updateGrade
+    );
     setEditingGrades((prev) => {
       const newState = { ...prev };
       delete newState[studentId];
@@ -98,24 +88,26 @@ const AssignmentGrades = ({
     <div className="p-6 pt-0">
       <div className="flex flex-col w-full">
         {/* Headers */}
-        <div
-          className="max-md:hidden grid border-b border-gray-300 p-4 font-light text-sm opacity-50"
-          style={{
-            gridTemplateColumns:
-              "minmax(120px, 1fr) minmax(50px, 0.5fr) minmax(75px, 1.5fr) minmax(50px, 0.5fr) minmax(50px, 0.75fr) 0.25fr",
-            gap: "4px",
-          }}
-        >
-          <div className="text-left">Student</div>
-          <div className="text-left flex items-center">Grade</div>
-          <div className="text-left flex items-center">Completion Status</div>
-          <div className="text-left flex items-center justify-center">
-            Published
+        <div className="max-md:hidden border-b border-gray-300 p-4">
+          <div
+            className="grid font-light text-sm opacity-50 max-w-[1000px]"
+            style={{
+              gridTemplateColumns:
+                "minmax(120px, 0.5fr) minmax(50px, 0.35fr) minmax(75px, 0.6fr) minmax(50px, 0.3fr) minmax(50px, 0.3fr) 0.25fr",
+              gap: "4px",
+            }}
+          >
+            <div className="text-left">Student</div>
+            <div className="text-left flex items-center">Grade</div>
+            <div className="text-left flex items-center">Completion Status</div>
+            <div className="text-left flex items-center justify-center">
+              Published
+            </div>
+            <div className="text-left flex items-center justify-center">
+              Feedback
+            </div>
+            <div></div>
           </div>
-          <div className="text-left flex items-center justify-center">
-            Feedback
-          </div>
-          <div></div>
         </div>
 
         {/* Student Rows */}
@@ -132,67 +124,67 @@ const AssignmentGrades = ({
               className="flex flex-col md:flex-row border-t border-gray-300 p-4"
             >
               {/* Desktop view */}
-              <div
-                className="hidden md:grid w-full items-center"
-                style={{
-                  gridTemplateColumns:
-                    "minmax(120px, 1fr) minmax(50px, 0.5fr) minmax(75px, 1.5fr) minmax(50px, 0.5fr) minmax(50px, 0.75fr) 0.25fr",
-                  gap: "4px",
-                }}
-              >
-                <div>
+              <div className="hidden md:block w-full">
+                <div
+                  className="grid items-center  max-w-[1000px]"
+                  style={{
+                    gridTemplateColumns:
+                      "minmax(120px, 0.5fr) minmax(50px, 0.35fr) minmax(75px, 0.6fr) minmax(50px, 0.3fr) minmax(50px, 0.3fr) 0.25fr",
+                    gap: "4px",
+                  }}
+                >
                   <StudentInfo student={student} />
-                </div>
-                <div className="flex items-center">
-                  <input
-                    className="px-2 w-4/5 max-w-16 py-1 border rounded text-left"
-                    value={
-                      editingGrades[student._id] ??
-                      student.grade?.rawScore ??
-                      ""
-                    }
-                    onChange={(e) =>
-                      handleGradeChange(student._id, e.target.value)
-                    }
-                    onBlur={() => handleGradeBlur(student._id)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleGradeBlur(student._id);
+                  <div className="flex items-center">
+                    <input
+                      className="px-2 w-4/5 max-w-16 py-1 border rounded text-left"
+                      value={
+                        editingGrades[student._id] ??
+                        student.grade?.rawScore ??
+                        ""
                       }
-                    }}
-                  />
-                </div>
-                <div className="flex items-center">
-                  <Select
-                    options={completionStatusOptions}
-                    defaultValue={completionStatusOptions[0]}
-                    className="w-4/5"
-                    isSearchable={false}
-                  />
-                </div>
-                <div className="flex items-center justify-center">
-                  <Switch
-                    checked={publishedStates[student._id] || false}
-                    onChange={() => handlePublishedToggle(student._id)}
-                    className={`${
-                      publishedStates[student._id]
-                        ? "bg-blue-600"
-                        : "bg-gray-200"
-                    } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
-                  >
-                    <span
+                      onChange={(e) =>
+                        handleGradeChange(student._id, e.target.value)
+                      }
+                      onBlur={() => handleGradeBlur(student._id)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleGradeBlur(student._id);
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <Select
+                      options={completionStatusOptions}
+                      defaultValue={completionStatusOptions[0]}
+                      className="w-4/5"
+                      isSearchable={false}
+                    />
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <Switch
+                      checked={publishedStates[student._id] || false}
+                      onChange={() => handlePublishedToggle(student._id)}
                       className={`${
                         publishedStates[student._id]
-                          ? "translate-x-6"
-                          : "translate-x-1"
-                      } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
-                    />
-                  </Switch>
+                          ? "bg-blue-600"
+                          : "bg-gray-200"
+                      } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
+                    >
+                      <span
+                        className={`${
+                          publishedStates[student._id]
+                            ? "translate-x-6"
+                            : "translate-x-1"
+                        } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+                      />
+                    </Switch>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <FaRegComment className="text-gray-500 text-2xl" />
+                  </div>
+                  <div></div>
                 </div>
-                <div className="flex items-center justify-center">
-                  <FaRegComment className="text-gray-500 text-2xl" />
-                </div>
-                <div></div>
               </div>
 
               {/* Mobile view */}
