@@ -1,15 +1,8 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import GradebookPage from "./gradebook/GradebookPage";
 import NewAssignmentPage from "./assignments/NewAssignmentPage";
 import Grid from "./gradebook/grid/Grid";
 import Placeholder from "./gradebook/Placeholder";
-import Assignments from "./assignments/Assignments";
 import AssignmentPageContainer from "./assignments/AssignmentPageContainer";
 import AdminDataFetcher from "./AdminDataFetcher";
 import AuthWrapper from "./auth/AuthWrapper";
@@ -51,7 +44,10 @@ function AppRoutes() {
         <Route
           path="/"
           element={
-            <Navigate to="/class/jn7b7h4tb5vm4std60sfddkjfn7f9yb9/gradebook" />
+            <GradebookPage>
+              <AdminBadge />
+              <Grid />
+            </GradebookPage>
           }
         />
         <Route

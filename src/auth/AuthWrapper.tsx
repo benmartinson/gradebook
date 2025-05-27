@@ -2,7 +2,6 @@ import { useConvexAuth } from "convex/react";
 import { ReactNode } from "react";
 import SignInForm from "./SignInForm";
 import { useAdminAuth } from "./useAdminAuth";
-
 interface AuthWrapperProps {
   children: ReactNode;
 }

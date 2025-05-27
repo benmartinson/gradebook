@@ -32,7 +32,6 @@ export const createClass = mutation({
       name: args.name,
       startDate: args.startDate,
       endDate: args.endDate,
-      teacher: args.teacher,
       classCode: args.classCode,
     });
     return classId;
@@ -54,7 +53,6 @@ export const updateClass = mutation({
       startDate: args.startDate,
       classCode: args.classCode,
       endDate: args.endDate,
-      teacher: args.teacher,
     });
   },
 });

@@ -21,8 +21,8 @@ export default defineSchema({
     endDate: v.string(),
     name: v.string(),
     startDate: v.string(),
-    teacher: v.string(),
     classCode: v.optional(v.string()),
+    isDefault: v.optional(v.boolean()),
   }),
 
   grades: defineTable({
@@ -41,6 +41,22 @@ export default defineSchema({
     state: v.optional(v.string()),
     zip: v.optional(v.string()),
   }),
+
+  teachers: defineTable({
+    firstName: v.string(),
+    lastName: v.string(),
+    userId: v.optional(v.id("users")), // option because may not have account yet
+    email: v.optional(v.string()),
+    phone: v.optional(v.string()),
+  }).index("byUser", ["userId"]),
+
+  classTeachers: defineTable({
+    teacherId: v.id("teachers"),
+    classId: v.id("classes"),
+    schoolYear: v.number(),
+  })
+    .index("byClass", ["classId"])
+    .index("byTeacher", ["teacherId"]),
 
   enrollments: defineTable({
     classId: v.id("classes"),
