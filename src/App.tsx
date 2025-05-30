@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  Outlet,
+} from "react-router-dom";
 import GradebookPage from "./gradebook/GradebookPage";
 import NewAssignmentPage from "./assignments/NewAssignmentPage";
 import Grid from "./gradebook/grid/Grid";
@@ -9,6 +15,7 @@ import AuthWrapper from "./auth/AuthWrapper";
 import { useAppStore } from "./appStore";
 import { useEffect } from "react";
 import AdminBadge from "./AdminBadge";
+import ReportsPage from "./Reports/ReportsPage";
 
 function AppRoutes() {
   const setParentDomain = useAppStore((state) => state.setParentDomain);
@@ -39,92 +46,34 @@ function AppRoutes() {
   }, [location, parentDomain]);
 
   return (
-    <>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <GradebookPage>
-              <AdminBadge />
-              <Grid />
-            </GradebookPage>
-          }
-        />
-        <Route
-          path="/class/:class_id/gradebook"
-          element={
-            <GradebookPage>
-              <AdminBadge />
-              <Grid />
-            </GradebookPage>
-          }
-        />
-        <Route
-          path="/attendance"
-          element={
-            <GradebookPage>
-              <AdminBadge />
-              <Placeholder />
-            </GradebookPage>
-          }
-        />
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <GradebookPage>
+            <AdminBadge />
+            <Outlet />
+          </GradebookPage>
+        }
+      >
+        <Route index element={<Grid />} />
+        <Route path="class/:class_id/gradebook" element={<Grid />} />
         <Route
           path="class/:class_id/assignment/:id/grades"
-          element={
-            <GradebookPage>
-              <AdminBadge />
-              <AssignmentPageContainer activeTab="grades" />
-            </GradebookPage>
-          }
+          element={<AssignmentPageContainer activeTab="grades" />}
         />
         <Route
           path="class/:class_id/assignment/:id"
-          element={
-            <GradebookPage>
-              <AdminBadge />
-              <AssignmentPageContainer activeTab="details" />
-            </GradebookPage>
-          }
+          element={<AssignmentPageContainer activeTab="details" />}
         />
-
         <Route
           path="class/:class_id/new-assignment"
-          element={
-            <GradebookPage>
-              <AdminBadge />
-              <NewAssignmentPage />
-            </GradebookPage>
-          }
+          element={<NewAssignmentPage />}
         />
-        <Route
-          path="class/:class_id/schedule"
-          element={
-            <GradebookPage>
-              <AdminBadge />
-              <Placeholder />
-            </GradebookPage>
-          }
-        />
-        <Route
-          path="class/:class_id/quizes"
-          element={
-            <GradebookPage>
-              <AdminBadge />
-              <Placeholder />
-            </GradebookPage>
-          }
-        />
-        <Route
-          path="class/:class_id/settings"
-          element={
-            <GradebookPage>
-              <AdminBadge />
-              <Placeholder />
-            </GradebookPage>
-          }
-        />
-      </Routes>
-    </>
+        <Route path="class/:class_id/reports" element={<ReportsPage />} />
+        <Route path="class/:class_id/settings" element={<Placeholder />} />
+      </Route>
+    </Routes>
   );
 }
 

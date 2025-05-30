@@ -127,11 +127,10 @@ const Sidebar = () => {
         />
         <NavItem
           icon={<FaQuestionCircle size={24} />}
-          label="Quizes"
-          path="/quizes"
-          isDisabled={true}
+          label="Reports"
+          path={`/class/${class_id}/reports`}
           isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "quizes"}
+          isSelected={selectedTab.toLowerCase() === "reports"}
           isLoadingAnimation={loadingAnimation}
         />
         <NavItem
