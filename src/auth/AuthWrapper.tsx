@@ -31,10 +31,10 @@ export default function AuthWrapper({ children }: AuthWrapperProps) {
         <div className="max-w-md w-full px-8">
           <div className="text-center">
             <div className="mt-6 text-3xl font-extrabold text-gray-900">
-              Sign in to Gradebook
+              Sign in to UserHub
             </div>
             <div className="mt-2 text-sm text-gray-600">
-              Please sign in to access your gradebook
+              Please sign in to access your UserHub
             </div>
           </div>
           <SignInForm />

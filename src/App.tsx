@@ -5,10 +5,10 @@ import {
   useLocation,
   Outlet,
 } from "react-router-dom";
-import GradebookPage from "./gradebook/GradebookPage";
+import MainPage from "./gradebook/MainPage";
 import NewAssignmentPage from "./assignments/NewAssignmentPage";
 import Grid from "./gradebook/grid/Grid";
-import Placeholder from "./gradebook/Placeholder";
+import Placeholder from "./UserHub/common/Placeholder";
 import AssignmentPageContainer from "./assignments/AssignmentPageContainer";
 import AdminDataFetcher from "./AdminDataFetcher";
 import AuthWrapper from "./auth/AuthWrapper";
@@ -16,6 +16,8 @@ import { useAppStore } from "./appStore";
 import { useEffect } from "react";
 import AdminBadge from "./AdminBadge";
 import ReportsPage from "./Reports/ReportsPage";
+import { tableDefs } from "./constants";
+import TablePage from "./UserHub/common/TablePage";
 
 function AppRoutes() {
   const setParentDomain = useAppStore((state) => state.setParentDomain);
@@ -50,28 +52,20 @@ function AppRoutes() {
       <Route
         path="/"
         element={
-          <GradebookPage>
+          <MainPage>
             <AdminBadge />
             <Outlet />
-          </GradebookPage>
+          </MainPage>
         }
       >
-        <Route index element={<Grid />} />
-        <Route path="class/:class_id/gradebook" element={<Grid />} />
-        <Route
-          path="class/:class_id/assignment/:id/grades"
-          element={<AssignmentPageContainer activeTab="grades" />}
-        />
-        <Route
-          path="class/:class_id/assignment/:id"
-          element={<AssignmentPageContainer activeTab="details" />}
-        />
-        <Route
-          path="class/:class_id/new-assignment"
-          element={<NewAssignmentPage />}
-        />
-        <Route path="class/:class_id/reports" element={<ReportsPage />} />
-        <Route path="class/:class_id/settings" element={<Placeholder />} />
+        <Route index element={<Placeholder />} />
+        {tableDefs.map((tableDef) => (
+          <Route
+            key={tableDef}
+            path={`${tableDef}`}
+            element={<TablePage tableDef={tableDef} />}
+          />
+        ))}
       </Route>
     </Routes>
   );

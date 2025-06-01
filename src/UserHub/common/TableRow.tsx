@@ -29,34 +29,41 @@ const TableCell = ({
     });
   };
 
-  if (isEditing) {
-    if (column.key === "dueDate" || column.key === "assignedDate") {
-      return (
-        <td className={`p-4 ring-none ${column.width}`}>
-          <DatePicker
-            selected={itemValue ? new Date(itemValue) : null}
-            onChange={handleDateChange}
-            dateFormat="yyyy-MM-dd"
-            className="ring-none focus:ring-0 focus:outline-none w-full"
-            placeholderText={column.placeholder}
-          />
-        </td>
-      );
-    }
-    return (
-      <td className={`p-4 ring-none ${column.width}`}>
-        <input
-          type="text"
-          value={itemValue}
-          onChange={handleChange}
-          placeholder={column.placeholder}
-          className="ring-none focus:ring-0 focus:outline-none"
-        />
-      </td>
+  let content = null;
+  if (column.key === "dueDate" || column.key === "assignedDate") {
+    content = (
+      <DatePicker
+        selected={itemValue ? new Date(itemValue) : null}
+        onChange={handleDateChange}
+        dateFormat="yyyy-MM-dd"
+        className="ring-none focus:ring-0 focus:outline-none w-full"
+        placeholderText={column.placeholder}
+      />
     );
   }
 
-  return <td className={`p-4 ${column.width}`}>{itemValue}</td>;
+  content = (
+    <input
+      type="text"
+      value={itemValue}
+      onChange={handleChange}
+      placeholder={column.placeholder}
+      className="ring-none focus:ring-0 focus:outline-none"
+    />
+  );
+
+  return (
+    <td
+      className={`px-4 h-8 border-r border-slate-200`}
+      style={{
+        maxWidth: column.width,
+        minWidth: column.width,
+        width: column.width,
+      }}
+    >
+      {content}
+    </td>
+  );
 };
 
 interface TableRowProps<T> {
@@ -89,7 +96,7 @@ const TableRow = <
   };
 
   return (
-    <tr className={`border-b ${className} p-4`} onClick={onClick}>
+    <tr className={`border-b border-slate-200 ${className}`} onClick={onClick}>
       {tableColumns.map((column, index) => (
         <TableCell
           key={index}
@@ -100,7 +107,7 @@ const TableRow = <
           editedItem={editedItem}
         />
       ))}
-      <td className="flex justify-end mr-4 items-center h-16">
+      {/* <td className="flex justify-end mr-4 items-center h-12">
         <button>
           <div className="flex  justify-between w-16">
             {isEditing ? (
@@ -117,7 +124,7 @@ const TableRow = <
             />
           </div>
         </button>
-      </td>
+      </td> */}
     </tr>
   );
 };

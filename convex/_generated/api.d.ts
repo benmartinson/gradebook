@@ -14,14 +14,9 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as ResendOTPPasswordReset from "../ResendOTPPasswordReset.js";
-import type * as assignments from "../assignments.js";
 import type * as auth from "../auth.js";
 import type * as classes from "../classes.js";
-import type * as enrollments from "../enrollments.js";
-import type * as grades from "../grades.js";
 import type * as http from "../http.js";
-import type * as students from "../students.js";
-import type * as teachers from "../teachers.js";
 import type * as users from "../users.js";
 
 /**
@@ -34,14 +29,9 @@ import type * as users from "../users.js";
  */
 declare const fullApi: ApiFromModules<{
   ResendOTPPasswordReset: typeof ResendOTPPasswordReset;
-  assignments: typeof assignments;
   auth: typeof auth;
   classes: typeof classes;
-  enrollments: typeof enrollments;
-  grades: typeof grades;
   http: typeof http;
-  students: typeof students;
-  teachers: typeof teachers;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

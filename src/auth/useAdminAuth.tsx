@@ -29,6 +29,7 @@ export function useAdminAuth() {
         "auth:validateSessionId" as any,
         { sessionId }
       );
+      console.log("validationResult", validationResult);
 
       if (validationResult?.isValid) {
         setIsAdminAuthenticated(true);

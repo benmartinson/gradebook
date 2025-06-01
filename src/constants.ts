@@ -1,4 +1,4 @@
-import { AssignmentType } from "../types";
+import { AssignmentType, TableColumn } from "../types";
 
 export const assignmentTypes: AssignmentType[] = [
   {
@@ -32,3 +32,52 @@ export const assignmentTypes: AssignmentType[] = [
     weight: 100,
   },
 ];
+
+export const tableDefs = ["classes", "assignments"];
+
+export const tableColumns: Record<string, TableColumn[]> = {
+  classes: [
+    {
+      key: "subject",
+      label: "Subject",
+      placeholder: "",
+      width: "200px",
+    },
+    {
+      key: "classCode",
+      label: "Class Code",
+      placeholder: "",
+      width: "200px",
+    },
+    {
+      key: "description",
+      label: "Description",
+      placeholder: "",
+      width: "200px",
+    },
+    {
+      key: "teacher",
+      label: "Teacher",
+      placeholder: "",
+      width: "200px",
+    },
+    {
+      key: "schoolYear",
+      label: "School Year",
+      placeholder: "",
+      width: "200px",
+    },
+    {
+      key: "startDate",
+      label: "Start Date",
+      placeholder: "",
+      width: "200px",
+    },
+    {
+      key: "endDate",
+      label: "End Date",
+      placeholder: "",
+      width: "200px",
+    },
+  ],
+};

@@ -11,10 +11,10 @@ import React, { useEffect } from "react";
 import classNames from "classnames";
 import { useNavigate, useParams } from "react-router";
 import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { Id } from "../../../convex/_generated/dataModel";
-import ClassSwitcher from "./ClassSwitcher";
-import UserMenu from "../../auth/UserMenu";
+import { api } from "../../convex/_generated/api";
+import { Id } from "../../convex/_generated/dataModel";
+import UserMenu from "../auth/UserMenu";
+import { tableDefs } from "../constants";
 
 interface NavItemProps {
   icon: React.ReactNode;
@@ -62,10 +62,6 @@ const Sidebar = () => {
   });
   const [loadingAnimation, setLoadingAnimation] = React.useState(false);
 
-  const { class_id } = useParams();
-  const classInfo = useQuery(api.classes.getClassInfo, {
-    id: class_id as Id<"classes">,
-  });
   const path = window.location.pathname;
   const selectedTab = path.split("/").pop() || "Gradebook";
 
@@ -91,12 +87,6 @@ const Sidebar = () => {
   return (
     <div className={containerClasses}>
       <div className="flex md:flex-col gap-6 md:gap-3">
-        <ClassSwitcher
-          isCollapsed={isCollapsed}
-          loadingAnimation={loadingAnimation}
-          classInfo={classInfo}
-        />
-
         <button
           onClick={toggleCollapse}
           className="md:absolute max-md:hidden -right-[16px] top-2 rounded-full w-8 h-8 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
@@ -108,40 +98,17 @@ const Sidebar = () => {
           )}
         </button>
 
-        <NavItem
-          icon={<FaBook size={24} />}
-          label="Gradebook"
-          path={`/class/${class_id}/gradebook`}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "gradebook"}
-          isLoadingAnimation={loadingAnimation}
-        />
-        <NavItem
-          icon={<FaClipboardCheck size={24} />}
-          label="Attendance"
-          path="/attendance"
-          isDisabled={true}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "attendance"}
-          isLoadingAnimation={loadingAnimation}
-        />
-        <NavItem
-          icon={<FaQuestionCircle size={24} />}
-          label="Reports"
-          path={`/class/${class_id}/reports`}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "reports"}
-          isLoadingAnimation={loadingAnimation}
-        />
-        <NavItem
-          icon={<FaCog size={24} />}
-          label="Settings"
-          path="/settings"
-          isDisabled={true}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "settings"}
-          isLoadingAnimation={loadingAnimation}
-        />
+        {tableDefs.map((tableDef) => (
+          <NavItem
+            key={tableDef}
+            icon={<FaCog size={24} />}
+            label={tableDef}
+            path={`/${tableDef}`}
+            isCollapsed={isCollapsed}
+            isSelected={selectedTab.toLowerCase() === tableDef}
+            isLoadingAnimation={loadingAnimation}
+          />
+        ))}
       </div>
 
       <div className="max-md:hidden">

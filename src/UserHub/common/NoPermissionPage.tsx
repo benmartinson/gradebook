@@ -1,4 +1,4 @@
-import GradebookPage from "../GradebookPage";
+import MainPage from "../MainPage";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 import Navbar from "../nav/Navbar";
