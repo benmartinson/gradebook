@@ -60,7 +60,7 @@ const StudentGrade = ({
     if (hasEditedGrade) {
       handleGradeBlur();
     } else {
-      navigate(`/class/${class_id}/assignment/${assignment._id}/grades`);
+      // navigate(`/class/${class_id}/assignment/${assignment._id}/grades`);
     }
   };
 
@@ -104,17 +104,19 @@ const StudentGrade = ({
 
   return (
     <td
-      className="bg-[#F6F6F4] rounded-lg h-10 cursor-pointer group"
+      className={`bg-[#F6F6F4] rounded-lg h-10 ${
+        hasEditedGrade ? "cursor-pointer" : "cursor-default"
+      } group`}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="flex p-2 w-28 items-center border border-[#E6E6E4] rounded-lg justify-center relative">
+      <div className="flex p-2 w-32 items-center border border-[#E6E6E4] rounded-lg justify-center relative">
         <div className={gradeClasses}>
           {allowGridGrading && isHovered ? (
             <input
               ref={inputRef}
-              className="flex w-12 h-6 bg-white  rounded-lg text-center"
+              className="flex w-12 h-6 focus:outline-none rounded-lg text-center cursor-default"
               value={gradeValue}
               onChange={handleChange}
               type="text"
@@ -125,10 +127,8 @@ const StudentGrade = ({
             <div className="">{grade?.rawScore ?? "-"}</div>
           )}
           <span className="absolute right-3 top-0 bottom-0 flex items-center justify-center">
-            {hasEditedGrade ? (
+            {hasEditedGrade && (
               <FaCheck className="text-green-400 text-sm group-hover:block hidden" />
-            ) : (
-              <FaPencilAlt className="text-gray-400 text-sm group-hover:block hidden" />
             )}
           </span>
         </div>

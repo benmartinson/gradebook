@@ -71,52 +71,47 @@ const Grid = () => {
   };
 
   return (
-    <div className="w-full h-full overflow-hidden flex flex-col pb-4">
+    <div className="w-full h-full overflow-hidden flex flex-col bg-slate-50">
       <Navbar showGridControls={true} />
 
       <div
-        className="hidden md:flex h-full overflow-scroll mt-4 ml-4 mr-4"
+        className="hidden md:flex flex-1 overflow-auto "
         style={{
-          msOverflowStyle: "none",
-          scrollbarWidth: "none",
+          msOverflowStyle: "none", // For Internet Explorer and Edge
+          scrollbarWidth: "none", // For Firefox
+          // For Chrome, Safari, and Opera:
+          // @ts-ignore
+          WebkitScrollbar: { display: "none" },
         }}
       >
-        <div className="flex flex-col pr-4">
-          <table className="border-collapse w-full">
+        <div className="flex flex-col w-full">
+          <table className="w-full border-collapse">
             <thead>
-              <tr className="sticky top-0 z-20 bg-white">
-                <th className="sticky left-0 z-30 bg-white h-24 p-[2px]"></th>
+              <tr className="sticky top-0 z-20 bg-slate-100 shadow-sm">
+                <th className="sticky left-0 z-30 bg-slate-100 p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap min-w-[200px]"></th>
 
                 {sortedAssignments.map((assignment) => (
-                  <th key={assignment._id} className="bg-white p-[2px]">
+                  <th
+                    key={assignment._id}
+                    className="p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap"
+                  >
                     <AssignmentInfo assignment={assignment} />
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white divide-y divide-slate-200">
               {students.map((student, idx) => (
-                <tr key={student._id}>
-                  <td className="sticky left-0 z-10 bg-white p-[2px]">
-                    <div className="flex justify-between">
-                      {" "}
-                      <div className="bg-white">
-                        <StudentInfo student={student} />
-                      </div>
-                      {showClassGrade && (
-                        <div className="bg-white">
-                          <ClassGrade
-                            student={student}
-                            grades={grades}
-                            assignments={sortedAssignments}
-                          />
-                        </div>
-                      )}
-                    </div>
+                <tr
+                  key={student._id}
+                  className="hover:bg-slate-50 transition-colors duration-150"
+                >
+                  <td className="sticky left-0 z-10 bg-white hover:bg-slate-50 p-2 whitespace-nowrap min-w-[200px]">
+                    <StudentInfo student={student} />
                   </td>
 
                   {sortedAssignments.map((assignment) => (
-                    <td key={assignment._id} className="p-[2px]">
+                    <td key={assignment._id} className="p-2 whitespace-nowrap">
                       <StudentGrade assignment={assignment} student={student} />
                     </td>
                   ))}
@@ -127,24 +122,24 @@ const Grid = () => {
         </div>
       </div>
 
-      <div className="md:hidden flex flex-col space-y-3 overflow-y-auto p-4  pt-0">
+      <div className="md:hidden flex flex-col space-y-3 overflow-y-auto p-4 flex-1">
         {sortedAssignments.map((assignment) => (
           <div
             key={assignment._id}
-            className="bg-white border border-gray-200 rounded-lg p-4 shadow hover:shadow-md cursor-pointer"
             onClick={() => handleCardClick(assignment._id as Id<"assignments">)}
+            className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm hover:shadow-md cursor-pointer transition-shadow duration-150"
           >
-            <div className="font-semibold text-gray-800 truncate mb-1">
+            <div className="font-semibold text-slate-700 truncate mb-1">
               {assignment.description}
             </div>
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-slate-500">
               Due: {new Date(assignment.dueDate).toLocaleDateString()}
             </div>
           </div>
         ))}
         {sortedAssignments.length === 0 && (
-          <div className="text-center text-gray-500 mt-8">
-            No assignments found.
+          <div className="text-center text-slate-500 mt-8 text-lg">
+            No assignments yet. Add one to get started!
           </div>
         )}
       </div>

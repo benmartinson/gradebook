@@ -37,19 +37,23 @@ const NavItem = ({
 }: NavItemProps) => {
   const navigate = useNavigate();
 
-  const tabClasses = classNames("flex items-center gap-2 p-2 rounded", {
-    "text-gray-600": !isSelected,
-    "bg-blue-100": isSelected,
-    "hover:bg-gray-100": !isSelected,
-    "opacity-50": isDisabled,
-    "cursor-pointer": !isDisabled,
-  });
+  const tabClasses = classNames(
+    "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ease-in-out",
+    {
+      "text-gray-400 hover:text-white hover:bg-slate-700": !isSelected,
+      "bg-sky-600 text-white shadow-md": isSelected,
+      "opacity-50 cursor-not-allowed": isDisabled,
+      "cursor-pointer": !isDisabled,
+    }
+  );
 
   return (
     <div onClick={() => !isDisabled && navigate(path)} className={tabClasses}>
-      <div className="shrink-0">{icon}</div>
+      <div className="shrink-0 w-6 h-6 flex items-center justify-center">
+        {icon}
+      </div>
       {!isCollapsed && !isLoadingAnimation && (
-        <span className="max-md:hidden">{label}</span>
+        <span className="max-md:hidden text-sm font-medium">{label}</span>
       )}
     </div>
   );
@@ -78,36 +82,41 @@ const Sidebar = () => {
     setLoadingAnimation(true);
     setTimeout(() => {
       setLoadingAnimation(false);
-    }, 100);
+    }, 200);
   };
 
   const containerClasses = classNames(
-    "flex md:flex-col max-md:gap-10 max-md:justify-center max-md:gap-4 max-md:w-full max-md:h-14 transition-all duration-300 bg-white md:border-r-2 max-md:border-b-2 border-gray-300 p-2 relative md:justify-between",
+    "flex md:flex-col max-md:gap-10 max-md:justify-center max-md:w-full max-md:h-16 transition-all duration-300 ease-in-out bg-slate-800 md:border-r md:border-slate-700 p-3 relative md:justify-between",
     {
-      "md:w-48": !isCollapsed,
+      "md:w-60": !isCollapsed,
+      "md:w-20": isCollapsed,
     }
   );
 
   return (
     <div className={containerClasses}>
-      <div className="flex md:flex-col gap-6 md:gap-3">
+      <div className="flex md:flex-col gap-2">
+        <div className="flex items-center max-md:justify-start">
+          <div
+            onClick={toggleCollapse}
+            className="text-gray-400 w-full hover:text-white flex items-center justify-end cursor-pointer pt-2 rounded-md  transition-colors"
+          >
+            {isCollapsed ? (
+              <div className="hover:bg-slate-700 p-2 rounded-md">
+                <FaChevronRight size={20} />
+              </div>
+            ) : (
+              <div className="hover:bg-slate-700 p-2 rounded-md">
+                <FaChevronLeft size={20} />
+              </div>
+            )}
+          </div>
+        </div>
         <ClassSwitcher
           isCollapsed={isCollapsed}
           loadingAnimation={loadingAnimation}
           classInfo={classInfo}
         />
-
-        <button
-          onClick={toggleCollapse}
-          className="md:absolute max-md:hidden -right-[16px] top-2 rounded-full w-8 h-8 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
-        >
-          {isCollapsed ? (
-            <FaChevronRight size={16} />
-          ) : (
-            <FaChevronLeft size={16} />
-          )}
-        </button>
-
         <NavItem
           icon={<FaBook size={24} />}
           label="Gradebook"
@@ -117,34 +126,25 @@ const Sidebar = () => {
           isLoadingAnimation={loadingAnimation}
         />
         <NavItem
-          icon={<FaClipboardCheck size={24} />}
-          label="Attendance"
-          path="/attendance"
-          isDisabled={true}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "attendance"}
-          isLoadingAnimation={loadingAnimation}
-        />
-        <NavItem
-          icon={<FaQuestionCircle size={24} />}
+          icon={
+            <FaQuestionCircle
+              size={20}
+              className={
+                selectedTab.toLowerCase() === "reports"
+                  ? "text-white"
+                  : "text-gray-400"
+              }
+            />
+          }
           label="Reports"
           path={`/class/${class_id}/reports`}
           isCollapsed={isCollapsed}
           isSelected={selectedTab.toLowerCase() === "reports"}
           isLoadingAnimation={loadingAnimation}
         />
-        <NavItem
-          icon={<FaCog size={24} />}
-          label="Settings"
-          path="/settings"
-          isDisabled={true}
-          isCollapsed={isCollapsed}
-          isSelected={selectedTab.toLowerCase() === "settings"}
-          isLoadingAnimation={loadingAnimation}
-        />
       </div>
 
-      <div className="max-md:hidden">
+      <div className="max-md:hidden pb-2">
         <UserMenu
           isCollapsed={isCollapsed}
           loadingAnimation={loadingAnimation}

@@ -16,10 +16,7 @@ const ClassSwitcher = ({
 
   const buttonClasses = classNames(
     "p-2 rounded-lg h-10 bg-gray-100 hover:bg-gray-200 flex items-center justify-center gap-2 transition-colors cursor-pointer",
-    {
-      "md:w-7": isCollapsed,
-      "md:w-[90%]": !isCollapsed,
-    }
+    {}
   );
 
   return (

@@ -29,30 +29,32 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
   });
 
   return (
-    <div className="flex w-full justify-end items-center py-1  md:border-b-2 border-gray-200 h-12 -mr-4 pr-4 min-h-12">
-      <div className="flex items-center gap-3">
+    <div className="flex w-full justify-end items-center py-2 md:border-b border-gray-200 h-14 px-4 min-h-14 bg-white">
+      <div className="flex items-center gap-4">
         {showGridControls && showDateOrder && (
           <button
-            className="text-gray-600 hover:text-gray-800 flex items-center gap-1 text-sm cursor-pointer"
+            className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900 transition-colors duration-150"
             onClick={() => setDateOrderAsc(!dateOrderAsc)}
           >
-            <div>Date Order</div>
-            <FaBars size={16} className={barsIconClasses} />
+            <FaSort size={16} />
+            <span>
+              Date Order {dateOrderAsc ? "(Newest First)" : "(Oldest First)"}
+            </span>
           </button>
         )}
 
         {showGridControls && allowAddAssignment && (
           <button
-            className="flex items-center gap-1 bg-white border-2 border-gray-500 hover:border-black text-gray-500 hover:text-black rounded-full px-3 py-1 h-7 text-sm cursor-pointer"
+            className="flex items-center gap-1.5 bg-sky-500 hover:bg-sky-600 text-white rounded-md px-3 py-1.5 h-9 text-sm font-medium transition-colors duration-150 shadow-sm hover:shadow-md"
             onClick={() => navigate(`/class/${class_id}/new-assignment`)}
           >
-            <FaPlus size={16} />
+            <FaPlus size={14} />
+            <span>New Assignment</span>
           </button>
         )}
         {!showGridControls && !isLoading && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <BackToScoresButton />
-            <div className="w-px bg-gray-300"></div>
           </div>
         )}
       </div>

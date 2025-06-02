@@ -9,30 +9,21 @@ const StudentInfo = ({ student }: { student: Student }) => {
   const initials = student.firstName.charAt(0) + student.lastName.charAt(0);
 
   return (
-    <td className="min-h-10 h-10 pr-3">
-      <div className="flex items-center gap-2 bg-white rounded-lg p-[2px]">
-        {showPhoto && (
-          <div className="text-gray-400">
-            {showInitials ? (
-              <div className="w-[38px] h-[38px] bg-gray-400  rounded-full flex items-center justify-center">
-                <span className="text-white text-lg font-bold">{initials}</span>
-              </div>
-            ) : (
-              <FaUserCircle size={38} />
-            )}
-          </div>
-        )}
-
-        <div className="flex flex-col leading-[18px]">
-          <span className="block font-bold text-gray-800 overflow-hidden whitespace-nowrap text-ellipsis">
-            {student.firstName}
-          </span>
-          <span className="block text-gray-600 max-w-[100px] overflow-hidden whitespace-nowrap text-ellipsis">
-            {student.lastName}
-          </span>
+    <div className="flex items-center gap-2">
+      {showInitials && (
+        <div className="w-8 h-8 bg-sky-500 rounded-full flex items-center justify-center shrink-0">
+          <span className="text-white text-sm font-semibold">{initials}</span>
         </div>
+      )}
+      <div className="flex gap-1 pl-2">
+        <span className="font-medium text-slate-700 whitespace-nowrap overflow-hidden text-ellipsis">
+          {student.firstName}
+        </span>
+        <span className=" text-slate-500 whitespace-nowrap overflow-hidden text-ellipsis">
+          {student.lastName}
+        </span>
       </div>
-    </td>
+    </div>
   );
 };
 
