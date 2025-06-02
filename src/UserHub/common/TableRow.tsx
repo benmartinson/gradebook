@@ -8,17 +8,16 @@ import "react-datepicker/dist/react-datepicker.css";
 const TableCell = ({
   itemValue,
   column,
-  isEditing,
   setEditedItem,
   editedItem,
 }: {
   itemValue: any;
   column: TableColumn;
-  isEditing: boolean;
   setEditedItem: (item: any) => void;
   editedItem: any;
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log({ value: e.target.value, editedItem });
     setEditedItem({ ...editedItem, [column.key]: e.target.value });
   };
 
@@ -40,21 +39,21 @@ const TableCell = ({
         placeholderText={column.placeholder}
       />
     );
+  } else {
+    content = (
+      <input
+        type="text"
+        value={itemValue}
+        onChange={handleChange}
+        placeholder={column.placeholder}
+        className="ring-none focus:ring-0 focus:outline-none w-full"
+      />
+    );
   }
-
-  content = (
-    <input
-      type="text"
-      value={itemValue}
-      onChange={handleChange}
-      placeholder={column.placeholder}
-      className="ring-none focus:ring-0 focus:outline-none"
-    />
-  );
 
   return (
     <td
-      className={`px-4 h-8 border-r border-slate-200`}
+      className={`px-4 h-8 border-r border-b border-slate-200`}
       style={{
         maxWidth: column.width,
         minWidth: column.width,
@@ -71,8 +70,7 @@ interface TableRowProps<T> {
   onClick?: () => void;
   tableColumns: TableColumn[];
   item: T;
-  handleAdd: (item: T) => void;
-  handleCancel: (item: T) => void;
+  onItemChange: (item: T) => void;
 }
 
 const TableRow = <
@@ -82,17 +80,10 @@ const TableRow = <
   tableColumns,
   onClick,
   item,
-  handleAdd,
-  handleCancel,
+  onItemChange,
 }: TableRowProps<T>) => {
-  const [isEditing, setIsEditing] = useState(item.isNew);
-  const [editedItem, setEditedItem] = useState<T>(item);
-
-  const handleAddClick = () => {
-    delete editedItem.id;
-    delete editedItem.isNew;
-    handleAdd(editedItem);
-    setIsEditing(false);
+  const handleCellChange = (changedItem: T) => {
+    onItemChange(changedItem);
   };
 
   return (
@@ -100,31 +91,15 @@ const TableRow = <
       {tableColumns.map((column, index) => (
         <TableCell
           key={index}
-          itemValue={editedItem[column.key]}
+          itemValue={item[column.key]}
           column={column}
-          isEditing={Boolean(isEditing)}
-          setEditedItem={setEditedItem}
-          editedItem={editedItem}
+          setEditedItem={(partialUpdate) => {
+            const updatedFullItem = { ...item, ...partialUpdate };
+            handleCellChange(updatedFullItem);
+          }}
+          editedItem={item}
         />
       ))}
-      {/* <td className="flex justify-end mr-4 items-center h-12">
-        <button>
-          <div className="flex  justify-between w-16">
-            {isEditing ? (
-              <FaCheck
-                className="text-green-500 w-6 h-6"
-                onClick={handleAddClick}
-              />
-            ) : (
-              <div className="w-6 h-6" />
-            )}
-            <FaXmark
-              className="text-red-500 w-6 h-6"
-              onClick={() => handleCancel(editedItem)}
-            />
-          </div>
-        </button>
-      </td> */}
     </tr>
   );
 };

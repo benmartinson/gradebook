@@ -89,12 +89,12 @@ const Sidebar = () => {
       <div className="flex md:flex-col gap-6 md:gap-3">
         <button
           onClick={toggleCollapse}
-          className="md:absolute max-md:hidden -right-[16px] top-2 rounded-full w-8 h-8 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
+          className="md:absolute max-md:hidden -right-[14px] top-1.5 rounded-full w-7 h-7 bg-white border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer z-50"
         >
           {isCollapsed ? (
-            <FaChevronRight size={16} />
+            <FaChevronRight size={12} />
           ) : (
-            <FaChevronLeft size={16} />
+            <FaChevronLeft size={12} />
           )}
         </button>
 

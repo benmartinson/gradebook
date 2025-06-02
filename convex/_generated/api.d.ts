@@ -15,8 +15,8 @@ import type {
 } from "convex/server";
 import type * as ResendOTPPasswordReset from "../ResendOTPPasswordReset.js";
 import type * as auth from "../auth.js";
-import type * as classes from "../classes.js";
 import type * as http from "../http.js";
+import type * as records from "../records.js";
 import type * as users from "../users.js";
 
 /**
@@ -30,8 +30,8 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   ResendOTPPasswordReset: typeof ResendOTPPasswordReset;
   auth: typeof auth;
-  classes: typeof classes;
   http: typeof http;
+  records: typeof records;
   users: typeof users;
 }>;
 export declare const api: FilterApi<
