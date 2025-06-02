@@ -60,7 +60,7 @@ const StudentGrade = ({
     if (hasEditedGrade) {
       handleGradeBlur();
     } else {
-      // navigate(`/class/${class_id}/assignment/${assignment._id}/grades`);
+      setIsHovered(true);
     }
   };
 
@@ -108,11 +108,10 @@ const StudentGrade = ({
         hasEditedGrade ? "cursor-pointer" : "cursor-default"
       } group`}
       onClick={handleClick}
-      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <div className="flex p-2 w-32 items-center border border-[#E6E6E4] rounded-lg justify-center relative">
-        <div className={gradeClasses}>
+        <div className={gradeClasses} onMouseEnter={handleMouseEnter}>
           {allowGridGrading && isHovered ? (
             <input
               ref={inputRef}

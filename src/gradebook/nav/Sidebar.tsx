@@ -38,9 +38,10 @@ const NavItem = ({
   const navigate = useNavigate();
 
   const tabClasses = classNames(
-    "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ease-in-out",
+    "flex items-center justify-center gap-3 p-3 rounded-lg transition-all duration-200 ease-in-out",
     {
-      "text-gray-400 hover:text-white hover:bg-slate-700": !isSelected,
+      "text-gray-400 hover:text-white bg-slate-700 hover:bg-slate-600":
+        !isSelected,
       "bg-sky-600 text-white shadow-md": isSelected,
       "opacity-50 cursor-not-allowed": isDisabled,
       "cursor-pointer": !isDisabled,
@@ -89,28 +90,31 @@ const Sidebar = () => {
     "flex md:flex-col max-md:gap-10 max-md:justify-center max-md:w-full max-md:h-16 transition-all duration-300 ease-in-out bg-slate-800 md:border-r md:border-slate-700 p-3 relative md:justify-between",
     {
       "md:w-60": !isCollapsed,
-      "md:w-20": isCollapsed,
+      "md:w-16": isCollapsed,
+    }
+  );
+
+  const iconClasses = classNames(
+    "max-md:hidden text-gray-400 hover:text-white flex items-center cursor-pointer rounded-md  transition-colors",
+    {
+      "justify-center": isCollapsed,
+      "justify-end": !isCollapsed,
     }
   );
 
   return (
     <div className={containerClasses}>
-      <div className="flex md:flex-col gap-2">
-        <div className="flex items-center max-md:justify-start">
-          <div
-            onClick={toggleCollapse}
-            className="text-gray-400 w-full hover:text-white flex items-center justify-end cursor-pointer pt-2 rounded-md  transition-colors"
-          >
-            {isCollapsed ? (
-              <div className="hover:bg-slate-700 p-2 rounded-md">
-                <FaChevronRight size={20} />
-              </div>
-            ) : (
-              <div className="hover:bg-slate-700 p-2 rounded-md">
-                <FaChevronLeft size={20} />
-              </div>
-            )}
-          </div>
+      <div className="flex md:flex-col gap-6 md:gap-2">
+        <div onClick={toggleCollapse} className={iconClasses}>
+          {isCollapsed ? (
+            <div className="bg-slate-700 p-2 rounded-md bg-slate-700 hover:bg-slate-600">
+              <FaChevronRight size={20} />
+            </div>
+          ) : (
+            <div className="bg-slate-700 p-2 rounded-md bg-slate-700 hover:bg-slate-600">
+              <FaChevronLeft size={20} />
+            </div>
+          )}
         </div>
         <ClassSwitcher
           isCollapsed={isCollapsed}

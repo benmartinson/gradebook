@@ -87,7 +87,7 @@ const GradebookPage = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <main className="min-h-[650px] h-[100vh] bg-gradient-to-br from-indigo-50 to-blue-100 md:p-4">
+    <main className="min-h-[650px] h-[100vh] bg-gradient-to-br from-indigo-50 to-blue-100 md:p-5">
       <div className="bg-white md:rounded-xl shadow-lg flex-1 w-full h-full mx-auto flex flex-col md:flex-row overflow-hidden">
         {isValidClass ? <Sidebar /> : <EmptySidebar />}
         {children}

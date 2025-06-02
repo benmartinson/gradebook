@@ -33,7 +33,7 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
       <div className="flex items-center gap-4">
         {showGridControls && showDateOrder && (
           <button
-            className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900 transition-colors duration-150"
+            className="flex items-center max-md:hidden gap-1.5 text-sm text-slate-600 hover:text-slate-900 transition-colors duration-150"
             onClick={() => setDateOrderAsc(!dateOrderAsc)}
           >
             <FaSort size={16} />

@@ -7,7 +7,6 @@ import StudentInfo from "./StudentInfo";
 import { api } from "../../../convex/_generated/api";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "../common/LoadingSpinner";
-import ClassGrade from "./ClassGrade";
 import { useParams, useNavigate } from "react-router-dom";
 import { Id } from "../../../convex/_generated/dataModel";
 import { useSettingValue, useAppStore } from "../../appStore";
@@ -77,9 +76,8 @@ const Grid = () => {
       <div
         className="hidden md:flex flex-1 overflow-auto "
         style={{
-          msOverflowStyle: "none", // For Internet Explorer and Edge
-          scrollbarWidth: "none", // For Firefox
-          // For Chrome, Safari, and Opera:
+          msOverflowStyle: "none",
+          scrollbarWidth: "none",
           // @ts-ignore
           WebkitScrollbar: { display: "none" },
         }}

@@ -82,8 +82,8 @@ const NewAssignmentPage = () => {
   return (
     <div className="w-full flex flex-col">
       <Navbar />
-      <div className="w-full p-6">
-        <div className="mb-6 flex items-center justify-between">
+      <div className="w-full p-6 max-md:pt-0">
+        <div className="mb-3 md:mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold">New Assignment</h1>
         </div>
 
@@ -176,38 +176,12 @@ const NewAssignmentPage = () => {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Notes
-              </label>
-              <textarea
-                name="notes"
-                value={formData.notes}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                rows={3}
-              />
-            </div>
-
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                name="isExtraCredit"
-                checked={formData.isExtraCredit}
-                onChange={handleInputChange}
-                className="rounded border-gray-300"
-              />
-              <label className="text-sm font-medium text-gray-700">
-                Extra Credit
-              </label>
-            </div>
-
             <div className="flex justify-end mt-6">
               <button
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition-colors"
               >
-                Create Assignment
+                Create
               </button>
             </div>
           </form>
