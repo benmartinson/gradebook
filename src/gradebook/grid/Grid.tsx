@@ -82,41 +82,51 @@ const Grid = () => {
           WebkitScrollbar: { display: "none" },
         }}
       >
-        <div className="flex flex-col w-full">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="sticky top-0 z-20 bg-slate-100 shadow-sm">
-                <th className="sticky left-0 z-30 bg-slate-100 p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap min-w-[150px]"></th>
+        <div className="flex flex-col w-full bg-white">
+          <div className="overflow-auto w-full">
+            <div className="min-w-full inline-block w-full">
+              <table className="border-collapse w-full">
+                <thead>
+                  <tr className="sticky top-0 z-20 bg-slate-100 shadow-sm flex justify-start">
+                    <th className="sticky left-0 z-30 bg-slate-100 p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-[200px]"></th>
 
-                {sortedAssignments.map((assignment) => (
-                  <th
-                    key={assignment._id}
-                    className="p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap"
-                  >
-                    <AssignmentInfo assignment={assignment} />
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-slate-200">
-              {students.map((student, idx) => (
-                <tr
-                  key={student._id}
-                  className="hover:bg-slate-50 transition-colors duration-150"
-                >
-                  <td className="sticky left-0 z-10 bg-white hover:bg-slate-50 p-2 whitespace-nowrap min-w-[150px]">
-                    <StudentInfo student={student} />
-                  </td>
+                    {sortedAssignments.map((assignment) => (
+                      <th
+                        key={assignment._id}
+                        className="p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap "
+                      >
+                        <AssignmentInfo assignment={assignment} />
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200">
+                  {students.map((student, idx) => (
+                    <tr
+                      key={student._id}
+                      className="hover:bg-slate-50 transition-colors duration-150 flex justify-start"
+                    >
+                      <td className="sticky left-0 z-10 bg-white hover:bg-slate-50 p-2 whitespace-nowrap w-[200px]">
+                        <StudentInfo student={student} />
+                      </td>
 
-                  {sortedAssignments.map((assignment) => (
-                    <td key={assignment._id} className="p-2 whitespace-nowrap">
-                      <StudentGrade assignment={assignment} student={student} />
-                    </td>
+                      {sortedAssignments.map((assignment) => (
+                        <td
+                          key={assignment._id}
+                          className="p-2 whitespace-nowrap "
+                        >
+                          <StudentGrade
+                            assignment={assignment}
+                            student={student}
+                          />
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
 
