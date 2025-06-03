@@ -7,6 +7,7 @@ import { Id } from "../../../convex/_generated/dataModel";
 
 const AssignmentInfo = ({ assignment }: { assignment: Assignment }) => {
   const { class_id } = useParams();
+  const navigate = useNavigate();
   const assignmentType = assignmentTypes.find(
     (type) => type.id === assignment.assignmentType
   );
@@ -24,8 +25,15 @@ const AssignmentInfo = ({ assignment }: { assignment: Assignment }) => {
 
   const typeTextColor = isColorLight(color) ? "text-slate-700" : "text-white";
 
+  const handleClick = () => {
+    navigate(`/class/${class_id}/assignment/${assignment._id}/update`);
+  };
+
   return (
-    <div className="bg-white border border-slate-200 rounded-lg p-3 flex flex-col w-32 min-h-[130px] group relative cursor-pointer shadow-sm hover:shadow-lg transition-all duration-200 ease-in-out h-full">
+    <div 
+      onClick={handleClick}
+      className="bg-white border border-slate-200 rounded-lg p-3 flex flex-col w-32 min-h-[130px] group relative cursor-pointer shadow-sm hover:shadow-lg transition-all duration-200 ease-in-out h-full"
+    >
       <div className="text-sm font-semibold text-slate-700 mb-1.5 leading-tight line-clamp-2 flex-grow">
         {assignment.description}
       </div>

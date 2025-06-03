@@ -54,7 +54,7 @@ export default function UserMenu({
       <div
         className={`flex items-center ${
           isCollapsed ? "justify-center" : "justify-start"
-        } gap-2 p-2 text-gray-600 mb-2`}
+        } gap-2 p-2 text-white mb-2`}
       >
         <div className="shrink-0">
           <FaUser size={20} />
@@ -75,7 +75,7 @@ export default function UserMenu({
         onClick={handleSignOut}
         className={`flex items-center gap-2 p-2 cursor-pointer ${
           isCollapsed ? "justify-center" : "justify-start"
-        } rounded text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors w-full`}
+        } rounded text-white hover:bg-red-50 hover:text-red-600 transition-colors w-full`}
       >
         <div className="shrink-0">
           <FaSignOutAlt size={20} />

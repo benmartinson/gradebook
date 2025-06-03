@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import GradebookPage from "./gradebook/GradebookPage";
 import NewAssignmentPage from "./assignments/NewAssignmentPage";
+import UpdateAssignmentPage from "./assignments/UpdateAssignmentPage";
 import Grid from "./gradebook/grid/Grid";
 import Placeholder from "./gradebook/Placeholder";
 import AssignmentPageContainer from "./assignments/AssignmentPageContainer";
@@ -69,6 +70,10 @@ function AppRoutes() {
         <Route
           path="class/:class_id/new-assignment"
           element={<NewAssignmentPage />}
+        />
+        <Route
+          path="class/:class_id/assignment/:assignment_id/update"
+          element={<UpdateAssignmentPage />}
         />
         <Route path="class/:class_id/reports" element={<ReportsPage />} />
         <Route path="class/:class_id/settings" element={<Placeholder />} />

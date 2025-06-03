@@ -129,7 +129,7 @@ const Sidebar = () => {
           isSelected={selectedTab.toLowerCase() === "gradebook"}
           isLoadingAnimation={loadingAnimation}
         />
-        <NavItem
+        {/* <NavItem
           icon={
             <FaQuestionCircle
               size={20}
@@ -145,7 +145,7 @@ const Sidebar = () => {
           isCollapsed={isCollapsed}
           isSelected={selectedTab.toLowerCase() === "reports"}
           isLoadingAnimation={loadingAnimation}
-        />
+        /> */}
       </div>
 
       <div className="max-md:hidden pb-2">

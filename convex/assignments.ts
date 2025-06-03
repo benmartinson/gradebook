@@ -53,12 +53,12 @@ export const getAssignments = query({
 
 export const getAssignment = query({
   args: {
-    id: v.id("assignments"),
+    assignmentId: v.id("assignments"),
   },
   handler: async (ctx, args): Promise<Assignment> => {
-    const assignment = await ctx.db.get(args.id);
+    const assignment = await ctx.db.get(args.assignmentId);
     if (!assignment) {
-      throw new Error(`Assignment with ID ${args.id} not found`);
+      throw new Error(`Assignment with ID ${args.assignmentId} not found`);
     }
     return assignment as Assignment;
   },
@@ -66,11 +66,27 @@ export const getAssignment = query({
 
 export const updateAssignment = mutation({
   args: {
-    field: v.string(),
-    value: v.any(),
-    id: v.id("assignments"),
+    assignmentId: v.id("assignments"),
+    description: v.string(),
+    assignmentType: v.number(),
+    weight: v.number(),
+    maxPoints: v.number(),
+    dueDate: v.string(),
+    assignedDate: v.string(),
+    notes: v.optional(v.string()),
+    isExtraCredit: v.boolean(),
   },
   handler: async (ctx, args): Promise<void> => {
-    await ctx.db.patch(args.id, { [args.field]: args.value });
+    const { assignmentId, ...updateData } = args;
+    await ctx.db.patch(assignmentId, {
+      description: updateData.description,
+      assignmentType: updateData.assignmentType,
+      weight: updateData.weight,
+      maxPoints: updateData.maxPoints,
+      dueDate: updateData.dueDate,
+      assignedDate: updateData.assignedDate,
+      notes: updateData.notes || "",
+      isExtraCredit: updateData.isExtraCredit,
+    });
   },
 });

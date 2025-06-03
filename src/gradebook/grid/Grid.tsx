@@ -1,3 +1,4 @@
+import "./hideScrollbar.css";
 import { useQuery } from "convex/react";
 import { assignments, students } from "../../mocks";
 import Navbar from "../nav/Navbar";
@@ -73,27 +74,27 @@ const Grid = () => {
     <div className="w-full h-full overflow-hidden flex flex-col bg-slate-50">
       <Navbar showGridControls={true} />
 
-      <div
-        className="hidden md:flex flex-1 overflow-auto "
-        style={{
-          msOverflowStyle: "none",
-          scrollbarWidth: "none",
-          // @ts-ignore
-          WebkitScrollbar: { display: "none" },
-        }}
-      >
+      <div className="hidden md:flex flex-1 overflow-auto hide-scrollbar">
         <div className="flex flex-col w-full bg-white">
-          <div className="overflow-auto w-full">
+          <div
+            className="overflow-auto w-full"
+            style={{
+              msOverflowStyle: "none",
+              scrollbarWidth: "none",
+              // @ts-ignore
+              WebkitScrollbar: { display: "none" },
+            }}
+          >
             <div className="min-w-full inline-block w-full">
               <table className="border-collapse w-full">
-                <thead>
-                  <tr className="sticky top-0 z-20 bg-slate-100 shadow-sm flex justify-start">
-                    <th className="sticky left-0 z-30 bg-slate-100 p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-[200px]"></th>
+                <thead className="sticky top-0 z-20 bg-slate-100 shadow-sm flex justify-start">
+                  <tr className="bg-slate-100 shadow-sm flex justify-start">
+                    <th className="sticky left-0  z-30 bg-slate-100 p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-[200px]"></th>
 
                     {sortedAssignments.map((assignment) => (
                       <th
                         key={assignment._id}
-                        className="p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap "
+                        className="p-2 text-left  bg-slate-100 text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap "
                       >
                         <AssignmentInfo assignment={assignment} />
                       </th>
@@ -104,9 +105,9 @@ const Grid = () => {
                   {students.map((student, idx) => (
                     <tr
                       key={student._id}
-                      className="hover:bg-slate-50 transition-colors duration-150 flex justify-start"
+                      className="hover:bg-slate-50 transition-colors duration-150 group flex items-center justify-start"
                     >
-                      <td className="sticky left-0 z-10 bg-white hover:bg-slate-50 p-2 whitespace-nowrap w-[200px]">
+                      <td className="sticky bg-white group-hover:bg-slate-50 left-0 z-10 p-2 whitespace-nowrap w-[200px] flex items-center ">
                         <StudentInfo student={student} />
                       </td>
 
@@ -130,7 +131,7 @@ const Grid = () => {
         </div>
       </div>
 
-      <div className="md:hidden flex flex-col space-y-3 overflow-y-auto p-4 flex-1">
+      <div className="md:hidden flex flex-col space-y-3 overflow-y-auto p-4 flex-1 hide-scrollbar">
         {sortedAssignments.map((assignment) => (
           <div
             key={assignment._id}
