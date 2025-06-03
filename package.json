@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@auth/core": "^0.37.4",
+    "@aws-sdk/client-bedrock-runtime": "^3.821.0",
     "@convex-dev/auth": "^0.0.83",
     "@dicebear/avatars": "^4.10.8",
     "@dicebear/avatars-initials-sprites": "^4.10.8",

@@ -1,4 +1,3 @@
-import "./hideScrollbar.css";
 import { useQuery } from "convex/react";
 import { assignments, students } from "../../mocks";
 import Navbar from "../nav/Navbar";

@@ -17,6 +17,7 @@ import { useAppStore } from "./appStore";
 import { useEffect } from "react";
 import AdminBadge from "./AdminBadge";
 import ReportsPage from "./Reports/ReportsPage";
+import BedrockTest from "./components/BedrockTest";
 
 function AppRoutes() {
   const setParentDomain = useAppStore((state) => state.setParentDomain);
@@ -53,6 +54,7 @@ function AppRoutes() {
         element={
           <GradebookPage>
             <AdminBadge />
+            <BedrockTest />
             <Outlet />
           </GradebookPage>
         }
