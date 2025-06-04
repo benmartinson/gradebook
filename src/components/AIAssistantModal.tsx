@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../gradebook/common/Modal";
 import { useAction } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useParams } from "react-router-dom";
 import { Id } from "../../convex/_generated/dataModel";
 import { buildContext } from "../helpers";
+import { FaPaperPlane } from "react-icons/fa";
 
 interface AIAssistantModalProps {
   isOpen: boolean;
@@ -29,6 +30,8 @@ const AIAssistantModal = ({
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const getResponse = useAction(api.chats.getResponse);
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [changesRequested, setChangesRequested] = useState<any[]>([]);
 
   const examples = [
     {
@@ -38,6 +41,17 @@ const AIAssistantModal = ({
     { cat: "Analytics", text: "Show class average for last week" },
     { cat: "Report", text: "Students with grades below 70%" },
   ];
+
+  useEffect(() => {
+    setMessages([]);
+    setIsConfirming(false);
+    setChangesRequested([]);
+  }, [isOpen]);
+
+  const handleConfirmChanges = () => {
+    console.log("confirming changes", changesRequested);
+    onClose();
+  };
 
   const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
@@ -52,10 +66,15 @@ const AIAssistantModal = ({
     if (classData) {
       context = buildContext(classData);
     }
-    console.log({ context });
 
     try {
       const result = await getResponse({ message: userMessage, context });
+
+      // Check if there's extracted data with confirmation
+      if (result.data?.confirm && result.data?.changesRequested) {
+        setIsConfirming(true);
+        setChangesRequested(result.data.changesRequested);
+      }
 
       if (result.success) {
         setMessages((prev) => [
@@ -92,31 +111,40 @@ const AIAssistantModal = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="">
-      <div
-        className="bg-slate-50 rounded-lg -m-6 p-6"
-        style={{ minHeight: "500px" }}
-      >
+      <div className="bg-slate-50 rounded-lg -m-6 p-6 min-h-[512px]">
         <div className="flex gap-2 mb-6">
-          <button
-            onClick={() => setActiveTab("examples")}
-            className={`py-2 px-4 rounded-lg font-medium transition-colors ${
-              activeTab === "examples"
-                ? "bg-white text-blue-600 shadow-sm"
-                : "text-gray-600 hover:text-gray-800"
-            }`}
-          >
-            Examples
-          </button>
-          <button
-            onClick={() => setActiveTab("chat")}
-            className={`py-2 px-4 rounded-lg font-medium transition-colors ${
-              activeTab === "chat"
-                ? "bg-white text-blue-600 shadow-sm"
-                : "text-gray-600 hover:text-gray-800"
-            }`}
-          >
-            Chat
-          </button>
+          {!isConfirming && (
+            <>
+              <button
+                onClick={() => setActiveTab("chat")}
+                className={`py-2 px-4 rounded-lg font-medium transition-colors ${
+                  activeTab === "chat"
+                    ? "bg-white text-blue-600 shadow-sm"
+                    : "text-gray-600 hover:text-gray-800"
+                }`}
+              >
+                Chat
+              </button>
+              <button
+                onClick={() => setActiveTab("examples")}
+                className={`py-2 px-4 rounded-lg font-medium transition-colors ${
+                  activeTab === "examples"
+                    ? "bg-white text-blue-600 shadow-sm"
+                    : "text-gray-600 hover:text-gray-800"
+                }`}
+              >
+                Examples
+              </button>
+            </>
+          )}
+          {isConfirming && (
+            <button
+              onClick={() => {}}
+              className="py-2 px-4 rounded-lg font-medium transition-colors bg-white text-blue-600 shadow-sm"
+            >
+              Changes Requested
+            </button>
+          )}
         </div>
 
         <div className="">
@@ -144,55 +172,82 @@ const AIAssistantModal = ({
             </div>
           ) : (
             <div className="flex flex-col" style={{ height: "400px" }}>
-              <div className="flex-1 overflow-y-auto space-y-3 mb-4 p-4 bg-white rounded-lg">
-                {messages.length === 0 ? (
-                  <div className="text-center text-gray-500 mt-8">
-                    <p className="text-lg mb-2">Start a conversation!</p>
-                    <p>
-                      Ask me anything about grades, students, or assignments.
-                    </p>
-                  </div>
-                ) : (
-                  messages.map((msg, idx) => (
-                    <div
-                      key={idx}
-                      className={`flex ${
-                        msg.role === "user" ? "justify-end" : "justify-start"
-                      }`}
-                    >
+              {!isConfirming && (
+                <div className="flex-1 overflow-y-auto space-y-3 mb-4 p-4 bg-white rounded-lg">
+                  {messages.length === 0 ? (
+                    <div className="text-center text-gray-500 mt-8">
+                      <p>
+                        Ask me anything about grades, students, or assignments.
+                        I can also help you with bulk updates of grades. You
+                        will see a confirmation of any changes before I make
+                        them.
+                      </p>
+                    </div>
+                  ) : (
+                    messages.map((msg, idx) => (
                       <div
-                        className={`max-w-[70%] p-4 rounded-lg ${
-                          msg.role === "user"
-                            ? "bg-blue-600 text-white"
-                            : "bg-gray-100 text-gray-800"
+                        key={idx}
+                        className={`flex ${
+                          msg.role === "user" ? "justify-end" : "justify-start"
                         }`}
                       >
-                        <p className="whitespace-pre-wrap">{msg.content}</p>
+                        <div
+                          className={`max-w-[70%] p-4 rounded-lg ${
+                            msg.role === "user"
+                              ? "bg-blue-600 text-white"
+                              : "bg-gray-100 text-gray-800"
+                          }`}
+                        >
+                          <p className="whitespace-pre-wrap">{msg.content}</p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                  {isLoading && (
+                    <div className="flex justify-start">
+                      <div className="bg-gray-100 p-4 rounded-lg">
+                        <div className="flex space-x-2">
+                          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                          <div
+                            className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                            style={{ animationDelay: "0.1s" }}
+                          ></div>
+                          <div
+                            className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                            style={{ animationDelay: "0.2s" }}
+                          ></div>
+                        </div>
                       </div>
                     </div>
-                  ))
-                )}
-                {isLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-gray-100 p-4 rounded-lg">
-                      <div className="flex space-x-2">
-                        <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                        <div
-                          className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
-                          style={{ animationDelay: "0.1s" }}
-                        ></div>
-                        <div
-                          className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
-                          style={{ animationDelay: "0.2s" }}
-                        ></div>
+                  )}
+                </div>
+              )}
+              {isConfirming && (
+                <div className="flex-1 overflow-y-auto space-y-3 mb-4 p-4 bg-white rounded-lg">
+                  <h3 className="font-semibold text-lg mb-4">
+                    Please confirm these grade changes:
+                  </h3>
+                  <div className="space-y-2">
+                    {changesRequested.map((change, idx) => (
+                      <div
+                        key={idx}
+                        className="p-3 bg-gray-50 rounded-lg border border-gray-200"
+                      >
+                        <p className="text-sm">
+                          <span className="font-medium">{change.student}</span>{" "}
+                          - {change.assignment}:
+                          <span className="ml-2 font-semibold text-blue-600">
+                            {change.grade}
+                          </span>
+                        </p>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
 
-              <div className="">
-                <div className="flex gap-2">
+              {!isConfirming && (
+                <div className="relative">
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
@@ -202,18 +257,31 @@ const AIAssistantModal = ({
                         handleSendMessage();
                       }
                     }}
-                    className="flex-1 p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                    className="w-full p-3 pr-12 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white"
                     rows={2}
                   />
-                  <button
-                    onClick={handleSendMessage}
-                    disabled={!message.trim() || isLoading}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors self-end"
-                  >
-                    Send
+                  {message.trim() && (
+                    <button
+                      onClick={handleSendMessage}
+                      disabled={isLoading}
+                      className="absolute bottom-2 right-2 bottom-3 px-3 py-1 h-8 text-sm bg-slate-600 text-white rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                    >
+                      <FaPaperPlane />
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {isConfirming && (
+                <div
+                  className="flex justify-end cursor-pointer"
+                  onClick={handleConfirmChanges}
+                >
+                  <button className="py-2 px-4 rounded-lg font-medium transition-colors bg-white text-blue-600 shadow-sm">
+                    Confirm
                   </button>
                 </div>
-              </div>
+              )}
             </div>
           )}
         </div>
