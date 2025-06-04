@@ -21,6 +21,9 @@ const Grid = () => {
     classId: class_id as Id<"classes">,
   });
   const grades = useQuery(api.grades.getGrades);
+  const classInfo = useQuery(api.classes.getClassInfo, {
+    id: class_id as Id<"classes">,
+  });
   const showClassGrade = useSettingValue("show_class_grade");
   const { dateOrderAsc, isLoading, setIsLoading } = useAppStore();
   const navigate = useNavigate();
@@ -34,7 +37,7 @@ const Grid = () => {
   if (isLoading || !students) {
     return (
       <div className="flex flex-col h-full w-full">
-        <Navbar />
+        <Navbar classData={undefined} />
         <LoadingSpinner />
       </div>
     );
@@ -43,7 +46,7 @@ const Grid = () => {
   if (!students.length && !isLoading) {
     return (
       <div className="flex flex-col h-full w-full">
-        <Navbar />
+        <Navbar classData={undefined} />
         <div className="p-4 overflow-auto">
           <h1 className="text-2xl font-semibold text-center text-gray-500 mt-16">
             No students are enrolled in this class.
@@ -69,9 +72,16 @@ const Grid = () => {
     navigate(`/class/${class_id}/assignment/${assignmentId}`);
   };
 
+  const classData = {
+    className: classInfo?.name,
+    students: students || [],
+    assignments: assignmentsData || [],
+    grades: grades || [],
+  };
+
   return (
     <div className="w-full h-full overflow-hidden flex flex-col bg-slate-50">
-      <Navbar showGridControls={true} />
+      <Navbar showGridControls={true} classData={classData} />
 
       <div className="hidden md:flex flex-1 overflow-auto hide-scrollbar">
         <div className="flex flex-col w-full bg-white">

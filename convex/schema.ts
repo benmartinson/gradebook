@@ -7,7 +7,7 @@ export default defineSchema({
 
   assignments: defineTable({
     assignedDate: v.string(),
-    assignmentType: v.float64(),
+    assignmentType: v.number(),
     description: v.string(),
     dueDate: v.string(),
     classId: v.id("classes"),

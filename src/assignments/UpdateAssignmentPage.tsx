@@ -88,7 +88,7 @@ const UpdateAssignmentPage = () => {
     e.preventDefault();
     const dataToSend = {
       ...formData,
-      assignmentType: formData.assignmentType || 1,
+      assignmentType: Number(formData.assignmentType) || 1,
       assignmentId: assignment_id as Id<"assignments">,
     };
     updateAssignment(dataToSend);

@@ -21,6 +21,42 @@ export const getStudentGradesObject = (
   });
 };
 
+export const buildContext = (classData: {
+  className?: string;
+  students?: Student[];
+  assignments?: Assignment[];
+  grades?: Grade[];
+}) => {
+  return `
+  Current Class Information:
+  - Class: ${classData.className || "Unknown"}
+  - Number of Students: ${classData.students?.length || 0}
+  - Number of Assignments: ${classData.assignments?.length || 0}
+  
+  Students in class:
+  ${classData.students?.map((s) => `- ${s.firstName} ${s.lastName}`).join("\n") || "No students"}
+  
+  Assignments:
+  ${classData.assignments?.map((a) => `- ${a.description} (Due: ${new Date(a.dueDate).toLocaleDateString()}, Max Points: ${a.maxPoints})`).join("\n") || "No assignments"}
+  
+  Grades:
+  ${
+    classData.grades
+      ?.map((g) => {
+        const student = classData.students?.find((s) => s._id === g.studentId);
+        const assignment = classData.assignments?.find(
+          (a) => a._id === g.assignmentId
+        );
+        return student && assignment
+          ? `- ${student.firstName} ${student.lastName}: ${g.rawScore}/${assignment.maxPoints} on ${assignment.description}`
+          : "";
+      })
+      .filter(Boolean)
+      .join("\n") || "No grades"
+  }
+  `;
+};
+
 export const getStudentClassGrade = (
   grades: Grade[],
   student: Student,

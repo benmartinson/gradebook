@@ -54,7 +54,6 @@ function AppRoutes() {
         element={
           <GradebookPage>
             <AdminBadge />
-            <BedrockTest />
             <Outlet />
           </GradebookPage>
         }

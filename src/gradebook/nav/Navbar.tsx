@@ -14,11 +14,23 @@ import { Id } from "../../../convex/_generated/dataModel";
 import BackToScoresButton from "../BackToScoresButton";
 import { useSettingValue, useAppStore } from "../../appStore";
 import classNames from "classnames";
+import AIAssistantModal from "../../components/AIAssistantModal";
 
-const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
+interface NavbarProps {
+  showGridControls?: boolean;
+  classData?: {
+    className?: string;
+    students?: any[];
+    assignments?: any[];
+    grades?: any[];
+  };
+}
+
+const Navbar = ({ showGridControls, classData }: NavbarProps) => {
   const navigate = useNavigate();
   const { class_id } = useParams();
   const { dateOrderAsc, setDateOrderAsc, isLoading } = useAppStore();
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
 
   const showDateOrder = useSettingValue("show_date_order_button");
   const allowAddAssignment = useSettingValue("allow_assignment_adding");
@@ -29,8 +41,16 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
   });
 
   return (
-    <div className="flex w-full justify-end items-center py-2 md:border-b border-gray-200 h-14 px-4 min-h-14 bg-white">
-      <div className="flex items-center gap-4">
+    <>
+      <div className="flex w-full justify-between items-center py-2 md:border-b border-gray-200 h-14 px-4 min-h-14 bg-white">
+        <button
+          onClick={() => setIsAIModalOpen(true)}
+          className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-150 underline-offset-2 hover:underline"
+        >
+          Open AI Assistant
+        </button>
+        
+        <div className="flex items-center gap-4">
         {showGridControls && showDateOrder && (
           <button
             className="flex items-center max-md:hidden gap-1.5 text-sm text-slate-600 hover:text-slate-900 transition-colors duration-150"
@@ -57,8 +77,15 @@ const Navbar = ({ showGridControls }: { showGridControls?: boolean }) => {
             <BackToScoresButton />
           </div>
         )}
+        </div>
       </div>
-    </div>
+      
+      <AIAssistantModal 
+        isOpen={isAIModalOpen} 
+        onClose={() => setIsAIModalOpen(false)}
+        classData={classData}
+      />
+    </>
   );
 };
 
