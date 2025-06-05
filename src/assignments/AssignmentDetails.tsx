@@ -73,7 +73,10 @@ const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
       [fieldName]: valueToSet,
     }));
     setHasMadeChanges(true);
-    handleUpdateAssignment({ field: fieldName, value: valueToSet });
+    handleUpdateAssignment({
+      field: fieldName,
+      value: valueToSet,
+    });
   };
 
   const handleUpdateAssignment = async ({
@@ -87,9 +90,11 @@ const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
       value = parseInt(value);
     }
     await updateAssignment({
-      field,
-      value,
-      id: id as Id<"assignments">,
+      ...formData,
+      maxPoints: Number(field === "maxPoints" ? value : formData.maxPoints),
+      weight: Number(field === "weight" ? value : formData.weight),
+      [field]: value,
+      assignmentId: id as Id<"assignments">,
     });
     setSavedFields((prev) => ({ ...prev, [field]: true }));
     setTimeout(() => {

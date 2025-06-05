@@ -106,6 +106,7 @@ const AIAssistantModal = ({
           { role: "assistant", content: result.response },
         ]);
       } else {
+        console.log("error", result);
         setMessages((prev) => [
           ...prev,
           {
@@ -115,6 +116,7 @@ const AIAssistantModal = ({
         ]);
       }
     } catch (error) {
+      console.log("error", error);
       setMessages((prev) => [
         ...prev,
         {

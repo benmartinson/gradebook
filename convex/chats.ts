@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { action } from "./_generated/server";
 import { api } from "./_generated/api";
+import { createHmac } from "crypto";
 import {
   BedrockRuntimeClient,
   InvokeModelCommand,
@@ -14,16 +15,23 @@ export const getResponse = action({
   handler: async (ctx, args) => {
     const { message, context } = args;
 
-    // Ensure credentials are not undefined
     if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
       throw new Error("Missing AWS credentials in environment variables");
+    }
+
+    // Debug credentials (don't log actual values in production)
+    const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+    const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+
+    if (!accessKeyId || !secretAccessKey) {
+      throw new Error("AWS credentials are missing");
     }
 
     const client = new BedrockRuntimeClient({
       region: "ap-southeast-2",
       credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+        accessKeyId: accessKeyId.trim(),
+        secretAccessKey: secretAccessKey.trim(),
       },
     });
 
@@ -71,14 +79,12 @@ Always explain the changes before showing the JSON structure.
     try {
       const response = await client.send(command);
       const result = JSON.parse(new TextDecoder().decode(response.body));
-      // Anthropic Claude's response is typically in result.content[0].text
+      // Claude's response is typically in result.content[0].text
       const modelResponse = result.content?.[0]?.text || "";
-      console.log({ modelResponse });
-      
-      // Try to extract JSON from the response
+
       let extractedData = null;
       const jsonMatch = modelResponse.match(/\{[\s\S]*"confirm"[\s\S]*\}/);
-      
+
       if (jsonMatch) {
         try {
           extractedData = JSON.parse(jsonMatch[0]);
@@ -87,17 +93,39 @@ Always explain the changes before showing the JSON structure.
           console.log("Failed to parse extracted JSON:", e);
         }
       }
-      
-      return { 
-        success: true, 
+
+      return {
+        success: true,
         response: modelResponse,
-        data: extractedData 
+        data: extractedData,
       };
     } catch (error: any) {
       console.error("Bedrock Error:", error);
+      console.error("Error details:", {
+        message: error.message,
+        code: error.Code,
+        statusCode: error.$metadata?.httpStatusCode,
+        requestId: error.$metadata?.requestId,
+      });
+
+      // Provide user-friendly error messages
+      let userMessage = "Failed to connect to AI service. Please try again.";
+
+      if (
+        error.message?.includes("Authorization header") ||
+        error.message?.includes("key=value pair")
+      ) {
+        userMessage =
+          "AI service authentication failed. Please contact support.";
+      } else if (error.Code === "AccessDeniedException") {
+        userMessage = "AI service access denied. Please contact support.";
+      } else if (error.$metadata?.httpStatusCode === 400) {
+        userMessage = "Invalid request to AI service. Please try again.";
+      }
+
       return {
         success: false,
-        error: error.message || "Failed to connect to Bedrock",
+        error: userMessage,
       };
     }
   },

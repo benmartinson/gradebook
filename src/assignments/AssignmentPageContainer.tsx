@@ -23,7 +23,7 @@ const AssignmentPageContainer = ({
   const navigate = useNavigate();
   const { setIsLoading } = useAppStore();
   const assignment = useQuery(api.assignments.getAssignment, {
-    id: id as Id<"assignments">,
+    assignmentId: id as Id<"assignments">,
   });
 
   useEffect(() => {
