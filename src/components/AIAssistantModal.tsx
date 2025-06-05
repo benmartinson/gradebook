@@ -116,7 +116,6 @@ const AIAssistantModal = ({
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setIsLoading(true);
 
-    // Build context string from class data
     let context = "";
     if (classData) {
       context = buildContext(classData);
@@ -124,8 +123,8 @@ const AIAssistantModal = ({
 
     try {
       const result = await getResponse({ message: userMessage, context });
+      console.log("result", result);
 
-      // Check if there's extracted data with confirmation
       if (result.data?.confirm && result.data?.changesRequested) {
         setIsConfirming(true);
         setChangesRequested(result.data.changesRequested);

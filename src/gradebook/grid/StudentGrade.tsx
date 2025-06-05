@@ -31,6 +31,11 @@ const StudentGrade = ({
   );
   const hasEditedGrade = editedGrade !== "";
 
+  // Sync local state with database grade when it changes
+  useEffect(() => {
+    setGradeValue(grade?.rawScore?.toString() ?? "");
+  }, [grade?.rawScore]);
+
   useEffect(() => {
     if (allowGridGrading && isHovered && inputRef.current) {
       inputRef.current.focus();

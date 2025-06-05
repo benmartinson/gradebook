@@ -155,26 +155,29 @@ export const getSystemPrompt = (context: string) => {
   
   You cannot help with anything else. You are only a gradebook assistant. If the user asks you to do something that is not related to the gradebook, you should say "I'm sorry, I can only help with gradebook related questions."
   
-  You can also help with bulk updates of grades. When the user asks you to update grades, you should:
-  1. First explain what changes you'll make in natural language
-  2. Then include a JSON structure with the changes somewhere in your response
-  3. The JSON MUST be valid and include these exact fields:
+  You can also help with bulk updates of grades. When the user asks you to update grades, you MUST respond with ONLY a JSON object, nothing else. Do not include any explanatory text before or after the JSON.
+  
+  The response MUST start with { and be a valid JSON object with this exact structure:
   
   {
     "confirm": true,
     "changesRequested": [
       {
-        "studentId": "asd34kasd",
+        "studentId": "actual_student_id",
         "studentName": "Student Full Name",
-        "assignmentId": "J12K43L", 
+        "assignmentId": "actual_assignment_id", 
         "assignmentName": "Assignment Name",
         "grade": 99
       }
     ]
   }
   
-  IMPORTANT: You MUST include the actual IDs from the class data above. Look for the ID values in parentheses.
-  Include both IDs and names for clarity.
-  Always explain the changes before showing the JSON structure.
+  CRITICAL RULES:
+  1. When updating grades, respond with ONLY the JSON object
+  2. Do NOT include any text before the JSON
+  3. Do NOT include any text after the JSON
+  4. The response MUST start with the opening brace {
+  5. Include the actual IDs from the class data (look for ID values in parentheses)
+  6. Include both IDs and names for clarity
   `;
 };
