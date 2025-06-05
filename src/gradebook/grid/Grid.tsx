@@ -97,7 +97,7 @@ const Grid = () => {
               <table className="border-collapse w-full">
                 <thead className="sticky top-0 z-20 bg-slate-100 shadow-sm flex justify-start">
                   <tr className="bg-slate-100 shadow-sm flex justify-start">
-                    <th className="sticky left-0  z-30 bg-slate-100 p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-[200px]"></th>
+                    <th className="sticky left-0  z-30 bg-slate-100 p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-[160px]"></th>
 
                     {sortedAssignments.map((assignment) => (
                       <th
@@ -115,7 +115,7 @@ const Grid = () => {
                       key={student._id}
                       className="hover:bg-slate-50 transition-colors duration-150 group flex items-center justify-start"
                     >
-                      <td className="sticky bg-white group-hover:bg-slate-50 left-0 z-10 p-2 whitespace-nowrap w-[200px] flex items-center ">
+                      <td className="sticky bg-white group-hover:bg-slate-50 left-0 z-10 p-2 whitespace-nowrap w-[160px] flex items-center ">
                         <StudentInfo student={student} />
                       </td>
 

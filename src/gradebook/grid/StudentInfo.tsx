@@ -9,7 +9,7 @@ const StudentInfo = ({ student }: { student: Student }) => {
   const initials = student.firstName.charAt(0) + student.lastName.charAt(0);
 
   return (
-    <div className="flex items-center gap-2 justify-start">
+    <div className="flex items-center gap-2 pl-2 justify-start">
       {showInitials && (
         <div className="w-8 h-8 bg-sky-500 rounded-full flex items-center justify-center shrink-0">
           <span className="text-white text-sm font-semibold">{initials}</span>
