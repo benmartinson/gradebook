@@ -17,8 +17,6 @@ const StudentGrade = ({
   student: Student;
 }) => {
   const grades = useQuery(api.grades.getGrades);
-  const navigate = useNavigate();
-  const { class_id } = useParams();
   const allowGridGrading = useSettingValue("allow_grid_grading");
   const [isHovered, setIsHovered] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);

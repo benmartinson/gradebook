@@ -34,10 +34,10 @@ export const buildContext = (classData: {
   - Number of Assignments: ${classData.assignments?.length || 0}
   
   Students in class:
-  ${classData.students?.map((s) => `- ${s.firstName} ${s.lastName}`).join("\n") || "No students"}
+  ${classData.students?.map((s) => `- ${s.firstName} ${s.lastName} (ID: ${s._id})`).join("\n") || "No students"}
   
   Assignments:
-  ${classData.assignments?.map((a) => `- ${a.description} (Due: ${new Date(a.dueDate).toLocaleDateString()}, Max Points: ${a.maxPoints})`).join("\n") || "No assignments"}
+  ${classData.assignments?.map((a) => `- ${a.description} (ID: ${a._id}, Due: ${new Date(a.dueDate).toLocaleDateString()}, Max Points: ${a.maxPoints})`).join("\n") || "No assignments"}
   
   Grades:
   ${
@@ -144,4 +144,37 @@ export const updateOrAddGrade = async (
       });
     }
   }
+};
+
+export const getSystemPrompt = (context: string) => {
+  return `You are an AI assistant for a gradebook application. You help teachers manage grades, students, and assignments.
+  ${context ? `Here is the current class data:\n${context}` : ""}
+  
+  You can provide insights about student performance, help with grade calculations, answer questions about the class data, and help manage grades.
+  Be helpful, concise, and professional in your responses. When referring to specific students or assignments, use the data provided above.
+  
+  You cannot help with anything else. You are only a gradebook assistant. If the user asks you to do something that is not related to the gradebook, you should say "I'm sorry, I can only help with gradebook related questions."
+  
+  You can also help with bulk updates of grades. When the user asks you to update grades, you should:
+  1. First explain what changes you'll make in natural language
+  2. Then include a JSON structure with the changes somewhere in your response
+  3. The JSON MUST be valid and include these exact fields:
+  
+  {
+    "confirm": true,
+    "changesRequested": [
+      {
+        "studentId": "asd34kasd",
+        "studentName": "Student Full Name",
+        "assignmentId": "J12K43L", 
+        "assignmentName": "Assignment Name",
+        "grade": 99
+      }
+    ]
+  }
+  
+  IMPORTANT: You MUST include the actual IDs from the class data above. Look for the ID values in parentheses.
+  Include both IDs and names for clarity.
+  Always explain the changes before showing the JSON structure.
+  `;
 };

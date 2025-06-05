@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import Modal from "../gradebook/common/Modal";
-import { useAction } from "convex/react";
+import { useAction, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useParams } from "react-router-dom";
 import { Id } from "../../convex/_generated/dataModel";
 import { buildContext } from "../helpers";
-import { FaPaperPlane, FaTimes } from "react-icons/fa";
+import { FaPaperPlane, FaTimes, FaSpinner } from "react-icons/fa";
 
 interface AIAssistantModalProps {
   isOpen: boolean;
@@ -23,15 +23,18 @@ const AIAssistantModal = ({
   onClose,
   classData,
 }: AIAssistantModalProps) => {
-  const [activeTab, setActiveTab] = useState<"examples" | "chat">("chat");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<
     Array<{ role: "user" | "assistant"; content: string }>
   >([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const getResponse = useAction(api.chats.getResponse);
+  const bulkUpdateGrades = useMutation(api.grades.bulkUpdateGrades);
   const [isConfirming, setIsConfirming] = useState(false);
   const [changesRequested, setChangesRequested] = useState<any[]>([]);
+  const { class_id } = useParams();
 
   const examples = [
     {
@@ -43,9 +46,11 @@ const AIAssistantModal = ({
   ];
 
   useEffect(() => {
-    // setMessages([]);
+    setMessages([]);
     setIsConfirming(false);
     setChangesRequested([]);
+    setShowSuccess(false);
+    setIsUpdating(false);
 
     const textarea = document.querySelector("textarea");
     if (textarea) {
@@ -72,9 +77,35 @@ const AIAssistantModal = ({
     }
   }, [messages]);
 
-  const handleConfirmChanges = () => {
-    console.log("confirming changes", changesRequested);
-    onClose();
+  const handleConfirmChanges = async () => {
+    if (changesRequested.length === 0) return;
+
+    setIsUpdating(true);
+
+    try {
+      // Transform the data to match the expected format
+      const gradeUpdates = changesRequested.map((change) => ({
+        studentId: change.studentId as Id<"students">,
+        assignmentId: change.assignmentId as Id<"assignments">,
+        grade: change.grade,
+      }));
+
+      await bulkUpdateGrades({
+        gradeUpdates,
+      });
+
+      setShowSuccess(true);
+
+      // Close modal after 3 seconds
+      setTimeout(() => {
+        onClose();
+      }, 3000);
+    } catch (error) {
+      console.error("Failed to update grades:", error);
+      setIsConfirming(false);
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   const handleSendMessage = async () => {
@@ -130,11 +161,6 @@ const AIAssistantModal = ({
     }
   };
 
-  const handleExampleClick = (example: string) => {
-    setActiveTab("chat");
-    setMessage(example);
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -149,21 +175,14 @@ const AIAssistantModal = ({
         <div className="flex justify-between items-center mb-4">
           <div className="flex gap-2">
             {!isConfirming && (
-              <button
-                onClick={() => setActiveTab("chat")}
-                className={`py-2 px-4 rounded-lg font-medium transition-colors ${
-                  activeTab === "chat"
-                    ? "bg-white text-blue-600 shadow-sm"
-                    : "text-gray-600 hover:text-gray-800"
-                }`}
-              >
+              <button className="py-2 px-4 rounded-lg font-medium transition-colors bg-white text-blue-500 shadow-sm">
                 Chat
               </button>
             )}
             {isConfirming && (
               <button
                 onClick={() => {}}
-                className="py-2 px-4 rounded-lg font-medium transition-colors bg-white text-blue-600 shadow-sm"
+                className="py-2 px-4 rounded-lg font-medium transition-colors bg-white text-blue-500 shadow-sm"
               >
                 Changes Requested
               </button>
@@ -187,16 +206,14 @@ const AIAssistantModal = ({
                   also help you with bulk updates of grades. You will see a
                   confirmation of any changes before I make them.
                 </p>
-                <div className="flex flex-col mt-10 space-y-2 max-md:hidden">
-                  {examples.map((example, idx) => (
-                    <>
+                <div className="flex flex-col mt-10 space-y-3 max-md:hidden">
+                  {examples.map((example) => (
+                    <div>
                       <span className="text-xs font-medium text-gray-500">
                         {example.cat}
                       </span>
-                      <p className="text-sm text-gray-700 mt-0.5">
-                        {example.text}
-                      </p>
-                    </>
+                      <p className="text-sm text-gray-700 ">"{example.text}"</p>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -211,7 +228,7 @@ const AIAssistantModal = ({
                   <div
                     className={`max-w-[70%] p-4 rounded-lg ${
                       msg.role === "user"
-                        ? "bg-blue-600 text-white"
+                        ? "bg-blue-100 text-blue-900"
                         : "bg-gray-100 text-gray-800"
                     }`}
                   >
@@ -251,8 +268,10 @@ const AIAssistantModal = ({
                   className="p-3 bg-gray-50 rounded-lg border border-gray-200"
                 >
                   <p className="text-sm">
-                    <span className="font-medium">{change.student}</span> -{" "}
-                    {change.assignment}:
+                    <span className="font-medium">
+                      {change.studentName || change.student}
+                    </span>{" "}
+                    - {change.assignmentName || change.assignment}:
                     <span className="ml-2 font-semibold text-blue-600">
                       {change.grade}
                     </span>
@@ -289,14 +308,23 @@ const AIAssistantModal = ({
           </div>
         )}
 
-        {isConfirming && (
-          <div
-            className="flex justify-end cursor-pointer"
-            onClick={handleConfirmChanges}
-          >
-            <button className="py-2 px-4 rounded-lg font-medium transition-colors bg-white text-blue-600 shadow-sm">
-              Confirm
+        {isConfirming && !showSuccess && (
+          <div className="flex justify-end">
+            <button
+              onClick={handleConfirmChanges}
+              disabled={isUpdating}
+              className="py-2 px-4 rounded-lg font-medium transition-colors bg-white text-green-500 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              {isUpdating ? <FaSpinner className="animate-spin" /> : "Confirm"}
             </button>
+          </div>
+        )}
+
+        {showSuccess && (
+          <div className="flex justify-center items-center py-8">
+            <div className="bg-green-100 text-green-700 px-6 py-3 rounded-lg font-medium">
+              ✓ Grades updated successfully!
+            </div>
           </div>
         )}
       </div>

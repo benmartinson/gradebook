@@ -29,7 +29,7 @@ export default defineSchema({
     assignmentId: v.string(),
     rawScore: v.float64(),
     studentId: v.string(),
-  }),
+  }).index("byStudentAndAssignment", ["studentId", "assignmentId"]),
 
   students: defineTable({
     firstName: v.string(),

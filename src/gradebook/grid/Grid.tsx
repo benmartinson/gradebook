@@ -24,7 +24,6 @@ const Grid = () => {
   const classInfo = useQuery(api.classes.getClassInfo, {
     id: class_id as Id<"classes">,
   });
-  const showClassGrade = useSettingValue("show_class_grade");
   const { dateOrderAsc, isLoading, setIsLoading } = useAppStore();
   const navigate = useNavigate();
 

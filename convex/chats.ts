@@ -1,11 +1,10 @@
 import { v } from "convex/values";
 import { action } from "./_generated/server";
-import { api } from "./_generated/api";
-import { createHmac } from "crypto";
 import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
+import { getSystemPrompt } from "../src/helpers";
 
 export const getResponse = action({
   args: {
@@ -19,7 +18,6 @@ export const getResponse = action({
       throw new Error("Missing AWS credentials in environment variables");
     }
 
-    // Debug credentials (don't log actual values in production)
     const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
     const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
@@ -35,33 +33,7 @@ export const getResponse = action({
       },
     });
 
-    const systemPrompt = `You are an AI assistant for a gradebook application. You help teachers manage grades, students, and assignments.
-${context ? `Here is the current class data:\n${context}` : ""}
-
-You can provide insights about student performance, help with grade calculations, answer questions about the class data, and help manage grades.
-Be helpful, concise, and professional in your responses. When referring to specific students or assignments, use the data provided above.
-
-You cannot help with anything else. You are only a gradebook assistant. If the user asks you to do something that is not related to the gradebook, you should say "I'm sorry, I can only help with gradebook related questions."
-
-You can also help with bulk updates of grades. When the user asks you to update grades, you should:
-1. First explain what changes you'll make in natural language
-2. Then include a JSON structure with the changes somewhere in your response
-3. The JSON MUST be valid and include these exact fields:
-
-{
-  "confirm": true,
-  "changesRequested": [
-    {
-      "student": "Student Full Name",
-      "assignment": "Assignment Name",
-      "grade": 99
-    }
-  ]
-}
-
-Make sure to use the exact student names and assignment names from the provided class data.
-Always explain the changes before showing the JSON structure.
-`;
+    const systemPrompt = getSystemPrompt(context || "");
 
     const command = new InvokeModelCommand({
       modelId: "anthropic.claude-3-haiku-20240307-v1:0",
@@ -88,7 +60,6 @@ Always explain the changes before showing the JSON structure.
       if (jsonMatch) {
         try {
           extractedData = JSON.parse(jsonMatch[0]);
-          console.log("Extracted data:", extractedData);
         } catch (e) {
           console.log("Failed to parse extracted JSON:", e);
         }

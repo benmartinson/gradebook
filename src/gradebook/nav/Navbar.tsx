@@ -1,19 +1,8 @@
 import { useState } from "react";
-import Select from "react-select";
-import {
-  FaSort,
-  FaBookOpen,
-  FaExchangeAlt,
-  FaPlus,
-  FaBars,
-} from "react-icons/fa";
-import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { FaSort, FaPlus } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
-import { Id } from "../../../convex/_generated/dataModel";
 import BackToScoresButton from "../BackToScoresButton";
 import { useSettingValue, useAppStore } from "../../appStore";
-import classNames from "classnames";
 import AIAssistantModal from "../../components/AIAssistantModal";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 
@@ -36,11 +25,6 @@ const Navbar = ({ showGridControls, classData }: NavbarProps) => {
   const showDateOrder = useSettingValue("show_date_order_button");
   const allowAddAssignment = useSettingValue("allow_assignment_adding");
 
-  const barsIconClasses = classNames({
-    "[clip-path:polygon(0%_100%,_100%_-20%,_100%_100%)]": dateOrderAsc,
-    "[clip-path:polygon(0%_-20%,_100%_100%,_0%_100%)]": !dateOrderAsc,
-  });
-
   return (
     <>
       <div className="flex w-full justify-between items-center py-2 md:border-b border-gray-200 h-14 px-4 min-h-14 bg-white">
@@ -48,8 +32,12 @@ const Navbar = ({ showGridControls, classData }: NavbarProps) => {
           onClick={() => setIsAIModalOpen(true)}
           className="text-blue-600 hover:text-blue-700 flex gap-1 items-center text-sm font-medium transition-colors duration-150 underline-offset-2 hover:underline focus:outline-none "
         >
-          Open AI Assistant
-          <FaWandMagicSparkles size={16} />
+          {!isAIModalOpen && (
+            <>
+              Open AI Assistant
+              <FaWandMagicSparkles size={16} />
+            </>
+          )}
         </button>
 
         <div className="flex items-center gap-4">
