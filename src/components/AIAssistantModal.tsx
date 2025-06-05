@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import Modal from "../gradebook/common/Modal";
 import { useAction, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useParams } from "react-router-dom";
 import { Id } from "../../convex/_generated/dataModel";
 import { buildContext } from "../helpers";
-import { FaPaperPlane, FaTimes, FaSpinner } from "react-icons/fa";
+import ModalHeader from "./AIAssistant/ModalHeader";
+import ChatMessages from "./AIAssistant/ChatMessages";
+import MessageInput from "./AIAssistant/MessageInput";
+import ConfirmationView from "./AIAssistant/ConfirmationView";
+import SuccessMessage from "./AIAssistant/SuccessMessage";
+import Examples from "./AIAssistant/Examples";
 
 interface AIAssistantModalProps {
   isOpen: boolean;
@@ -44,6 +48,10 @@ const AIAssistantModal = ({
     { cat: "Analytics", text: "Show class average for last week" },
     { cat: "Report", text: "Students with grades below 70%" },
   ];
+
+  const handleExampleClick = (example: string) => {
+    setMessage(example);
+  };
 
   useEffect(() => {
     setMessages([]);
@@ -171,161 +179,33 @@ const AIAssistantModal = ({
         className="bg-slate-50 rounded-lg p-4 md:p-6 overflow-hidden flex flex-col min-w-full h-full"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex gap-2">
-            {!isConfirming && (
-              <button className="py-2 px-4 rounded-lg font-medium transition-colors bg-white text-blue-500 shadow-sm">
-                Chat
-              </button>
-            )}
-            {isConfirming && (
-              <button
-                onClick={() => {}}
-                className="py-2 px-4 rounded-lg font-medium transition-colors bg-white text-blue-500 shadow-sm"
-              >
-                Changes Requested
-              </button>
-            )}
-          </div>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 focus:outline-none flex items-center justify-center"
-            aria-label="Close modal"
-          >
-            <FaTimes size={20} />
-          </button>
-        </div>
+        <ModalHeader isConfirming={isConfirming} onClose={onClose} />
 
-        {!isConfirming && (
-          <div className="flex-grow overflow-y-auto space-y-3 mb-4 p-4 bg-white rounded-lg messages-container">
-            {messages.length === 0 ? (
-              <div className="text-center text-gray-500 mt-8">
-                <p>
-                  Ask me anything about grades, students, or assignments. I can
-                  also help you with bulk updates of grades. You will see a
-                  confirmation of any changes before I make them.
-                </p>
-                <div className="flex flex-col mt-10 space-y-3 max-md:hidden">
-                  {examples.map((example) => (
-                    <div>
-                      <span className="text-xs font-medium text-gray-500">
-                        {example.cat}
-                      </span>
-                      <p className="text-sm text-gray-700 ">"{example.text}"</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              messages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`flex ${
-                    msg.role === "user" ? "justify-end" : "justify-start"
-                  }`}
-                >
-                  <div
-                    className={`max-w-[70%] p-4 rounded-lg ${
-                      msg.role === "user"
-                        ? "bg-blue-100 text-blue-900"
-                        : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    <p className="whitespace-pre-wrap">{msg.content}</p>
-                  </div>
-                </div>
-              ))
-            )}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-gray-100 p-4 rounded-lg">
-                  <div className="flex space-x-2">
-                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                    <div
-                      className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
-                      style={{ animationDelay: "0.1s" }}
-                    ></div>
-                    <div
-                      className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
-                      style={{ animationDelay: "0.2s" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+        {!isConfirming &&
+          (messages.length === 0 ? (
+            <Examples examples={examples} />
+          ) : (
+            <ChatMessages messages={messages} isLoading={isLoading} />
+          ))}
+
         {isConfirming && (
-          <div className="flex-1 overflow-y-auto space-y-3 mb-4 p-4 bg-white rounded-lg">
-            <h3 className="font-semibold text-lg mb-4">
-              Please confirm these grade changes:
-            </h3>
-            <div className="space-y-2">
-              {changesRequested.map((change, idx) => (
-                <div
-                  key={idx}
-                  className="p-3 bg-gray-50 rounded-lg border border-gray-200"
-                >
-                  <p className="text-sm">
-                    <span className="font-medium">
-                      {change.studentName || change.student}
-                    </span>{" "}
-                    - {change.assignmentName || change.assignment}:
-                    <span className="ml-2 font-semibold text-blue-600">
-                      {change.grade}
-                    </span>
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <ConfirmationView
+            changesRequested={changesRequested}
+            onConfirm={handleConfirmChanges}
+            isUpdating={isUpdating}
+          />
         )}
 
-        {!isConfirming && (
-          <div className="relative">
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSendMessage();
-                }
-              }}
-              className="w-full p-3 pr-12 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white"
-              rows={2}
-            />
-            {message.trim() && (
-              <button
-                onClick={handleSendMessage}
-                disabled={isLoading}
-                className="absolute bottom-2 right-2 bottom-3 px-3 py-1 h-8 text-sm bg-slate-600 text-white rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer transition-colors"
-              >
-                <FaPaperPlane />
-              </button>
-            )}
-          </div>
+        {!isConfirming && !showSuccess && (
+          <MessageInput
+            message={message}
+            setMessage={setMessage}
+            onSendMessage={handleSendMessage}
+            isLoading={isLoading}
+          />
         )}
 
-        {isConfirming && !showSuccess && (
-          <div className="flex justify-end">
-            <button
-              onClick={handleConfirmChanges}
-              disabled={isUpdating}
-              className="py-2 px-4 rounded-lg font-medium transition-colors bg-white text-green-500 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              {isUpdating ? <FaSpinner className="animate-spin" /> : "Confirm"}
-            </button>
-          </div>
-        )}
-
-        {showSuccess && (
-          <div className="flex justify-center items-center py-8">
-            <div className="bg-green-100 text-green-700 px-6 py-3 rounded-lg font-medium">
-              ✓ Grades updated successfully!
-            </div>
-          </div>
-        )}
+        <SuccessMessage show={showSuccess} />
       </div>
     </div>
   );
