@@ -10,9 +10,15 @@ export const getResponse = action({
   args: {
     message: v.string(),
     context: v.optional(v.string()),
+    permissions: v.object({
+      allowAssignmentUpdate: v.boolean(),
+      allowAssignmentCreation: v.boolean(),
+      allowAssignmentDeletion: v.boolean(),
+      allowGradeUpdate: v.boolean(),
+    }),
   },
   handler: async (ctx, args) => {
-    const { message, context } = args;
+    const { message, context, permissions } = args;
 
     if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
       throw new Error("Missing AWS credentials in environment variables");
@@ -33,7 +39,7 @@ export const getResponse = action({
       },
     });
 
-    const systemPrompt = getSystemPrompt(context || "");
+    const systemPrompt = getSystemPrompt(context || "", permissions);
 
     const command = new InvokeModelCommand({
       modelId: "anthropic.claude-3-haiku-20240307-v1:0",

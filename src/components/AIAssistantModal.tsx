@@ -10,11 +10,13 @@ import MessageInput from "./AIAssistant/MessageInput";
 import ConfirmationView from "./AIAssistant/ConfirmationView";
 import SuccessMessage from "./AIAssistant/SuccessMessage";
 import Examples from "./AIAssistant/Examples";
+import { useSettingValue } from "../appStore";
 
 interface AIAssistantModalProps {
   isOpen: boolean;
   onClose: () => void;
   classData?: {
+    _id?: Id<"classes">;
     className?: string;
     students?: any[];
     assignments?: any[];
@@ -34,24 +36,18 @@ const AIAssistantModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const getResponse = useAction(api.chats.getResponse);
   const bulkUpdateGrades = useMutation(api.grades.bulkUpdateGrades);
+  const addAssignment = useMutation(api.assignments.addAssignment);
+  const updateAssignment = useMutation(api.assignments.updateAssignment);
+  const deleteAssignment = useMutation(api.assignments.deleteAssignment);
   const [isConfirming, setIsConfirming] = useState(false);
   const [changesRequested, setChangesRequested] = useState<any[]>([]);
-  const { class_id } = useParams();
-
-  const examples = [
-    {
-      cat: "Bulk Update",
-      text: "Grades for test 1: Mark 99, Patrick 88, Leah: 50",
-    },
-    { cat: "Analytics", text: "Show class average for last week" },
-    { cat: "Report", text: "Students with grades below 70%" },
-  ];
-
-  const handleExampleClick = (example: string) => {
-    setMessage(example);
-  };
+  const allowAssignmentUpdate = useSettingValue("allow_assignment_update");
+  const allowAssignmentCreation = useSettingValue("allow_assignment_creation");
+  const allowAssignmentDeletion = useSettingValue("allow_assignment_deletion");
+  const allowGradeUpdate = useSettingValue("allow_grade_update");
 
   useEffect(() => {
     setMessages([]);
@@ -59,6 +55,7 @@ const AIAssistantModal = ({
     setChangesRequested([]);
     setShowSuccess(false);
     setIsUpdating(false);
+    setSuccessMessage("");
 
     const textarea = document.querySelector("textarea");
     if (textarea) {
@@ -86,22 +83,61 @@ const AIAssistantModal = ({
   }, [messages]);
 
   const handleConfirmChanges = async () => {
+    console.log("changesRequested", changesRequested);
     if (changesRequested.length === 0) return;
 
     setIsUpdating(true);
 
     try {
-      // Transform the data to match the expected format
-      const gradeUpdates = changesRequested.map((change) => ({
-        studentId: change.studentId as Id<"students">,
-        assignmentId: change.assignmentId as Id<"assignments">,
-        grade: change.grade,
-      }));
+      // Separate grade and assignment changes
+      const gradeChanges = changesRequested.filter(
+        (change) => change.type === "grade"
+      );
+      const assignmentChanges = changesRequested.filter(
+        (change) => change.type === "assignment"
+      );
 
-      await bulkUpdateGrades({
-        gradeUpdates,
-      });
+      // Handle grade updates
+      if (gradeChanges.length > 0) {
+        const gradeUpdates = gradeChanges.map((change) => ({
+          studentId: change.studentId as Id<"students">,
+          assignmentId: change.assignmentId as Id<"assignments">,
+          grade: change.grade,
+        }));
 
+        await bulkUpdateGrades({
+          gradeUpdates,
+        });
+      }
+
+      // Handle assignment operations
+      for (const change of assignmentChanges) {
+        if (change.action === "create" && change.assignment) {
+          await addAssignment({
+            description: change.assignment.description,
+            assignmentType: change.assignment.assignmentType || 0,
+            weight: change.assignment.weight,
+            maxPoints: change.assignment.maxPoints,
+            dueDate: change.assignment.dueDate,
+            assignedDate: new Date().toISOString(),
+            notes: "",
+            classId: classData?._id as Id<"classes">,
+            isExtraCredit: false,
+          });
+        } else if (change.action === "update" && change.assignmentId) {
+          await updateAssignment({
+            assignmentId: change.assignmentId as Id<"assignments">,
+            field: change.field,
+            value: change.value,
+          });
+        } else if (change.action === "delete" && change.assignmentId) {
+          await deleteAssignment({
+            id: change.assignmentId as Id<"assignments">,
+          });
+        }
+      }
+
+      setSuccessMessage("Changes applied successfully!");
       setShowSuccess(true);
 
       // Close modal after 3 seconds
@@ -109,7 +145,7 @@ const AIAssistantModal = ({
         onClose();
       }, 3000);
     } catch (error) {
-      console.error("Failed to update grades:", error);
+      console.error("Failed to update:", error);
       setIsConfirming(false);
     } finally {
       setIsUpdating(false);
@@ -130,7 +166,16 @@ const AIAssistantModal = ({
     }
 
     try {
-      const result = await getResponse({ message: userMessage, context });
+      const result = await getResponse({
+        message: userMessage,
+        context,
+        permissions: {
+          allowAssignmentUpdate,
+          allowAssignmentCreation,
+          allowAssignmentDeletion,
+          allowGradeUpdate,
+        },
+      });
       console.log("result", result);
 
       if (result.data?.confirm && result.data?.changesRequested) {
@@ -183,7 +228,14 @@ const AIAssistantModal = ({
 
         {!isConfirming &&
           (messages.length === 0 ? (
-            <Examples examples={examples} />
+            <Examples
+              permissions={{
+                allowAssignmentUpdate: allowAssignmentUpdate || false,
+                allowAssignmentCreation: allowAssignmentCreation || false,
+                allowAssignmentDeletion: allowAssignmentDeletion || false,
+                allowGradeUpdate: allowGradeUpdate || false,
+              }}
+            />
           ) : (
             <ChatMessages messages={messages} isLoading={isLoading} />
           ))}
@@ -193,6 +245,7 @@ const AIAssistantModal = ({
             changesRequested={changesRequested}
             onConfirm={handleConfirmChanges}
             isUpdating={isUpdating}
+            showConfirm={!showSuccess}
           />
         )}
 
@@ -205,7 +258,7 @@ const AIAssistantModal = ({
           />
         )}
 
-        <SuccessMessage show={showSuccess} />
+        <SuccessMessage show={showSuccess} message={successMessage} />
       </div>
     </div>
   );

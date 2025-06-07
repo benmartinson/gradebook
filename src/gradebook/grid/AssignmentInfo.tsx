@@ -30,9 +30,9 @@ const AssignmentInfo = ({ assignment }: { assignment: Assignment }) => {
   };
 
   return (
-    <div 
-      onClick={handleClick}
-      className="bg-white border border-slate-200 rounded-lg p-3 flex flex-col w-32 min-h-[130px] group relative cursor-pointer shadow-sm hover:shadow-lg transition-all duration-200 ease-in-out h-full"
+    <div
+      // onClick={handleClick}
+      className="bg-white border border-slate-200 rounded-lg p-3 flex flex-col w-32 min-h-[130px] group relative shadow-sm hover:shadow-lg transition-all duration-200 ease-in-out h-full"
     >
       <div className="text-sm font-semibold text-slate-700 mb-1.5 leading-tight line-clamp-2 flex-grow">
         {assignment.description}

@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
-import { Assignment, Student, Grade } from "../types";
+import { Assignment, Student, Grade, AssignmentType } from "../types";
+import { assignmentTypes } from "../src/constants";
 
 export const addAssignment = mutation({
   args: {
@@ -33,7 +34,6 @@ export const addAssignment = mutation({
 export const deleteAssignment = mutation({
   args: {
     id: v.id("assignments"),
-    classId: v.id("classes"),
   },
   handler: async (ctx, args): Promise<void> => {
     await ctx.db.delete(args.id);
@@ -67,26 +67,23 @@ export const getAssignment = query({
 export const updateAssignment = mutation({
   args: {
     assignmentId: v.id("assignments"),
-    description: v.string(),
-    assignmentType: v.number(),
-    weight: v.number(),
-    maxPoints: v.number(),
-    dueDate: v.string(),
-    assignedDate: v.string(),
-    notes: v.optional(v.string()),
-    isExtraCredit: v.boolean(),
+    field: v.string(),
+    value: v.union(v.string(), v.number()),
   },
   handler: async (ctx, args): Promise<void> => {
-    const { assignmentId, ...updateData } = args;
-    await ctx.db.patch(assignmentId, {
-      description: updateData.description,
-      assignmentType: updateData.assignmentType,
-      weight: updateData.weight,
-      maxPoints: updateData.maxPoints,
-      dueDate: updateData.dueDate,
-      assignedDate: updateData.assignedDate,
-      notes: updateData.notes || "",
-      isExtraCredit: updateData.isExtraCredit,
-    });
+    const { assignmentId, field, value } = args;
+    let parsedValue: string | number = value;
+    if (field === "maxPoints" && typeof value === "string") {
+      parsedValue = parseFloat(value);
+    } else if (field === "weight" && typeof value === "string") {
+      parsedValue = parseFloat(value as string);
+    }
+
+    if (field === "assignmentType") {
+      parsedValue =
+        assignmentTypes.find((type) => type.description === value)?.id || 0;
+    }
+
+    await ctx.db.patch(assignmentId, { [field]: parsedValue });
   },
 });

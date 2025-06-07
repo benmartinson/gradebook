@@ -2,6 +2,12 @@ import { AssignmentType } from "../types";
 
 export const assignmentTypes: AssignmentType[] = [
   {
+    id: 0,
+    description: "other",
+    color: "purple",
+    weight: 100,
+  },
+  {
     id: 1,
     description: "quiz",
     color: "#EB5160",
@@ -31,4 +37,13 @@ export const assignmentTypes: AssignmentType[] = [
     color: "purple",
     weight: 100,
   },
+];
+
+export const aiAssistantExamples = [
+  {
+    cat: "Bulk Update",
+    text: "Grades for test 1: Mark 99, Patrick 88, Leah: 50",
+  },
+  { cat: "Analytics", text: "Show class average for last week" },
+  { cat: "Report", text: "Students with grades below 70%" },
 ];
