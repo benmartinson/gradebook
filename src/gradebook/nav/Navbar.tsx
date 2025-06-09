@@ -35,10 +35,10 @@ const Navbar = ({ showGridControls, classData }: NavbarProps) => {
           className="text-blue-600 hover:text-blue-700 flex gap-1 items-center text-sm font-medium transition-colors duration-150 underline-offset-2 hover:underline focus:outline-none "
         >
           {!isAIModalOpen && (
-            <>
-              Open AI Assistant
+            <div className="cursor-pointer flex gap-1">
+              Class Assistant
               <FaWandMagicSparkles size={16} />
-            </>
+            </div>
           )}
         </button>
 

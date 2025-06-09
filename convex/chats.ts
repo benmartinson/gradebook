@@ -1,24 +1,62 @@
 import { v } from "convex/values";
-import { action } from "./_generated/server";
+import { action, query } from "./_generated/server";
 import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
 import { getSystemPrompt } from "../src/helpers";
 
+type Setting = {
+  appConfigId: string;
+  category: string;
+  descriptionLabel: string;
+  enabled: boolean;
+  systemValue: string;
+  type: string;
+};
+let appSettingsFromOtherApp: {
+  settings: Setting[];
+};
+
+const getPermissions = async () => {
+  try {
+    const response = await fetch(
+      `https://festive-grouse-756.convex.site/api/app-settings?appConfigId=kd7d796ngp0zgax7c82qtq4fvd7fnxyr`
+    );
+    const responseText = await response.text();
+    appSettingsFromOtherApp = JSON.parse(responseText);
+  } catch (e) {
+    throw new Error(`Invalid JSON response from app settings endpoint`);
+  }
+
+  const appSettings = appSettingsFromOtherApp.settings;
+  return {
+    allowAssignmentUpdate:
+      appSettings.find(
+        (setting) => setting.systemValue === "allow_assignment_update"
+      )?.enabled || false,
+    allowAssignmentCreation:
+      appSettings.find(
+        (setting) => setting.systemValue === "allow_assignment_creation"
+      )?.enabled || false,
+    allowAssignmentDeletion:
+      appSettings.find(
+        (setting) => setting.systemValue === "allow_assignment_deletion"
+      )?.enabled || false,
+    allowGradeUpdate:
+      appSettings.find(
+        (setting) => setting.systemValue === "allow_grade_update"
+      )?.enabled || false,
+  };
+};
+
 export const getResponse = action({
   args: {
     message: v.string(),
     context: v.optional(v.string()),
-    permissions: v.object({
-      allowAssignmentUpdate: v.boolean(),
-      allowAssignmentCreation: v.boolean(),
-      allowAssignmentDeletion: v.boolean(),
-      allowGradeUpdate: v.boolean(),
-    }),
   },
   handler: async (ctx, args) => {
-    const { message, context, permissions } = args;
+    const { message, context } = args;
 
     if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
       throw new Error("Missing AWS credentials in environment variables");
@@ -38,6 +76,16 @@ export const getResponse = action({
         secretAccessKey: secretAccessKey.trim(),
       },
     });
+
+    let permissions;
+    try {
+      permissions = await getPermissions();
+    } catch (e) {
+      return {
+        success: false,
+        error: "Failed to get permissions",
+      };
+    }
 
     const systemPrompt = getSystemPrompt(context || "", permissions);
 
@@ -75,6 +123,7 @@ export const getResponse = action({
         success: true,
         response: modelResponse,
         data: extractedData,
+        permissions,
       };
     } catch (error: any) {
       console.error("Bedrock Error:", error);
@@ -85,8 +134,7 @@ export const getResponse = action({
         requestId: error.$metadata?.requestId,
       });
 
-      // Provide user-friendly error messages
-      let userMessage = "Failed to connect to AI service. Please try again.";
+      let userMessage = "Failed to connect to the service. Please try again.";
 
       if (
         error.message?.includes("Authorization header") ||

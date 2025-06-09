@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
+import { assignmentTypes } from "../../constants";
 
 interface GradeChange {
   action: "update";
@@ -25,7 +26,7 @@ interface AssignmentChange {
     dueDate: string;
     maxPoints: number;
     weight: number;
-    assignmentType?: number;
+    type?: number;
   };
 }
 
@@ -36,6 +37,12 @@ interface ConfirmationViewProps {
   onConfirm: () => void;
   isUpdating: boolean;
   showConfirm: boolean;
+  permissions: {
+    allowAssignmentUpdate: boolean;
+    allowAssignmentCreation: boolean;
+    allowAssignmentDeletion: boolean;
+    allowGradeUpdate: boolean;
+  };
 }
 
 const ConfirmationView: React.FC<ConfirmationViewProps> = ({
@@ -43,6 +50,7 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
   onConfirm,
   isUpdating,
   showConfirm,
+  permissions,
 }) => {
   const hasGradeChanges = changesRequested.some(
     (change) => change.type === "grade"
@@ -50,6 +58,32 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
   const hasAssignmentChanges = changesRequested.some(
     (change) => change.type === "assignment"
   );
+  const [showError, setShowError] = useState<string | null>(null);
+
+  const handleConfirm = () => {
+    setShowError(null);
+    const hasPermission = changesRequested.every((request) => {
+      if (request.type === "assignment") {
+        if (request.action === "create") {
+          return permissions.allowAssignmentCreation;
+        } else if (request.action === "update") {
+          return permissions.allowAssignmentUpdate;
+        } else if (request.action === "delete") {
+          return permissions.allowAssignmentDeletion;
+        }
+      } else if (request.type === "grade") {
+        return permissions.allowGradeUpdate;
+      }
+    });
+
+    if (hasPermission) {
+      onConfirm();
+    } else {
+      setShowError(
+        "You do not have permission to perform one or more of the actions requested. Contact your adminitrator if this is an error."
+      );
+    }
+  };
 
   const renderAssignmentChange = (change: AssignmentChange, idx: number) => {
     if (change.action === "create" && change.assignment) {
@@ -59,14 +93,14 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
           className="p-3 bg-gray-50 rounded-lg border border-gray-200"
         >
           <p className="text-sm font-medium mb-1">
-            <span className="text-green-700">Create assignment</span> '
+            <span className="text-slate-600">Create assignment</span> '
             {change.assignment.description}'
           </p>
-          <div className="text-xs text-gray-600 space-y-1 ml-4">
+          <div className="text-xs text-slate-600 space-y-1 ml-4">
             <p>
               Type:{" "}
-              {change.assignment.assignmentType !== undefined
-                ? `Type ${change.assignment.assignmentType}`
+              {change.assignment.type !== undefined
+                ? `${assignmentTypes[change.assignment.type].description}`
                 : "Not specified"}
             </p>
             <p>Max points: {change.assignment.maxPoints}</p>
@@ -85,7 +119,7 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
           className="p-3 bg-gray-50 rounded-lg border border-gray-200"
         >
           <p className="text-sm font-medium">
-            <span className="text-red-700">Delete assignment</span> '
+            <span className="text-slate-600">Delete assignment</span> '
             {change.assignmentName}'
           </p>
         </div>
@@ -97,7 +131,7 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
           className="p-3 bg-gray-50 rounded-lg border border-gray-200"
         >
           <p className="text-sm font-medium mb-1">
-            <span className="text-blue-700">Update assignment</span> '
+            <span className="text-slate-600">Update assignment</span> '
             {change.assignmentName}' {`=>`} {change.field} = {change.value}
           </p>
           <div className="text-xs text-gray-600 space-y-1 ml-4"></div>
@@ -128,7 +162,7 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
   return (
     <>
       <div className="flex-1 overflow-y-auto space-y-3 mb-4 p-4 bg-white rounded-lg">
-        <h3 className="font-semibold text-lg mb-4">
+        <h3 className="font-light text-lg mb-4">
           Please confirm these{" "}
           {hasGradeChanges && hasAssignmentChanges
             ? "changes"
@@ -147,15 +181,16 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
       </div>
 
       <div className="flex justify-end">
-        {showConfirm && (
+        {!showError && showConfirm && (
           <button
-            onClick={onConfirm}
+            onClick={handleConfirm}
             disabled={isUpdating}
-            className="py-2 px-4 rounded-lg font-medium cursor-pointer transition-colors bg-white text-green-500 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="py-2 px-4 rounded-lg font-medium cursor-pointer transition-colors bg-white text-red-500 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {isUpdating ? <FaSpinner className="animate-spin" /> : "Confirm"}
           </button>
         )}
+        {showError && <p className="text-red-500 text-sm">{showError}</p>}
       </div>
     </>
   );

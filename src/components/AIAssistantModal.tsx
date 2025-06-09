@@ -48,6 +48,12 @@ const AIAssistantModal = ({
   const allowAssignmentCreation = useSettingValue("allow_assignment_creation");
   const allowAssignmentDeletion = useSettingValue("allow_assignment_deletion");
   const allowGradeUpdate = useSettingValue("allow_grade_update");
+  const permissions = {
+    allowAssignmentUpdate: allowAssignmentUpdate || false,
+    allowAssignmentCreation: allowAssignmentCreation || false,
+    allowAssignmentDeletion: allowAssignmentDeletion || false,
+    allowGradeUpdate: allowGradeUpdate || false,
+  };
 
   useEffect(() => {
     setMessages([]);
@@ -115,7 +121,7 @@ const AIAssistantModal = ({
         if (change.action === "create" && change.assignment) {
           await addAssignment({
             description: change.assignment.description,
-            assignmentType: change.assignment.assignmentType || 0,
+            assignmentType: change.assignment.type || 0,
             weight: change.assignment.weight,
             maxPoints: change.assignment.maxPoints,
             dueDate: change.assignment.dueDate,
@@ -169,12 +175,6 @@ const AIAssistantModal = ({
       const result = await getResponse({
         message: userMessage,
         context,
-        permissions: {
-          allowAssignmentUpdate,
-          allowAssignmentCreation,
-          allowAssignmentDeletion,
-          allowGradeUpdate,
-        },
       });
       console.log("result", result);
 
@@ -228,14 +228,7 @@ const AIAssistantModal = ({
 
         {!isConfirming &&
           (messages.length === 0 ? (
-            <Examples
-              permissions={{
-                allowAssignmentUpdate: allowAssignmentUpdate || false,
-                allowAssignmentCreation: allowAssignmentCreation || false,
-                allowAssignmentDeletion: allowAssignmentDeletion || false,
-                allowGradeUpdate: allowGradeUpdate || false,
-              }}
-            />
+            <Examples permissions={permissions} />
           ) : (
             <ChatMessages messages={messages} isLoading={isLoading} />
           ))}
@@ -246,6 +239,7 @@ const AIAssistantModal = ({
             onConfirm={handleConfirmChanges}
             isUpdating={isUpdating}
             showConfirm={!showSuccess}
+            permissions={permissions}
           />
         )}
 

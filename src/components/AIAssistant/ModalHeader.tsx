@@ -12,7 +12,7 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({ isConfirming, onClose }) => {
       <div className="flex gap-2">
         {!isConfirming && (
           <button className="py-2 px-4 rounded-lg font-medium transition-colors bg-white text-blue-500 shadow-sm">
-            AI Assistant
+            Class Assistant
           </button>
         )}
         {isConfirming && (

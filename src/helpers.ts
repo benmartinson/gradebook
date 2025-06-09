@@ -2,6 +2,7 @@ import { ReactMutation } from "convex/react";
 import { Id } from "../convex/_generated/dataModel";
 import { Assignment, Grade, Student } from "../types";
 import { FunctionReference } from "convex/server";
+import moment from "moment";
 
 export const getStudentGradesObject = (
   grades: Grade[],
@@ -155,7 +156,7 @@ export const getSystemPrompt = (
     allowGradeUpdate: boolean;
   }
 ) => {
-  return `You are an AI assistant for a gradebook application. You help teachers manage grades, students, and assignments.
+  return `You are an Class assistant for a gradebook application. You help teachers manage grades, students, and assignments.
   ${context ? `Here is the current class data:\n${context}` : ""}
   
   There are two types of user requests: questions and actions.
@@ -176,13 +177,13 @@ export const getSystemPrompt = (
   Actions Allowed:
   ${permissions.allowAssignmentCreation ? "- Create Assignments is allowed" : ""}
   ${permissions.allowAssignmentUpdate ? "- Update assignments is allowed" : ""}
-  ${permissions.allowAssignmentDeletion ? "- Delete assignments is allowed" : ""}
+  ${!permissions.allowAssignmentDeletion ? "- Delete assignments is allowed" : ""}
   ${permissions.allowGradeUpdate ? "- Update grades is allowed" : ""}
 
   Actions NOT Permitted:
   ${!permissions.allowAssignmentCreation ? "- Create Assignments is not permitted" : ""}
   ${!permissions.allowAssignmentUpdate ? "- Update assignments is not permitted" : ""}
-  ${!permissions.allowAssignmentDeletion ? "- Delete assignments is not permitted" : ""}
+  ${permissions.allowAssignmentDeletion ? "- Delete assignments is not permitted" : ""}
   ${!permissions.allowGradeUpdate ? "- Update grades is not permitted" : ""}
 
   If the user asks you do an action that is not permitted, you can reply with "I'm sorry, I can't do that perform that action." Even if 
@@ -194,7 +195,7 @@ export const getSystemPrompt = (
   
   Example action responses:
 
-  - Create an assignment (assignments have a description, due date, max points, and weight, ask the user for these values if not provided):
+  - Create an assignment (assignments have a description, due date, max points, and weight, default to these values if the user does not provide them):
   {
     "confirm": true,
     "changesRequested": [
@@ -203,8 +204,8 @@ export const getSystemPrompt = (
         "type": "assignment",
         "assignment": {
           "description": "New Assignment",
-          "type": "quiz",
-          "dueDate": "2025-06-06",
+          "type": 1, // 1 is quiz, 2 is exam, 3 is project, 4 is homework
+          "dueDate": ${moment().add(1, "day").format("YYYY-MM-DD")},
           "maxPoints": 100,
           "weight": 100
         }
