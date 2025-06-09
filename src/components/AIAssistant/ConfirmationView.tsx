@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { assignmentTypes } from "../../constants";
+import Confirmation from "./Confirmation";
 
-interface GradeChange {
+export interface GradeChange {
   action: "update";
   type: "grade";
   studentName?: string;
@@ -14,7 +14,7 @@ interface GradeChange {
   assignmentId: string;
 }
 
-interface AssignmentChange {
+export interface AssignmentChange {
   action: "create" | "update" | "delete";
   type: "assignment";
   assignmentId?: string;
@@ -30,7 +30,7 @@ interface AssignmentChange {
   };
 }
 
-type Change = GradeChange | AssignmentChange;
+export type Change = GradeChange | AssignmentChange;
 
 interface ConfirmationViewProps {
   changesRequested: Change[];
@@ -52,12 +52,6 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
   showConfirm,
   permissions,
 }) => {
-  const hasGradeChanges = changesRequested.some(
-    (change) => change.type === "grade"
-  );
-  const hasAssignmentChanges = changesRequested.some(
-    (change) => change.type === "assignment"
-  );
   const [showError, setShowError] = useState<string | null>(null);
 
   const handleConfirm = () => {
@@ -85,79 +79,12 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
     }
   };
 
-  const renderAssignmentChange = (change: AssignmentChange, idx: number) => {
-    if (change.action === "create" && change.assignment) {
-      return (
-        <div
-          key={idx}
-          className="p-3 bg-gray-50 rounded-lg border border-gray-200"
-        >
-          <p className="text-sm font-medium mb-1">
-            <span className="text-slate-600">Create assignment</span> '
-            {change.assignment.description}'
-          </p>
-          <div className="text-xs text-slate-600 space-y-1 ml-4">
-            <p>
-              Type:{" "}
-              {change.assignment.type !== undefined
-                ? `${assignmentTypes[change.assignment.type].description}`
-                : "Not specified"}
-            </p>
-            <p>Max points: {change.assignment.maxPoints}</p>
-            <p>Weight: {change.assignment.weight}%</p>
-            <p>
-              Due date:{" "}
-              {new Date(change.assignment.dueDate).toLocaleDateString()}
-            </p>
-          </div>
-        </div>
-      );
-    } else if (change.action === "delete") {
-      return (
-        <div
-          key={idx}
-          className="p-3 bg-gray-50 rounded-lg border border-gray-200"
-        >
-          <p className="text-sm font-medium">
-            <span className="text-slate-600">Delete assignment</span> '
-            {change.assignmentName}'
-          </p>
-        </div>
-      );
-    } else if (change.action === "update" && change.type === "assignment") {
-      return (
-        <div
-          key={idx}
-          className="p-3 bg-gray-50 rounded-lg border border-gray-200"
-        >
-          <p className="text-sm font-medium mb-1">
-            <span className="text-slate-600">Update assignment</span> '
-            {change.assignmentName}' {`=>`} {change.field} = {change.value}
-          </p>
-          <div className="text-xs text-gray-600 space-y-1 ml-4"></div>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  const renderGradeChange = (change: GradeChange, idx: number) => {
-    return (
-      <div
-        key={idx}
-        className="p-3 bg-gray-50 rounded-lg border border-gray-200"
-      >
-        <p className="text-sm">
-          <span className="text-blue-700">Update grade</span> for{" "}
-          <span className="font-medium text-gray-700">
-            {change.studentName || change.student}
-          </span>{" "}
-          - {change.assignmentName || change.assignment}:
-          <span className="ml-2 font-semibold ">{change.grade}</span>
-        </p>
-      </div>
-    );
-  };
+  const hasGradeChanges = changesRequested.some(
+    (change) => change.type === "grade"
+  );
+  const hasAssignmentChanges = changesRequested.some(
+    (change) => change.type === "assignment"
+  );
 
   return (
     <>
@@ -172,14 +99,11 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
           :
         </h3>
         <div className="space-y-2">
-          {changesRequested.map((change, idx) =>
-            change.type === "assignment"
-              ? renderAssignmentChange(change as AssignmentChange, idx)
-              : renderGradeChange(change as GradeChange, idx)
-          )}
+          {changesRequested.map((change, idx) => (
+            <Confirmation key={idx} change={change} />
+          ))}
         </div>
       </div>
-
       <div className="flex justify-end">
         {!showError && showConfirm && (
           <button

@@ -177,13 +177,13 @@ export const getSystemPrompt = (
   Actions Allowed:
   ${permissions.allowAssignmentCreation ? "- Create Assignments is allowed" : ""}
   ${permissions.allowAssignmentUpdate ? "- Update assignments is allowed" : ""}
-  ${!permissions.allowAssignmentDeletion ? "- Delete assignments is allowed" : ""}
+  ${permissions.allowAssignmentDeletion ? "- Delete assignments is allowed" : ""}
   ${permissions.allowGradeUpdate ? "- Update grades is allowed" : ""}
 
   Actions NOT Permitted:
   ${!permissions.allowAssignmentCreation ? "- Create Assignments is not permitted" : ""}
   ${!permissions.allowAssignmentUpdate ? "- Update assignments is not permitted" : ""}
-  ${permissions.allowAssignmentDeletion ? "- Delete assignments is not permitted" : ""}
+  ${!permissions.allowAssignmentDeletion ? "- Delete assignments is not permitted" : ""}
   ${!permissions.allowGradeUpdate ? "- Update grades is not permitted" : ""}
 
   If the user asks you do an action that is not permitted, you can reply with "I'm sorry, I can't do that perform that action." Even if 

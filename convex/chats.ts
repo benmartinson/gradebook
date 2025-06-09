@@ -95,7 +95,7 @@ export const getResponse = action({
       accept: "application/json",
       body: JSON.stringify({
         anthropic_version: "bedrock-2023-05-31",
-        max_tokens: 20000,
+        max_tokens: 100000,
         system: systemPrompt,
         messages: [{ role: "user", content: message }],
         temperature: 0.7,
