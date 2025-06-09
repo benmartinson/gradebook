@@ -7,10 +7,11 @@ import { buildContext } from "../helpers";
 import ModalHeader from "./AIAssistant/ModalHeader";
 import ChatMessages from "./AIAssistant/ChatMessages";
 import MessageInput from "./AIAssistant/MessageInput";
-import ConfirmationView from "./AIAssistant/ConfirmationView";
+import ConfirmationView, { Change } from "./AIAssistant/ConfirmationView";
 import SuccessMessage from "./AIAssistant/SuccessMessage";
 import Examples from "./AIAssistant/Examples";
 import { useSettingValue } from "../appStore";
+import { isEqual } from "lodash";
 
 interface AIAssistantModalProps {
   isOpen: boolean;
@@ -88,18 +89,16 @@ const AIAssistantModal = ({
     }
   }, [messages]);
 
-  const handleConfirmChanges = async () => {
-    console.log("changesRequested", changesRequested);
-    if (changesRequested.length === 0) return;
-
+  const handleConfirmChanges = async (changesToConfirm: Change[]) => {
     setIsUpdating(true);
+    const isConfirmAll = changesRequested.length === changesToConfirm.length;
 
     try {
       // Separate grade and assignment changes
-      const gradeChanges = changesRequested.filter(
+      const gradeChanges = changesToConfirm.filter(
         (change) => change.type === "grade"
       );
-      const assignmentChanges = changesRequested.filter(
+      const assignmentChanges = changesToConfirm.filter(
         (change) => change.type === "assignment"
       );
 
@@ -143,12 +142,21 @@ const AIAssistantModal = ({
         }
       }
 
-      setSuccessMessage("Changes applied successfully!");
-      setShowSuccess(true);
+      if (isConfirmAll) {
+        setSuccessMessage("Changes applied successfully!");
+        setShowSuccess(true);
+      } else {
+        const changesLeftToConfirm = changesRequested.filter(
+          (change) =>
+            !changesToConfirm.some((requested) => isEqual(change, requested))
+        );
+        setChangesRequested(changesLeftToConfirm);
+      }
 
-      // Close modal after 3 seconds
       setTimeout(() => {
-        onClose();
+        if (isConfirmAll) {
+          onClose();
+        }
       }, 3000);
     } catch (error) {
       console.error("Failed to update:", error);
@@ -236,7 +244,8 @@ const AIAssistantModal = ({
         {isConfirming && (
           <ConfirmationView
             changesRequested={changesRequested}
-            onConfirm={handleConfirmChanges}
+            onConfirm={() => handleConfirmChanges(changesRequested)}
+            onConfirmSingle={(change) => handleConfirmChanges([change])}
             isUpdating={isUpdating}
             showConfirm={!showSuccess}
             permissions={permissions}
