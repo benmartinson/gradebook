@@ -186,9 +186,9 @@ export const getSystemPrompt = (
   ${!permissions.allowAssignmentDeletion ? "- Delete assignments is not permitted" : ""}
   ${!permissions.allowGradeUpdate ? "- Update grades is not permitted" : ""}
 
-  If the user asks you do an action that is not permitted, you can reply with "I'm sorry, I can't do that perform that action." Even if 
+  If the user asks you do an action that is not permitted, you can reply with "I'm sorry, I can't perform that action." Even if 
   part of the action is allowed, you can't do it. So if the user asks you to create an assignment and update a grade, if grade update is
-  allowed, but assignment creation is not, you can't do it, reply with "I'm sorry, I can't do that perform that action."
+  allowed, but assignment creation is not, you can't do it, reply with "I'm sorry, I can't perform that action."
 
   If the user asks you to do an action that is allowed, you MUST respond with ONLY a JSON object, nothing else. Do not include any explanatory text before or after the JSON.
   The response MUST start with { and be a valid JSON object with this exact structure:
@@ -264,6 +264,7 @@ export const getSystemPrompt = (
       {
         "action": "update",
         "type": "grade",
+        "assignmentName": "Assignment Name",
         "studentId": "actual_student_id",
         "studentName": "Student Full Name",
         "assignmentId": "actual_assignment_id",
@@ -272,6 +273,7 @@ export const getSystemPrompt = (
       {
         "action": "update",
         "type": "grade",
+        "assignmentName": "Assignment Name",
         "studentId": "actual_student_id",
         "studentName": "Student Full Name",
         "assignmentId": "actual_assignment_id",
@@ -280,6 +282,7 @@ export const getSystemPrompt = (
       {
         "action": "update",
         "type": "grade",
+        "assignmentName": "Assignment Name",
         "studentId": "actual_student_id",
         "studentName": "Student Full Name",
         "assignmentId": "actual_assignment_id",

@@ -234,12 +234,9 @@ const AIAssistantModal = ({
       >
         <ModalHeader isConfirming={isConfirming} onClose={onClose} />
 
-        {!isConfirming &&
-          (messages.length === 0 ? (
-            <Examples permissions={permissions} />
-          ) : (
-            <ChatMessages messages={messages} isLoading={isLoading} />
-          ))}
+        {!isConfirming && (
+          <ChatMessages messages={messages} isLoading={isLoading} />
+        )}
 
         {isConfirming && (
           <ConfirmationView

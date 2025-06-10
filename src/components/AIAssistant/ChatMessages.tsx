@@ -14,11 +14,11 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ messages, isLoading }) => {
   return (
     <div className="flex-grow overflow-y-auto space-y-3 mb-4 p-4 bg-white rounded-lg messages-container">
       {messages.length === 0 ? (
-        <div className="text-center text-gray-500 mt-8">
+        <div className="text-center text-gray-500 mt-8 px-18">
           <p>
-            Ask me anything about grades, students, or assignments. I can
-            also help you with bulk updates of grades. You will see a
-            confirmation of any changes before I make them.
+            Ask me anything about grades, students, or assignments, or request
+            changes. You will see a confirmation of any changes before I make
+            them.
           </p>
         </div>
       ) : (
