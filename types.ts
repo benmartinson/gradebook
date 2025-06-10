@@ -84,3 +84,31 @@ export type Teacher = {
   firstName: string;
   lastName: string;
 };
+
+export type GradeChange = {
+  action: "update";
+  type: "grade";
+  studentName?: string;
+  student?: string;
+  assignmentName?: string;
+  assignment?: string;
+  grade: number;
+  studentId: string;
+  assignmentId: string;
+};
+
+export type AssignmentChange = {
+  action: "create" | "update" | "delete";
+  type: "assignment";
+  assignmentId?: string;
+  assignmentName?: string;
+  field?: string;
+  value?: string;
+  assignment?: {
+    description: string;
+    dueDate: string;
+    maxPoints: number;
+    weight: number;
+    type?: number;
+  };
+};

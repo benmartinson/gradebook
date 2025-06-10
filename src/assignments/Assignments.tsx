@@ -31,7 +31,6 @@ const Assignments = () => {
   const handleDelete = async (assignment: Assignment) => {
     await deleteAssignment({
       id: assignment._id as Id<"assignments">,
-      classId: class_id as Id<"classes">,
     });
   };
 

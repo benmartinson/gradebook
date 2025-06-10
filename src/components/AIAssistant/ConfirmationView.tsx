@@ -1,41 +1,14 @@
 import React, { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import Confirmation from "./Confirmation";
-
-export interface GradeChange {
-  action: "update";
-  type: "grade";
-  studentName?: string;
-  student?: string;
-  assignmentName?: string;
-  assignment?: string;
-  grade: number;
-  studentId: string;
-  assignmentId: string;
-}
-
-export interface AssignmentChange {
-  action: "create" | "update" | "delete";
-  type: "assignment";
-  assignmentId?: string;
-  assignmentName?: string;
-  field?: string;
-  value?: string;
-  assignment?: {
-    description: string;
-    dueDate: string;
-    maxPoints: number;
-    weight: number;
-    type?: number;
-  };
-}
+import { GradeChange, AssignmentChange } from "../../../types";
 
 export type Change = GradeChange | AssignmentChange;
-
 interface ConfirmationViewProps {
   changesRequested: Change[];
   onConfirm: () => void;
   onConfirmSingle: (change: Change) => void;
+  onUpdateChange: (index: number, updatedChange: Change) => void;
   isUpdating: boolean;
   showConfirm: boolean;
   permissions: {
@@ -50,6 +23,7 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
   changesRequested,
   onConfirm,
   onConfirmSingle,
+  onUpdateChange,
   isUpdating,
   showConfirm,
   permissions,
@@ -107,6 +81,7 @@ const ConfirmationView: React.FC<ConfirmationViewProps> = ({
               key={idx}
               change={change}
               onConfirm={() => handleSingleConfirm(change)}
+              onUpdateChange={(updatedChange) => onUpdateChange(idx, updatedChange)}
             />
           ))}
         </div>

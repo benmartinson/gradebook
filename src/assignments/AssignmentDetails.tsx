@@ -90,11 +90,9 @@ const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
       value = parseInt(value);
     }
     await updateAssignment({
-      ...formData,
-      maxPoints: Number(field === "maxPoints" ? value : formData.maxPoints),
-      weight: Number(field === "weight" ? value : formData.weight),
-      [field]: value,
       assignmentId: id as Id<"assignments">,
+      field: field,
+      value: value,
     });
     setSavedFields((prev) => ({ ...prev, [field]: true }));
     setTimeout(() => {

@@ -8,6 +8,7 @@ import ModalHeader from "./AIAssistant/ModalHeader";
 import ChatMessages from "./AIAssistant/ChatMessages";
 import MessageInput from "./AIAssistant/MessageInput";
 import ConfirmationView, { Change } from "./AIAssistant/ConfirmationView";
+import { GradeChange, AssignmentChange } from "../../types";
 import SuccessMessage from "./AIAssistant/SuccessMessage";
 import Examples from "./AIAssistant/Examples";
 import { useSettingValue } from "../appStore";
@@ -96,10 +97,10 @@ const AIAssistantModal = ({
     try {
       // Separate grade and assignment changes
       const gradeChanges = changesToConfirm.filter(
-        (change) => change.type === "grade"
+        (change): change is GradeChange => change.type === "grade"
       );
       const assignmentChanges = changesToConfirm.filter(
-        (change) => change.type === "assignment"
+        (change): change is AssignmentChange => change.type === "assignment"
       );
 
       // Handle grade updates
@@ -129,7 +130,12 @@ const AIAssistantModal = ({
             classId: classData?._id as Id<"classes">,
             isExtraCredit: false,
           });
-        } else if (change.action === "update" && change.assignmentId) {
+        } else if (
+          change.action === "update" &&
+          change.assignmentId &&
+          change.field &&
+          change.value
+        ) {
           await updateAssignment({
             assignmentId: change.assignmentId as Id<"assignments">,
             field: change.field,
@@ -243,6 +249,11 @@ const AIAssistantModal = ({
             changesRequested={changesRequested}
             onConfirm={() => handleConfirmChanges(changesRequested)}
             onConfirmSingle={(change) => handleConfirmChanges([change])}
+            onUpdateChange={(index, updatedChange) => {
+              const newChanges = [...changesRequested];
+              newChanges[index] = updatedChange;
+              setChangesRequested(newChanges);
+            }}
             isUpdating={isUpdating}
             showConfirm={!showSuccess}
             permissions={permissions}

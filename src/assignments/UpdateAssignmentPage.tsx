@@ -91,7 +91,7 @@ const UpdateAssignmentPage = () => {
       assignmentType: Number(formData.assignmentType) || 1,
       assignmentId: assignment_id as Id<"assignments">,
     };
-    updateAssignment(dataToSend);
+    // updateAssignment(dataToSend);
     navigate(`/class/${class_id}/gradebook`);
   };
 

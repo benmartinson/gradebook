@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { assignmentTypes } from "../../constants";
-import type { Change, GradeChange, AssignmentChange } from "./ConfirmationView";
+import type { Change } from "./ConfirmationView";
+import type { GradeChange, AssignmentChange } from "../../../types";
 
 interface ConfirmationProps {
   change: Change;
   onConfirm: () => void;
+  onUpdateChange?: (updatedChange: Change) => void;
 }
 
 const ConfirmButton = ({ onConfirm }: { onConfirm: () => void }) => {
