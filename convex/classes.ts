@@ -41,18 +41,12 @@ export const createClass = mutation({
 export const updateClass = mutation({
   args: {
     _id: v.id("classes"),
-    classCode: v.string(),
-    name: v.string(),
-    startDate: v.string(),
-    endDate: v.string(),
-    teacher: v.string(),
+    field: v.string(),
+    value: v.union(v.string(), v.number()),
   },
-  handler: async (ctx, args) => {
-    await ctx.db.patch(args._id, {
-      name: args.name,
-      startDate: args.startDate,
-      classCode: args.classCode,
-      endDate: args.endDate,
-    });
+  handler: async (ctx, args): Promise<void> => {
+    const { _id, field, value } = args;
+    let parsedValue: string | number = value;
+    await ctx.db.patch(_id, { [field]: parsedValue });
   },
 });

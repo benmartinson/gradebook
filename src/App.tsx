@@ -17,7 +17,6 @@ import { useAppStore } from "./appStore";
 import { useEffect } from "react";
 import AdminBadge from "./AdminBadge";
 import ReportsPage from "./Reports/ReportsPage";
-import BedrockTest from "./components/BedrockTest";
 
 function AppRoutes() {
   const setParentDomain = useAppStore((state) => state.setParentDomain);
@@ -62,19 +61,7 @@ function AppRoutes() {
         <Route path="class/:class_id/gradebook" element={<Grid />} />
         <Route
           path="class/:class_id/assignment/:id/grades"
-          element={<AssignmentPageContainer activeTab="grades" />}
-        />
-        <Route
-          path="class/:class_id/assignment/:id"
-          element={<AssignmentPageContainer activeTab="details" />}
-        />
-        <Route
-          path="class/:class_id/new-assignment"
-          element={<NewAssignmentPage />}
-        />
-        <Route
-          path="class/:class_id/assignment/:assignment_id/update"
-          element={<UpdateAssignmentPage />}
+          element={<AssignmentPageContainer />}
         />
         <Route path="class/:class_id/reports" element={<ReportsPage />} />
         <Route path="class/:class_id/settings" element={<Placeholder />} />

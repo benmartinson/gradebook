@@ -10,11 +10,7 @@ import BackToScoresButton from "../gradebook/BackToScoresButton";
 import Navbar from "../gradebook/nav/Navbar";
 import { useAppStore } from "../appStore";
 
-const AssignmentPageContainer = ({
-  activeTab,
-}: {
-  activeTab: "details" | "grades";
-}) => {
+const AssignmentPageContainer = () => {
   const { id, class_id } = useParams();
   const grades = useQuery(api.grades.getGrades);
   const students = useQuery(api.students.getStudentsByClass, {
@@ -45,42 +41,12 @@ const AssignmentPageContainer = ({
       <div className="flex flex-col">
         <div className="flex justify-between w-full p-6 max-md:pt-1">
           <div className="font-bold text-2xl">{assignment?.description}</div>
-          <div className="flex border border-gray-300 rounded-lg">
-            <button
-              onClick={() => navigate(`/class/${class_id}/assignment/${id}`)}
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
-                activeTab === "details"
-                  ? "bg-blue-500 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              Details
-            </button>
-            <div className="w-px bg-gray-300"></div>
-            <button
-              onClick={() =>
-                navigate(`/class/${class_id}/assignment/${id}/grades`)
-              }
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
-                activeTab === "grades"
-                  ? "bg-blue-500 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              Grades
-            </button>
-          </div>
         </div>
-        {activeTab === "details" && (
-          <AssignmentDetails assignment={assignment} />
-        )}
-        {activeTab === "grades" && (
-          <AssignmentGrades
-            assignment={assignment}
-            grades={grades}
-            students={students}
-          />
-        )}
+        <AssignmentGrades
+          assignment={assignment}
+          grades={grades}
+          students={students}
+        />
       </div>
     </div>
   );

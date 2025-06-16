@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { assignmentTypes } from "../../constants";
 import type { Change } from "./ConfirmationView";
 import type { GradeChange, AssignmentChange } from "../../../types";
+import { FaCheck, FaSpinner } from "react-icons/fa";
 
 interface ConfirmationProps {
   change: Change;
@@ -10,9 +11,19 @@ interface ConfirmationProps {
 }
 
 const ConfirmButton = ({ onConfirm }: { onConfirm: () => void }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleConfirm = async () => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
+    await onConfirm();
+  };
+
   return (
     <button
-      onClick={onConfirm}
+      onClick={handleConfirm}
       className="text-sm cursor-pointer text-blue-600 underline hover:text-blue-800 ml-4"
     >
       Confirm

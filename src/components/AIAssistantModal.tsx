@@ -72,7 +72,6 @@ const AIAssistantModal = ({
   }, [isOpen]);
 
   useEffect(() => {
-    // if esc is pressed, close the modal
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
@@ -83,7 +82,6 @@ const AIAssistantModal = ({
   }, []);
 
   useEffect(() => {
-    // scroll to the bottom of the messages
     const messagesContainer = document.querySelector(".messages-container");
     if (messagesContainer) {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -95,7 +93,6 @@ const AIAssistantModal = ({
     const isConfirmAll = changesRequested.length === changesToConfirm.length;
 
     try {
-      // Separate grade and assignment changes
       const gradeChanges = changesToConfirm.filter(
         (change): change is GradeChange => change.type === "grade"
       );
@@ -103,7 +100,6 @@ const AIAssistantModal = ({
         (change): change is AssignmentChange => change.type === "assignment"
       );
 
-      // Handle grade updates
       if (gradeChanges.length > 0) {
         const gradeUpdates = gradeChanges.map((change) => ({
           studentId: change.studentId as Id<"students">,
@@ -116,7 +112,6 @@ const AIAssistantModal = ({
         });
       }
 
-      // Handle assignment operations
       for (const change of assignmentChanges) {
         if (change.action === "create" && change.assignment) {
           await addAssignment({
@@ -159,11 +154,9 @@ const AIAssistantModal = ({
         setChangesRequested(changesLeftToConfirm);
       }
 
-      setTimeout(() => {
-        if (isConfirmAll) {
-          onClose();
-        }
-      }, 3000);
+      if (isConfirmAll) {
+        onClose();
+      }
     } catch (error) {
       console.error("Failed to update:", error);
       setIsConfirming(false);
@@ -235,7 +228,7 @@ const AIAssistantModal = ({
       onClick={onClose}
     >
       <div
-        className="bg-slate-50 rounded-lg p-4 md:p-6 overflow-hidden flex flex-col min-w-full h-full"
+        className="bg-slate-50 rounded-lg p-4 md:p-6 overflow-hidden flex flex-col min-w-full h-full max-h-[700px]"
         onClick={(e) => e.stopPropagation()}
       >
         <ModalHeader isConfirming={isConfirming} onClose={onClose} />
@@ -268,8 +261,6 @@ const AIAssistantModal = ({
             isLoading={isLoading}
           />
         )}
-
-        <SuccessMessage show={showSuccess} message={successMessage} />
       </div>
     </div>
   );

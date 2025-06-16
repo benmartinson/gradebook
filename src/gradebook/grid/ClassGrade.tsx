@@ -16,15 +16,8 @@ const ClassGrade = ({
 }) => {
   const classGrade = getStudentClassGrade(grades, student, assignments);
 
-  const handleClick = () => {
-    // navigate(`/assignment/${assignment._id}/grades`);
-  };
-
   return (
-    <td
-      className="bg-[#e3f2fd] rounded-lg h-10"
-      // onClick={handleClick}
-    >
+    <td className="bg-[#e3f2fd] rounded-lg h-10">
       <div className="flex p-2 w-28 items-center border border-[#64b5f6] rounded-lg justify-center relative">
         <div className="flex items-center gap-1">
           <div className="font-semibold">{classGrade ?? "-"}</div>

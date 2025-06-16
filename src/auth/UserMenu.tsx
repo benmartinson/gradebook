@@ -26,7 +26,6 @@ export default function UserMenu({
     void signOut();
   };
 
-  // Safely access user properties
   const userEmail =
     currentUser && typeof currentUser === "object" && "email" in currentUser
       ? (currentUser as any).email

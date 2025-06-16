@@ -31,7 +31,6 @@ const StudentGrade = ({
   );
   const hasEditedGrade = editedGrade !== "";
 
-  // Sync local state with database grade when it changes
   useEffect(() => {
     setGradeValue(grade?.rawScore?.toString() ?? "");
   }, [grade?.rawScore]);
@@ -106,10 +105,10 @@ const StudentGrade = ({
   });
 
   return (
-    <td
+    <div
       className={`bg-[#F6F6F4] rounded-lg h-10 ${
         hasEditedGrade ? "cursor-pointer" : "cursor-default"
-      } group`}
+      } group w-full`}
       onClick={handleClick}
       onMouseLeave={handleMouseLeave}
     >
@@ -135,7 +134,7 @@ const StudentGrade = ({
           </span>
         </div>
       </div>
-    </td>
+    </div>
   );
 };
 

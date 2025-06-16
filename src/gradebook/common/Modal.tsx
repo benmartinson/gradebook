@@ -24,7 +24,7 @@ const Modal: React.FC<ModalProps> = ({
     >
       <div
         className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md"
-        onClick={(e) => e.stopPropagation()} // Prevent click through to overlay
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">{title}</h2>

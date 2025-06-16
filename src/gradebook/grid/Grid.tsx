@@ -69,7 +69,7 @@ const Grid = () => {
   });
 
   const handleCardClick = (assignmentId: Id<"assignments">) => {
-    navigate(`/class/${class_id}/assignment/${assignmentId}`);
+    navigate(`/class/${class_id}/assignment/${assignmentId}/grades`);
   };
 
   const classData = {
@@ -98,7 +98,7 @@ const Grid = () => {
             <div className="min-w-full inline-block w-full">
               <table className="border-collapse w-full">
                 <thead className="sticky top-0 z-20 bg-slate-100 shadow-sm flex justify-start">
-                  <tr className="bg-slate-100 shadow-sm flex justify-start">
+                  <tr className="">
                     <th
                       className={`sticky left-0  z-30 bg-slate-100 p-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap ${!showInitials ? "w-[160px]" : "w-[200px]"}`}
                     ></th>

@@ -196,8 +196,7 @@ const AssignmentGrades = ({
                       Grade
                     </span>
                     <input
-                      type="number"
-                      className="w-full px-2 py-1 border rounded text-left"
+                      className="px-2 py-1 border rounded text-left w-10"
                       value={
                         editingGrades[student._id] ??
                         student.grade?.rawScore ??
@@ -213,47 +212,6 @@ const AssignmentGrades = ({
                         }
                       }}
                     />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-light opacity-75 mb-1">
-                      Completion Status
-                    </span>
-                    <Select
-                      options={completionStatusOptions}
-                      defaultValue={completionStatusOptions[0]}
-                      className="w-full"
-                      isSearchable={false}
-                    />
-                  </div>
-                  <div className="flex flex-row justify-between mt-2">
-                    <div className="flex items-center justify-between w-30">
-                      <span className="text-sm font-light opacity-75">
-                        Published
-                      </span>
-                      <Switch
-                        checked={publishedStates[student._id] || false}
-                        onChange={() => handlePublishedToggle(student._id)}
-                        className={`${
-                          publishedStates[student._id]
-                            ? "bg-blue-600"
-                            : "bg-gray-200"
-                        } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
-                      >
-                        <span
-                          className={`${
-                            publishedStates[student._id]
-                              ? "translate-x-6"
-                              : "translate-x-1"
-                          } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
-                        />
-                      </Switch>
-                    </div>
-                    <div className="flex items-center justify-between w-30">
-                      <span className="text-sm font-light opacity-75">
-                        Feedback
-                      </span>
-                      <FaRegComment className="text-gray-500 text-2xl" />
-                    </div>
                   </div>
                 </div>
               </div>

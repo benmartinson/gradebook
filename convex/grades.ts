@@ -48,7 +48,6 @@ export const bulkUpdateGrades = mutation({
   handler: async (ctx, args): Promise<void> => {
     await Promise.all(
       args.gradeUpdates.map(async (update) => {
-        // Check if grade already exists
         const existingGrade = await ctx.db
           .query("grades")
           .withIndex("byStudentAndAssignment", (q) =>
@@ -59,10 +58,8 @@ export const bulkUpdateGrades = mutation({
           .first();
 
         if (existingGrade) {
-          // Update existing grade
           await ctx.db.patch(existingGrade._id, { rawScore: update.grade });
         } else {
-          // Create new grade
           await ctx.db.insert("grades", {
             studentId: update.studentId,
             assignmentId: update.assignmentId,

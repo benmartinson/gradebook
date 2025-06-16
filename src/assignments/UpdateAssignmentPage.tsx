@@ -86,12 +86,6 @@ const UpdateAssignmentPage = () => {
 
   const handleUpdateAssignment = (e: React.FormEvent) => {
     e.preventDefault();
-    const dataToSend = {
-      ...formData,
-      assignmentType: Number(formData.assignmentType) || 1,
-      assignmentId: assignment_id as Id<"assignments">,
-    };
-    // updateAssignment(dataToSend);
     navigate(`/class/${class_id}/gradebook`);
   };
 
