@@ -59,7 +59,7 @@ export default function UserMenu({
           <FaUser size={20} />
         </div>
         {!isCollapsed && !loadingAnimation && (
-          <div className="max-md:hidden">
+          <div className="max-sm:hidden">
             <div className="text-sm font-medium truncate">{userInitials}</div>
             {userEmail && userName && (
               <div className="text-xs text-gray-400 truncate">
@@ -80,7 +80,7 @@ export default function UserMenu({
           <FaSignOutAlt size={20} />
         </div>
         {!isCollapsed && !loadingAnimation && (
-          <span className="max-md:hidden">Sign Out</span>
+          <span className="max-sm:hidden">Sign Out</span>
         )}
       </button>
     </div>

@@ -88,7 +88,7 @@ const AssignmentGrades = ({
     <div className="p-6 pt-0">
       <div className="flex flex-col w-full">
         {/* Headers */}
-        <div className="max-md:hidden border-b border-gray-300 p-4">
+        <div className="max-sm:hidden border-b border-gray-300 p-4">
           <div
             className="grid font-light text-sm opacity-50 max-w-[1000px]"
             style={{
@@ -121,10 +121,10 @@ const AssignmentGrades = ({
           {studentGrades.map((student) => (
             <div
               key={student._id}
-              className="flex flex-col md:flex-row border-t border-gray-300 p-4"
+              className="flex flex-col sm:flex-row border-t border-gray-300 p-4"
             >
               {/* Desktop view */}
-              <div className="hidden md:block w-full">
+              <div className="hidden sm:block w-full">
                 <div
                   className="grid items-center  max-w-[1000px]"
                   style={{
@@ -188,7 +188,7 @@ const AssignmentGrades = ({
               </div>
 
               {/* Mobile view */}
-              <div className="md:hidden flex flex-col w-full">
+              <div className="sm:hidden flex flex-col w-full">
                 <div className="font-medium text-lg mb-2">{`${student.firstName} ${student.lastName}`}</div>
                 <div className="flex flex-col space-y-3">
                   <div className="flex flex-col">

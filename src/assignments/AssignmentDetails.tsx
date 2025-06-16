@@ -106,7 +106,7 @@ const AssignmentDetails = ({ assignment }: { assignment: Assignment }) => {
 
   return (
     <div className="w-full mr-auto p-6 pt-0 overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-md:flex max-md:flex-col overflow-scroll max-md:h-[calc(100vh-250px)]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-sm:flex max-sm:flex-col overflow-scroll max-sm:h-[calc(100vh-250px)]">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
             Description

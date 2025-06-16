@@ -60,7 +60,7 @@ const Examples: React.FC<{
     <div className="flex-grow overflow-y-auto space-y-3 mb-4 p-4 bg-white rounded-lg messages-container">
       <div className="text-center text-gray-500 mt-8">
         <p>{buildMessage()}</p>
-        <div className="flex flex-col mt-4 space-y-3 max-md:hidden">
+        <div className="flex flex-col mt-4 space-y-3 max-sm:hidden">
           {examples.map((example, idx) => (
             <div key={idx} className="space-y-1 mb-6">
               <span className="text-xs font-medium text-gray-500 block">

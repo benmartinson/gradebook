@@ -84,7 +84,7 @@ const Grid = () => {
     <div className="w-full h-full overflow-hidden flex flex-col bg-slate-50">
       <Navbar showGridControls={true} classData={classData} />
 
-      <div className="hidden md:flex flex-1 overflow-auto hide-scrollbar">
+      <div className="hidden sm:flex flex-1 overflow-auto hide-scrollbar">
         <div className="flex flex-col w-full bg-white">
           <div
             className="overflow-auto w-full"
@@ -145,7 +145,7 @@ const Grid = () => {
         </div>
       </div>
 
-      <div className="md:hidden flex flex-col space-y-3 overflow-y-auto p-4 flex-1 hide-scrollbar">
+      <div className="sm:hidden flex flex-col space-y-3 overflow-y-auto p-4 flex-1 hide-scrollbar">
         {sortedAssignments.map((assignment) => (
           <div
             key={assignment._id}

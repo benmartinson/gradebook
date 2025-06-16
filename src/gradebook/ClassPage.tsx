@@ -16,7 +16,7 @@ const ClassPage = () => {
         <h1 className="text-2xl font-bold">Class Summary</h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow p-4">
           <h2 className="font-medium mb-3">Course Information</h2>
           <div className="text-sm text-gray-600">

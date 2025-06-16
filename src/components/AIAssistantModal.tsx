@@ -224,11 +224,11 @@ const AIAssistantModal = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/30 flex justify-center items-center z-[100] sm:px-2 md:px-20 lg:px-60 h-screen py-10"
+      className="fixed inset-0 bg-black/30 flex justify-center items-center z-[100] sm:px-2 sm:px-20 lg:px-60 h-screen py-10"
       onClick={onClose}
     >
       <div
-        className="bg-slate-50 rounded-lg p-4 md:p-6 overflow-hidden flex flex-col min-w-full h-full max-h-[700px]"
+        className="bg-slate-50 rounded-lg p-4 sm:p-6 overflow-hidden flex flex-col min-w-full h-full max-h-[700px]"
         onClick={(e) => e.stopPropagation()}
       >
         <ModalHeader isConfirming={isConfirming} onClose={onClose} />

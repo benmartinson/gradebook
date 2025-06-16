@@ -82,14 +82,14 @@ const NewAssignmentPage = () => {
   return (
     <div className="w-full flex flex-col">
       <Navbar />
-      <div className="w-full p-6 max-md:pt-0">
-        <div className="mb-3 md:mb-6 flex items-center justify-between">
+      <div className="w-full p-6 max-sm:pt-0">
+        <div className="mb-3 sm:mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold">New Assignment</h1>
         </div>
 
         <div className="mr-auto">
           <form onSubmit={handleCreateAssignment} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Description

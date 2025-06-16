@@ -29,7 +29,7 @@ const Navbar = ({ showGridControls, classData }: NavbarProps) => {
 
   return (
     <>
-      <div className="flex w-full justify-between items-center py-2 md:border-b border-gray-200 h-14 px-4 min-h-14 bg-white">
+      <div className="flex w-full justify-between items-center py-2 sm:border-b border-gray-200 h-14 px-4 min-h-14 bg-white">
         <button
           onClick={() => setIsAIModalOpen(true)}
           className="text-blue-600 hover:text-blue-700 flex gap-1 items-center text-sm font-medium transition-colors duration-150 underline-offset-2 hover:underline focus:outline-none "
@@ -45,7 +45,7 @@ const Navbar = ({ showGridControls, classData }: NavbarProps) => {
         {/* <div className="flex items-center gap-4">
           {showGridControls && showDateOrder && (
             <button
-              className="flex items-center max-md:hidden gap-1.5 text-sm text-slate-600 hover:text-slate-900 transition-colors duration-150"
+              className="flex items-center max-sm:hidden gap-1.5 text-sm text-slate-600 hover:text-slate-900 transition-colors duration-150"
               onClick={() => setDateOrderAsc(!dateOrderAsc)}
             >
               <FaSort size={16} />

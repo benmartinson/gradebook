@@ -24,7 +24,7 @@ const ClassSwitcher = ({
       <button className={buttonClasses} onClick={() => setIsOpen(true)}>
         <FaExchangeAlt size={16} />
         {!isCollapsed && !loadingAnimation && (
-          <span className="text-sm max-md:hidden font-medium">
+          <span className="text-sm max-sm:hidden font-medium">
             {classInfo?.classCode}
           </span>
         )}

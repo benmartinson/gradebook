@@ -54,7 +54,7 @@ const NavItem = ({
         {icon}
       </div>
       {!isCollapsed && !isLoadingAnimation && (
-        <span className="max-md:hidden text-sm font-medium">{label}</span>
+        <span className="max-sm:hidden text-sm font-medium">{label}</span>
       )}
     </div>
   );
@@ -87,15 +87,15 @@ const Sidebar = () => {
   };
 
   const containerClasses = classNames(
-    "flex md:flex-col max-md:gap-10 max-md:justify-center max-md:w-full max-md:h-16 transition-all duration-300 ease-in-out bg-slate-800 md:border-r md:border-slate-700 p-3 relative md:justify-between",
+    "flex sm:flex-col max-sm:gap-10 max-sm:justify-center max-sm:w-full max-sm:h-16 transition-all duration-300 ease-in-out bg-slate-800 sm:border-r sm:border-slate-700 p-3 relative sm:justify-between",
     {
-      "md:w-60": !isCollapsed,
-      "md:w-16": isCollapsed,
+      "sm:w-60": !isCollapsed,
+      "sm:w-16": isCollapsed,
     }
   );
 
   const iconClasses = classNames(
-    "max-md:hidden text-gray-400 hover:text-white flex items-center cursor-pointer rounded-md  transition-colors",
+    "max-sm:hidden text-gray-400 hover:text-white flex items-center cursor-pointer rounded-md  transition-colors",
     {
       "justify-center": isCollapsed,
       "justify-end": !isCollapsed,
@@ -104,7 +104,7 @@ const Sidebar = () => {
 
   return (
     <div className={containerClasses}>
-      <div className="flex md:flex-col gap-6 md:gap-2">
+      <div className="flex sm:flex-col gap-6 sm:gap-2">
         <div onClick={toggleCollapse} className={iconClasses}>
           {isCollapsed ? (
             <div className="bg-slate-700 p-2 rounded-md bg-slate-700 hover:bg-slate-600">
@@ -148,7 +148,7 @@ const Sidebar = () => {
         /> */}
       </div>
 
-      <div className="max-md:hidden pb-2">
+      <div className="max-sm:hidden pb-2">
         <UserMenu
           isCollapsed={isCollapsed}
           loadingAnimation={loadingAnimation}
