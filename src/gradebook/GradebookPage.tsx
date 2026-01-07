@@ -32,6 +32,8 @@ const GradebookPage = ({ children }: { children: React.ReactNode }) => {
     } else {
       const teacher = await convex.query(api.teachers.getTeacher);
       if (!teacher) {
+        // No teacher record for this user - stop loading but show empty state
+        setIsLoadingClasses(false);
         return;
       }
       classes = await convex.query(api.teachers.getTeacherClasses, {
