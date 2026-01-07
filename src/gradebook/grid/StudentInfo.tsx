@@ -2,9 +2,17 @@ import { FaUserCircle } from "react-icons/fa";
 import { Student } from "../../../types";
 import { useSettingValue } from "../../appStore";
 
-const StudentInfo = ({ student }: { student: Student }) => {
+type StudentInfoProps = {
+  student: Student;
+  showInitials?: boolean; // Optional - if not provided, uses settings hook
+};
+
+const StudentInfo = ({ student, showInitials: showInitialsProp }: StudentInfoProps) => {
   const showPhoto = useSettingValue("show_photo");
-  const showInitials = useSettingValue("show_initials_instead_of_photo");
+  const showInitialsFromSettings = useSettingValue("show_initials_instead_of_photo");
+
+  // Use prop if provided, otherwise fall back to settings
+  const showInitials = showInitialsProp ?? showInitialsFromSettings;
 
   const initials = student.firstName.charAt(0) + student.lastName.charAt(0);
 

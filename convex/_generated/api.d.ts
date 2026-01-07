@@ -19,6 +19,7 @@ import type * as auth from "../auth.js";
 import type * as bedrock from "../bedrock.js";
 import type * as chats from "../chats.js";
 import type * as classes from "../classes.js";
+import type * as componentOverrides from "../componentOverrides.js";
 import type * as enrollments from "../enrollments.js";
 import type * as grades from "../grades.js";
 import type * as http from "../http.js";
@@ -41,6 +42,7 @@ declare const fullApi: ApiFromModules<{
   bedrock: typeof bedrock;
   chats: typeof chats;
   classes: typeof classes;
+  componentOverrides: typeof componentOverrides;
   enrollments: typeof enrollments;
   grades: typeof grades;
   http: typeof http;

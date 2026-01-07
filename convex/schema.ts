@@ -65,4 +65,14 @@ export default defineSchema({
   })
     .index("byClass", ["classId"])
     .index("byStudent", ["studentId"]),
+
+  // User-specific component overrides for AI customization
+  userComponentOverrides: defineTable({
+    userId: v.id("users"),
+    componentKey: v.string(), // e.g., "Grid/StudentInfo"
+    bundleUrl: v.string(), // Full URL to the bundled component on Adaptations
+    sourceCode: v.string(), // The modified source code (for future AI edits)
+  })
+    .index("byUser", ["userId"])
+    .index("byUserAndComponent", ["userId", "componentKey"]),
 });

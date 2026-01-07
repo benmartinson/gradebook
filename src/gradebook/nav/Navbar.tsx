@@ -4,7 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import BackToScoresButton from "../BackToScoresButton";
 import { useSettingValue, useAppStore } from "../../appStore";
 import AIAssistantModal from "../../components/AIAssistantModal";
+import { CustomizationModal } from "../../customization/CustomizationModal";
 import { FaWandMagicSparkles } from "react-icons/fa6";
+import { HiSparkles } from "react-icons/hi";
 import { Id } from "../../../convex/_generated/dataModel";
 
 interface NavbarProps {
@@ -23,6 +25,7 @@ const Navbar = ({ showGridControls, classData }: NavbarProps) => {
   const { class_id } = useParams();
   const { dateOrderAsc, setDateOrderAsc, isLoading } = useAppStore();
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+  const [isCustomizationOpen, setIsCustomizationOpen] = useState(false);
 
   const showDateOrder = useSettingValue("show_date_order_button");
   const allowAddAssignment = useSettingValue("allow_assignment_adding");
@@ -30,17 +33,27 @@ const Navbar = ({ showGridControls, classData }: NavbarProps) => {
   return (
     <>
       <div className="flex w-full justify-between items-center py-2 sm:border-b border-gray-200 h-14 px-4 min-h-14 bg-white">
-        <button
-          onClick={() => setIsAIModalOpen(true)}
-          className="text-blue-600 hover:text-blue-700 flex gap-1 items-center text-sm font-medium transition-colors duration-150 underline-offset-2 hover:underline focus:outline-none "
-        >
-          {!isAIModalOpen && (
-            <div className="cursor-pointer flex gap-1">
-              Class Assistant
-              <FaWandMagicSparkles size={16} />
-            </div>
-          )}
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setIsAIModalOpen(true)}
+            className="text-blue-600 hover:text-blue-700 flex gap-1 items-center text-sm font-medium transition-colors duration-150 underline-offset-2 hover:underline focus:outline-none"
+          >
+            {!isAIModalOpen && (
+              <div className="cursor-pointer flex gap-1">
+                Class Assistant
+                <FaWandMagicSparkles size={16} />
+              </div>
+            )}
+          </button>
+
+          <button
+            onClick={() => setIsCustomizationOpen(true)}
+            className="text-violet-600 hover:text-violet-700 flex gap-1 items-center text-sm font-medium transition-colors duration-150 underline-offset-2 hover:underline focus:outline-none"
+          >
+            <span>Customize UI</span>
+            <HiSparkles size={16} />
+          </button>
+        </div>
 
         {/* <div className="flex items-center gap-4">
           {showGridControls && showDateOrder && (
@@ -76,6 +89,11 @@ const Navbar = ({ showGridControls, classData }: NavbarProps) => {
         isOpen={isAIModalOpen}
         onClose={() => setIsAIModalOpen(false)}
         classData={classData}
+      />
+
+      <CustomizationModal
+        isOpen={isCustomizationOpen}
+        onClose={() => setIsCustomizationOpen(false)}
       />
     </>
   );

@@ -11,6 +11,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Id } from "../../../convex/_generated/dataModel";
 import { useSettingValue, useAppStore } from "../../appStore";
 import { Assignment } from "../../../types";
+import { CustomizableComponent } from "../../customization/CustomizableComponent";
 
 const Grid = () => {
   const { class_id } = useParams();
@@ -122,7 +123,11 @@ const Grid = () => {
                       <td
                         className={`sticky h-[59px] bg-white group-hover:bg-slate-50 left-0 z-10 p-2 whitespace-nowrap ${!showInitials ? "w-[160px]" : "w-[200px]"} flex items-center `}
                       >
-                        <StudentInfo student={student} />
+                        <CustomizableComponent
+                          componentKey="Grid/StudentInfo"
+                          defaultComponent={StudentInfo}
+                          props={{ student, showInitials: showInitials ?? false }}
+                        />
                       </td>
 
                       {sortedAssignments.map((assignment) => (
